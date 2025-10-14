@@ -1,208 +1,142 @@
 <script>
   import { router } from '@inertiajs/svelte';
 
-  let { response, assessment, documents } = $props();
+  let { response, assessment, documents, answers } = $props();
 
-  function getRiskLevelColor(riskLevel) {
-    const colors = {
-      'compliant': 'green',
-      'attention_required': 'yellow',
-      'non_compliant': 'red'
-    };
-    return colors[riskLevel] || 'gray';
-  }
+  function getAnswerDisplay(answer) {
+    const { question_type, answer_value, answer_choices } = answer;
 
-  function getRiskLevelText(riskLevel) {
-    const texts = {
-      'compliant': 'Conforme',
-      'attention_required': 'Attention requise',
-      'non_compliant': 'Non-conforme'
-    };
-    return texts[riskLevel] || 'Inconnu';
-  }
+    switch (question_type) {
+      case 'yes_no':
+      case 'single_choice':
+        const choiceId = answer_value.choice_id;
+        const choice = answer_choices.find(ac => ac.id === choiceId);
+        return choice ? choice.choice_text : '-';
 
-  function getDocumentTypeLabel(type) {
-    const labels = {
-      'privacy_policy': 'Politique de confidentialité',
-      'processing_register': 'Registre des traitements (Article 30)',
-      'consent_form': 'Formulaire de consentement',
-      'employee_notice': 'Notice employés'
-    };
-    return labels[type] || type;
-  }
+      case 'multiple_choice':
+        const choiceIds = answer_value.choice_ids || [];
+        const selectedChoices = answer_choices.filter(ac => choiceIds.includes(ac.id));
+        return selectedChoices.map(c => c.choice_text).join(', ') || '-';
 
-  function getDocumentIcon(type) {
-    if (type === 'processing_register') {
-      return '📋'; // Registry icon
+      case 'text':
+      case 'long_text':
+        return answer_value.text || '-';
+
+      case 'rating_scale':
+        return `${answer_value.rating || 0} / ${answer_value.max_rating || 5}`;
+
+      default:
+        return '-';
     }
-    return '📄';
   }
 
-  const isCalculating = !assessment;
-  const processingRegister = documents?.find(d => d.document_type === 'processing_register');
-  const otherDocuments = documents?.filter(d => d.document_type !== 'processing_register') || [];
+  // Group answers by section
+  const answersBySection = $derived(() => {
+    const sections = {};
+    answers.forEach(answer => {
+      if (!sections[answer.section_title]) {
+        sections[answer.section_title] = [];
+      }
+      sections[answer.section_title].push(answer);
+    });
+    return sections;
+  });
 </script>
 
-<div class="min-h-screen bg-gray-50 py-12">
-  <div class="max-w-4xl mx-auto px-4">
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-5xl mx-auto px-4">
     <!-- Header -->
-    <div class="text-center mb-12">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-        <svg class="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    <div class="mb-8">
+      <button
+        onclick={() => router.visit('/dashboard')}
+        class="text-gray-600 hover:text-gray-900 mb-4 flex items-center"
+      >
+        <svg class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-      </div>
-      <h1 class="text-3xl font-bold text-gray-900 mb-2">
-        Évaluation terminée !
-      </h1>
-      <p class="text-gray-600">
-        Merci d'avoir complété l'évaluation RGPD Monaco
+        Retour au tableau de bord
+      </button>
+      <h1 class="text-3xl font-bold text-gray-900">Détails de l'évaluation</h1>
+      <p class="text-gray-600 mt-2">
+        {response.questionnaire.title} • Complétée le {new Date(response.completed_at).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
     </div>
 
-    {#if isCalculating}
-      <!-- Calculating State -->
-      <div class="bg-white rounded-lg shadow-md p-8 mb-8">
-        <div class="flex items-center justify-center mb-4">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        </div>
-        <p class="text-center text-gray-600">
-          Calcul de votre score de conformité en cours...
-        </p>
-      </div>
-    {:else}
-      <!-- Compliance Score Card -->
-      <div class="bg-white rounded-lg shadow-md p-8 mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Votre score de conformité</h2>
-
-        <div class="flex items-center justify-between mb-6">
+    <!-- Score Summary Card (compact) -->
+    {#if assessment}
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex items-center justify-between">
           <div>
-            <div class="text-5xl font-bold text-{getRiskLevelColor(assessment.risk_level)}-600">
-              {Number(assessment.overall_score).toFixed(1)}%
-            </div>
-            <div class="mt-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-{getRiskLevelColor(assessment.risk_level)}-100 text-{getRiskLevelColor(assessment.risk_level)}-800">
-              {getRiskLevelText(assessment.risk_level)}
+            <h2 class="text-lg font-medium text-gray-600 mb-1">Score de conformité</h2>
+            <div class="flex items-baseline space-x-2">
+              <span class="text-3xl font-bold text-blue-600">{Number(assessment.overall_score).toFixed(1)}%</span>
+              <span class="text-gray-500">/ 100%</span>
             </div>
           </div>
-
-          <div class="text-right">
-            <div class="text-gray-600 text-sm">Score maximum</div>
-            <div class="text-2xl font-semibold text-gray-900">{assessment.max_possible_score}</div>
-          </div>
+          {#if documents && documents.length > 0}
+            <a
+              href="#documents"
+              class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 font-medium"
+            >
+              Voir les documents ({documents.length})
+            </a>
+          {/if}
         </div>
+      </div>
+    {/if}
 
-        <!-- Compliance Areas -->
-        {#if assessment.compliance_area_scores && assessment.compliance_area_scores.length > 0}
-          <div class="border-t pt-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Conformité par domaine</h3>
-            <div class="space-y-4">
-              {#each assessment.compliance_area_scores as area}
-                <div>
-                  <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-medium text-gray-700">{area.area_name}</span>
-                    <span class="text-sm font-bold text-gray-900">{area.percentage}%</span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-3">
-                    <div
-                      class="h-3 rounded-full {area.percentage >= 85 ? 'bg-green-500' : area.percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'}"
-                      style="width: {area.percentage}%"
-                    ></div>
-                  </div>
+    <!-- Answers by Section -->
+    <div class="space-y-6">
+      {#each Object.entries(answersBySection()) as [sectionTitle, sectionAnswers]}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+            <h2 class="text-xl font-bold text-gray-900">{sectionTitle}</h2>
+          </div>
+          <div class="p-6 space-y-6">
+            {#each sectionAnswers as answer, index}
+              <div class="pb-6 {index < sectionAnswers.length - 1 ? 'border-b border-gray-200' : ''}">
+                <h3 class="font-medium text-gray-900 mb-2">
+                  {answer.question_text}
+                </h3>
+                <div class="pl-4 py-2 bg-gray-50 rounded-lg">
+                  <p class="text-gray-700">{getAnswerDisplay(answer)}</p>
                 </div>
-              {/each}
-            </div>
-          </div>
-        {/if}
-      </div>
-    {/if}
-
-    <!-- Article 30 Registry (Processing Register) -->
-    {#if processingRegister}
-      <div class="bg-blue-50 border-l-4 border-blue-400 rounded-lg shadow-md p-8 mb-8">
-        <div class="flex items-start">
-          <div class="text-4xl mr-4">📋</div>
-          <div class="flex-1">
-            <h2 class="text-xl font-bold text-gray-900 mb-2">
-              Registre des traitements (Article 30)
-            </h2>
-            <p class="text-gray-700 mb-4">
-              Votre registre des activités de traitement est obligatoire selon la Loi n° 1.565.
-            </p>
-
-            {#if processingRegister.status === 'generating'}
-              <div class="flex items-center text-blue-600">
-                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-2"></div>
-                <span>Génération en cours...</span>
               </div>
-            {:else if processingRegister.status === 'ready'}
-              <a
-                href={processingRegister.download_url}
-                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-              >
-                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Télécharger le registre
-              </a>
-            {:else}
-              <div class="text-red-600">
-                Erreur lors de la génération
-              </div>
-            {/if}
+            {/each}
           </div>
         </div>
-      </div>
-    {/if}
+      {/each}
+    </div>
 
-    <!-- Other Documents -->
-    {#if otherDocuments.length > 0}
-      <div class="bg-white rounded-lg shadow-md p-8 mb-8">
-        <h2 class="text-xl font-bold text-gray-900 mb-6">Vos documents essentiels</h2>
-        <div class="grid gap-4">
-          {#each otherDocuments as doc}
-            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+    <!-- Documents Section -->
+    {#if documents && documents.length > 0}
+      <div id="documents" class="bg-white rounded-lg shadow-md p-6 mt-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Documents générés</h2>
+        <div class="grid gap-3">
+          {#each documents as doc}
+            <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
               <div class="flex items-center">
-                <span class="text-3xl mr-4">{getDocumentIcon(doc.document_type)}</span>
-                <div>
-                  <h3 class="font-semibold text-gray-900">{getDocumentTypeLabel(doc.document_type)}</h3>
-                  <p class="text-sm text-gray-600">{doc.title}</p>
-                </div>
+                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span class="font-medium text-gray-900">{doc.title}</span>
               </div>
-
-              <div>
-                {#if doc.status === 'generating'}
-                  <div class="flex items-center text-gray-600">
-                    <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-600 mr-2"></div>
-                    <span class="text-sm">Génération...</span>
-                  </div>
-                {:else if doc.status === 'ready'}
-                  <a
-                    href={doc.download_url}
-                    class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium"
-                  >
-                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Télécharger
-                  </a>
-                {:else}
-                  <span class="text-red-600 text-sm">Erreur</span>
-                {/if}
-              </div>
+              {#if doc.status === 'ready' && doc.download_url}
+                <a
+                  href={doc.download_url}
+                  class="text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Télécharger
+                </a>
+              {:else if doc.status === 'generating'}
+                <span class="text-gray-500 text-sm">Génération...</span>
+              {:else}
+                <span class="text-red-600 text-sm">Erreur</span>
+              {/if}
             </div>
           {/each}
         </div>
       </div>
     {/if}
-
-    <!-- Actions -->
-    <div class="flex justify-center space-x-4">
-      <button
-        onclick={() => router.visit('/dashboard')}
-        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-      >
-        Retour au tableau de bord
-      </button>
-    </div>
   </div>
 </div>

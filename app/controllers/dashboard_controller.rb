@@ -11,6 +11,7 @@ class DashboardController < ApplicationController
 
     render inertia: "Dashboard/Show", props: {
       latest_assessment: latest_response&.compliance_assessment ? assessment_props(latest_response.compliance_assessment) : nil,
+      latest_response_id: latest_response&.id,
       documents: latest_response ? latest_response.documents.ready.map { |d| document_props(d) } : [],
       responses: Current.account.responses.order(created_at: :desc).limit(5).map { |r| response_summary_props(r) },
       questionnaire_id: published_questionnaire&.id

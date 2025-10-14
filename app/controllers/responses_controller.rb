@@ -55,10 +55,22 @@ class ResponsesController < ApplicationController
   end
 
   def results
+    # Get all answers with their questions and answer choices for display
+    answers_with_details = @response.answers.includes(question: [:answer_choices, :section]).map do |answer|
+      {
+        question_text: answer.question.question_text,
+        question_type: answer.question.question_type,
+        section_title: answer.question.section.title,
+        answer_value: answer.answer_value,
+        answer_choices: answer.question.answer_choices.map { |ac| { id: ac.id, choice_text: ac.choice_text } }
+      }
+    end
+
     render inertia: "Responses/Results", props: {
       response: response_props(@response),
       assessment: @response.compliance_assessment ? assessment_props(@response.compliance_assessment) : nil,
-      documents: @response.documents.map { |d| document_props(d) }
+      documents: @response.documents.map { |d| document_props(d) },
+      answers: answers_with_details
     }
   end
 

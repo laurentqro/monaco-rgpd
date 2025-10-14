@@ -3,7 +3,7 @@
   import DocumentList from '../../components/DocumentList.svelte';
   import { router, page } from '@inertiajs/svelte';
 
-  let { latest_assessment, documents, responses, questionnaire_id } = $props();
+  let { latest_assessment, latest_response_id, documents, responses, questionnaire_id } = $props();
 
   // Flash message state
   let showFlash = $state(!!$page.props.flash?.notice);
@@ -66,7 +66,7 @@
 
     {#if latest_assessment}
       <!-- Score Card -->
-      <ComplianceScoreCard assessment={latest_assessment} />
+      <ComplianceScoreCard assessment={latest_assessment} responseId={latest_response_id} />
 
       <!-- Compliance Areas Breakdown -->
       <div class="bg-white rounded-lg shadow-md p-6 mb-8">

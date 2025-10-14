@@ -1,5 +1,5 @@
 <script>
-  let { assessment } = $props();
+  let { assessment, responseId } = $props();
 
   const percentage = $derived((assessment.overall_score / assessment.max_possible_score * 100).toFixed(0));
 
@@ -32,18 +32,18 @@
       </p>
     </div>
 
-    <div class="flex space-x-3">
+    <div class="flex flex-col space-y-2">
       <a
-        href="/responses"
-        class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium"
+        href="/responses/{responseId}/results"
+        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-center"
       >
         Voir les détails
       </a>
       <a
-        href="/questionnaires/1/responses"
-        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+        href="/responses"
+        class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium text-center"
       >
-        Nouvelle évaluation
+        Historique des évaluations
       </a>
     </div>
   </div>
