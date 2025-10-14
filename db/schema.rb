@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_105029) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "access_categories", force: :cascade do |t|
+    t.bigint "processing_activity_id", null: false
+    t.integer "category_number"
+    t.string "category_name", null: false
+    t.text "detail"
+    t.string "location"
+    t.integer "order_index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_index"], name: "index_access_categories_on_order_index"
+    t.index ["processing_activity_id"], name: "index_access_categories_on_processing_activity_id"
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -110,6 +123,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
     t.index ["status"], name: "index_compliance_assessments_on_status"
   end
 
+  create_table "data_category_details", force: :cascade do |t|
+    t.bigint "processing_activity_id", null: false
+    t.integer "category_type", null: false
+    t.text "detail"
+    t.string "retention_period"
+    t.integer "retention_period_enum"
+    t.string "data_source"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["processing_activity_id"], name: "index_data_category_details_on_processing_activity_id"
+  end
+
   create_table "document_template_versions", force: :cascade do |t|
     t.bigint "document_template_id", null: false
     t.text "content", null: false
@@ -187,6 +212,52 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "processing_activities", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "response_id"
+    t.string "name", null: false
+    t.text "description"
+    t.boolean "has_representative", default: false
+    t.boolean "has_dpo", default: false
+    t.boolean "has_joint_controller", default: false
+    t.boolean "surveillance_purpose", default: false
+    t.jsonb "data_subjects", default: []
+    t.boolean "sensitive_data", default: false
+    t.jsonb "sensitive_data_types", default: []
+    t.integer "sensitive_data_justification"
+    t.jsonb "data_categories", default: []
+    t.jsonb "individual_rights", default: []
+    t.jsonb "security_measures", default: []
+    t.boolean "inadequate_protection_transfer", default: false
+    t.jsonb "transfer_destinations", default: []
+    t.integer "transfer_safeguard"
+    t.integer "transfer_derogation"
+    t.text "information_modalities"
+    t.boolean "impact_assessment_required", default: false
+    t.boolean "profiling", default: false
+    t.boolean "special_case_article", default: false
+    t.string "special_case_reference"
+    t.boolean "prior_authorization", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "created_at"], name: "index_processing_activities_on_account_id_and_created_at"
+    t.index ["account_id"], name: "index_processing_activities_on_account_id"
+    t.index ["response_id"], name: "index_processing_activities_on_response_id"
+  end
+
+  create_table "processing_purposes", force: :cascade do |t|
+    t.bigint "processing_activity_id", null: false
+    t.integer "purpose_number", null: false
+    t.string "purpose_name", null: false
+    t.text "purpose_detail"
+    t.integer "legal_basis", null: false
+    t.integer "order_index", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_index"], name: "index_processing_purposes_on_order_index"
+    t.index ["processing_activity_id"], name: "index_processing_purposes_on_processing_activity_id"
+  end
+
   create_table "questionnaires", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -211,6 +282,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
     t.datetime "updated_at", null: false
     t.index ["order_index"], name: "index_questions_on_order_index"
     t.index ["section_id"], name: "index_questions_on_section_id"
+  end
+
+  create_table "recipient_categories", force: :cascade do |t|
+    t.bigint "processing_activity_id", null: false
+    t.integer "recipient_number"
+    t.string "recipient_name", null: false
+    t.text "detail"
+    t.string "location"
+    t.integer "order_index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_index"], name: "index_recipient_categories_on_order_index"
+    t.index ["processing_activity_id"], name: "index_recipient_categories_on_processing_activity_id"
   end
 
   create_table "responses", force: :cascade do |t|
@@ -397,6 +481,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "access_categories", "processing_activities"
   add_foreign_key "admin_sessions", "admins"
   add_foreign_key "answer_choices", "questions"
   add_foreign_key "answers", "questions"
@@ -405,6 +490,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
   add_foreign_key "compliance_area_scores", "compliance_assessments"
   add_foreign_key "compliance_assessments", "accounts"
   add_foreign_key "compliance_assessments", "responses"
+  add_foreign_key "data_category_details", "processing_activities"
   add_foreign_key "document_template_versions", "document_templates"
   add_foreign_key "documents", "accounts"
   add_foreign_key "documents", "responses"
@@ -412,7 +498,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
   add_foreign_key "logic_rules", "sections", column: "target_section_id"
   add_foreign_key "magic_links", "users"
   add_foreign_key "notifications", "users"
+  add_foreign_key "processing_activities", "accounts"
+  add_foreign_key "processing_activities", "responses"
+  add_foreign_key "processing_purposes", "processing_activities"
   add_foreign_key "questions", "sections"
+  add_foreign_key "recipient_categories", "processing_activities"
   add_foreign_key "responses", "accounts"
   add_foreign_key "responses", "questionnaires"
   add_foreign_key "responses", "users", column: "respondent_id"

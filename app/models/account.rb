@@ -6,6 +6,7 @@ class Account < ApplicationRecord
   has_many :responses, dependent: :destroy
   has_many :compliance_assessments, dependent: :destroy
   has_many :documents, dependent: :destroy
+  has_many :processing_activities, dependent: :destroy
 
   enum :account_type, {
     solopreneur: 0,

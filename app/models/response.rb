@@ -5,6 +5,7 @@ class Response < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_one :compliance_assessment, dependent: :destroy
   has_many :documents, dependent: :destroy
+  has_many :processing_activities, dependent: :nullify
 
   enum :status, {
     in_progress: 0,
