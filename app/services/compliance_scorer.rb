@@ -25,8 +25,9 @@ class ComplianceScorer
       max_score += max_question_score
     end
 
-    assessment.overall_score = total_score
-    assessment.max_possible_score = max_score
+    # Store overall_score as a percentage (0-100)
+    assessment.overall_score = max_score > 0 ? (total_score / max_score * 100) : 0
+    assessment.max_possible_score = 100 # Max percentage
     assessment.status = :completed
     assessment.save!
 
@@ -42,10 +43,10 @@ class ComplianceScorer
     case question.question_type
     when "yes_no", "single_choice"
       choice = question.answer_choices.find_by(id: answer.answer_value["choice_id"])
-      choice ? (choice.score * question.weight) : 0
+      choice && choice.score.present? ? (choice.score * question.weight) : 0
     when "multiple_choice"
       choice_ids = answer.answer_value["choice_ids"] || []
-      choices = question.answer_choices.where(id: choice_ids)
+      choices = question.answer_choices.where(id: choice_ids).where.not(score: nil)
       avg_score = choices.any? ? (choices.sum(&:score) / choices.count) : 0
       avg_score * question.weight
     when "rating_scale"
