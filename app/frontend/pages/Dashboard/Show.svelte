@@ -29,9 +29,9 @@
 
   function getRiskLevelText(riskLevel) {
     const texts = {
-      'compliant': 'Conforme',
-      'attention_required': 'Attention requise',
-      'non_compliant': 'Non-conforme'
+      'compliant': 'Risque faible',
+      'attention_required': 'Risque moyen',
+      'non_compliant': 'Risque élevé'
     };
     return texts[riskLevel] || 'Inconnu';
   }

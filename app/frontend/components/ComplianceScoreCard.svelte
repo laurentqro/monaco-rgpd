@@ -10,9 +10,9 @@
   }[assessment.risk_level] || 'gray');
 
   const riskLevelText = $derived({
-    'compliant': 'Conforme',
-    'attention_required': 'Attention requise',
-    'non_compliant': 'Non-conforme'
+    'compliant': 'Risque faible',
+    'attention_required': 'Risque moyen',
+    'non_compliant': 'Risque élevé'
   }[assessment.risk_level] || 'Inconnu');
 </script>
 
@@ -25,7 +25,7 @@
         <span class="text-xl text-gray-500">/ 100%</span>
       </div>
       <p class="mt-3 text-lg">
-        Statut: <span class="font-bold text-{riskLevelColor}-600">{riskLevelText}</span>
+        Niveau de risque: <span class="font-bold text-{riskLevelColor}-600">{riskLevelText}</span>
       </p>
       <p class="mt-2 text-sm text-gray-500">
         Dernière évaluation: {new Date(assessment.created_at).toLocaleDateString('fr-FR')}
