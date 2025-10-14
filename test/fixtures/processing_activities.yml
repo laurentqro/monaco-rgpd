@@ -1,0 +1,15 @@
+customer_data:
+  account: basic
+  response: completed_response
+  name: Customer Data Management
+  description: Processing customer data for marketing and service delivery
+  sensitive_data: false
+  data_categories: ["names", "email_addresses", "phone_numbers"]
+
+employee_data:
+  account: basic
+  response: completed_response
+  name: Employee HR Management
+  description: Managing employee information for HR purposes
+  sensitive_data: false
+  data_categories: ["employee_names", "employee_contact"]

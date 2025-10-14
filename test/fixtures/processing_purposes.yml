@@ -1,0 +1,13 @@
+customer_marketing:
+  processing_activity: customer_data
+  purpose_number: 1
+  purpose_name: Marketing and Communications
+  legal_basis: consent
+  order_index: 1
+
+employee_payroll:
+  processing_activity: employee_data
+  purpose_number: 2
+  purpose_name: Payroll Processing
+  legal_basis: contract
+  order_index: 1

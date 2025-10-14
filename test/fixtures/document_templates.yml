@@ -1,0 +1,63 @@
+privacy_policy:
+  title: Privacy Policy
+  document_type: privacy_policy
+  content: |
+    # Privacy Policy for {{ account.name }}
+
+    Entity type: {{ account.entity_type }}
+    Activity sector: {{ account.activity_sector }}
+
+    ## Processing Activities
+    {% for activity in processing_activities %}
+    - {{ activity.name }}
+      Purposes: {{ activity.purposes | join: ", " }}
+    {% endfor %}
+  version: 1
+  is_active: true
+  created_by_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>
+
+processing_register:
+  title: Processing Register
+  document_type: processing_register
+  content: |
+    # Register of Processing Activities - {{ account.name }}
+
+    {% for activity in processing_activities %}
+    ## {{ activity.name }}
+    - Purposes: {{ activity.purposes | join: ", " }}
+    - Data Categories: {{ activity.data_categories | join: ", " }}
+    - Retention: {{ activity.retention_periods | join: ", " }}
+    {% endfor %}
+  version: 1
+  is_active: true
+  created_by_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>
+
+consent_form:
+  title: Consent Form
+  document_type: consent_form
+  content: |
+    # Consent Form - {{ account.name }}
+
+    I consent to the processing of my personal data for the following purposes:
+    {% for activity in processing_activities %}
+    - {{ activity.name }}
+    {% endfor %}
+  version: 1
+  is_active: true
+  created_by_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>
+
+employee_notice:
+  title: Employee Notice
+  document_type: employee_notice
+  content: |
+    # Employee Privacy Notice - {{ account.name }}
+
+    Employee count: {{ account.employee_count }}
+
+    Your personal data is processed for:
+    {% for activity in processing_activities %}
+    - {{ activity.name }}
+    {% endfor %}
+  version: 1
+  is_active: true
+  created_by_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>

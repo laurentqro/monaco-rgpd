@@ -3,9 +3,17 @@ basic:
   subdomain: basic
   plan_type: basic
   owner_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>
+  account_type: company
+  entity_type: company
+  activity_sector: Technology
+  employee_count: 25
+  jurisdiction: monaco
 
 premium:
   name: Premium Account
   subdomain: premium
   plan_type: premium
-  owner_id: <%= ActiveRecord::FixtureSet.identify(:premium_owner) %> 
+  owner_id: <%= ActiveRecord::FixtureSet.identify(:premium_owner) %>
+  account_type: company
+  entity_type: company
+  jurisdiction: monaco 

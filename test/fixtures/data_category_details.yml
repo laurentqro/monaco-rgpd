@@ -1,0 +1,13 @@
+customer_names:
+  processing_activity: customer_data
+  category_type: identity_family
+  detail: Names and Contact Information
+  retention_period: 3 years
+  retention_period_enum: three_years
+
+employee_personal:
+  processing_activity: employee_data
+  category_type: identity_family
+  detail: Personal Information
+  retention_period: 5 years after employment ends
+  retention_period_enum: five_years
