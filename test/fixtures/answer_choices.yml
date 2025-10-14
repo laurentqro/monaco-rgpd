@@ -1,0 +1,11 @@
+yes_choice:
+  question: one
+  choice_text: "Oui"
+  score: 100
+  order_index: 1
+
+no_choice:
+  question: one
+  choice_text: "Non"
+  score: 0
+  order_index: 2

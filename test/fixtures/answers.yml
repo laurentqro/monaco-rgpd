@@ -1,0 +1,5 @@
+answer_one:
+  response: completed_response
+  question: one
+  answer_value:
+    choice_id: <%= ActiveRecord::FixtureSet.identify(:yes_choice) %>
