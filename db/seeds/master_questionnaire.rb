@@ -13,7 +13,7 @@ section1 = questionnaire.sections.find_or_create_by!(order_index: 1) do |s|
   s.description = "Informations de base sur votre organisation"
 end
 
-section1.questions.find_or_create_by!(order_index: 1) do |q|
+monaco_question = section1.questions.find_or_create_by!(order_index: 1) do |q|
   q.question_text = "Votre organisation est-elle basée à Monaco?"
   q.question_type = :yes_no
   q.help_text = "Cette plateforme est actuellement réservée aux entités basées à Monaco."
@@ -22,6 +22,17 @@ section1.questions.find_or_create_by!(order_index: 1) do |q|
 end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
   q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 0)
+end
+
+# Add exit logic rule: if not based in Monaco, exit questionnaire
+no_choice = monaco_question.answer_choices.find_by(choice_text: "Non")
+if monaco_question && no_choice
+  monaco_question.logic_rules.find_or_create_by!(
+    condition_type: :equals,
+    condition_value: no_choice.id.to_s,
+    action: :exit_questionnaire,
+    exit_message: "Cette plateforme est actuellement réservée aux organisations basées à Monaco. Si votre organisation n'est pas basée à Monaco, vous ne pouvez pas utiliser ce questionnaire pour le moment."
+  )
 end
 
 section1.questions.find_or_create_by!(order_index: 2) do |q|

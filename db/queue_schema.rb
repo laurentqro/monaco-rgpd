@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_121618) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_123142) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -211,6 +211,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_121618) do
     t.integer "action", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "exit_message"
     t.index ["source_question_id"], name: "index_logic_rules_on_source_question_id"
     t.index ["target_section_id"], name: "index_logic_rules_on_target_section_id"
   end

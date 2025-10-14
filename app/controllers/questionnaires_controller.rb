@@ -59,7 +59,8 @@ class QuestionnairesController < ApplicationController
       condition_type: rule.condition_type,
       condition_value: rule.condition_value,
       action: rule.action,
-      target_section_id: rule.target_section_id
+      target_section_id: rule.target_section_id,
+      exit_message: rule.exit_message
     }
   end
 end

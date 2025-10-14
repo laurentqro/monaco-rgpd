@@ -86,4 +86,38 @@ class QuestionnaireBranchingTest < ActionDispatch::IntegrationTest
     assert_equal @section3.id, @logic_rule.target_section_id, "Should skip to section 3"
     assert_equal "skip_to_section", @logic_rule.action
   end
+
+  test "exit_questionnaire action terminates questionnaire with message" do
+    # Create exit logic rule
+    exit_question = @section1.questions.create!(
+      question_text: "Are you based in Monaco?",
+      question_type: :yes_no,
+      is_required: true,
+      weight: 0,
+      order_index: 2
+    )
+
+    yes_choice = exit_question.answer_choices.create!(
+      choice_text: "Yes",
+      score: 0,
+      order_index: 1
+    )
+
+    no_choice = exit_question.answer_choices.create!(
+      choice_text: "No",
+      score: 0,
+      order_index: 2
+    )
+
+    exit_rule = exit_question.logic_rules.create!(
+      condition_type: :equals,
+      condition_value: no_choice.id.to_s,
+      action: :exit_questionnaire,
+      exit_message: "This questionnaire is only for Monaco-based organizations."
+    )
+
+    assert_equal "exit_questionnaire", exit_rule.action
+    assert_equal "This questionnaire is only for Monaco-based organizations.", exit_rule.exit_message
+    assert_nil exit_rule.target_section_id, "Exit rules don't need a target section"
+  end
 end

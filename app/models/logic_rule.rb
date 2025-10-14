@@ -13,7 +13,8 @@ class LogicRule < ApplicationRecord
   enum :action, {
     show: 0,
     hide: 1,
-    skip_to_section: 2
+    skip_to_section: 2,
+    exit_questionnaire: 3
   }, prefix: true
 
   validates :condition_type, presence: true
