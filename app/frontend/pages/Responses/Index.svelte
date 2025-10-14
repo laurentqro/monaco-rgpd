@@ -113,7 +113,7 @@
                   {#if response.compliance_assessment}
                     <div class="flex items-center">
                       <span class="text-2xl font-bold text-{getRiskLevelColor(response.compliance_assessment.risk_level)}-600">
-                        {response.compliance_assessment.overall_score.toFixed(1)}%
+                        {Number(response.compliance_assessment.overall_score).toFixed(1)}%
                       </span>
                       <span class="ml-2 text-xs text-gray-500">
                         {getRiskLevelText(response.compliance_assessment.risk_level)}

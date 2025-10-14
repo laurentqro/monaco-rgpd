@@ -83,7 +83,7 @@ class ResponsesController < ApplicationController
         title: response.questionnaire.title
       },
       compliance_assessment: response.compliance_assessment ? {
-        overall_score: response.compliance_assessment.overall_score,
+        overall_score: response.compliance_assessment.overall_score.to_f.round(1),
         risk_level: response.compliance_assessment.risk_level
       } : nil,
       answers: response.answers.includes(:question).map { |a| answer_props(a) }

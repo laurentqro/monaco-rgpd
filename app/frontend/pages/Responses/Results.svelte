@@ -78,7 +78,7 @@
         <div class="flex items-center justify-between mb-6">
           <div>
             <div class="text-5xl font-bold text-{getRiskLevelColor(assessment.risk_level)}-600">
-              {assessment.overall_score.toFixed(1)}%
+              {Number(assessment.overall_score).toFixed(1)}%
             </div>
             <div class="mt-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-{getRiskLevelColor(assessment.risk_level)}-100 text-{getRiskLevelColor(assessment.risk_level)}-800">
               {getRiskLevelText(assessment.risk_level)}
