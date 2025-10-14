@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_103820) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_104433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -108,6 +108,46 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_103820) do
     t.index ["account_id"], name: "index_compliance_assessments_on_account_id"
     t.index ["response_id"], name: "index_compliance_assessments_on_response_id"
     t.index ["status"], name: "index_compliance_assessments_on_status"
+  end
+
+  create_table "document_template_versions", force: :cascade do |t|
+    t.bigint "document_template_id", null: false
+    t.text "content", null: false
+    t.integer "version", null: false
+    t.bigint "changed_by_id"
+    t.text "change_notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_template_id"], name: "index_document_template_versions_on_document_template_id"
+  end
+
+  create_table "document_templates", force: :cascade do |t|
+    t.integer "document_type", null: false
+    t.string "title", null: false
+    t.text "content", null: false
+    t.integer "version", default: 1, null: false
+    t.boolean "is_active", default: false
+    t.bigint "created_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_type"], name: "index_document_templates_on_document_type"
+    t.index ["is_active"], name: "index_document_templates_on_is_active"
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "response_id", null: false
+    t.integer "document_type", null: false
+    t.string "title", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "generated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "created_at"], name: "index_documents_on_account_id_and_created_at"
+    t.index ["account_id"], name: "index_documents_on_account_id"
+    t.index ["document_type"], name: "index_documents_on_document_type"
+    t.index ["response_id"], name: "index_documents_on_response_id"
+    t.index ["status"], name: "index_documents_on_status"
   end
 
   create_table "logic_rules", force: :cascade do |t|
@@ -365,6 +405,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_103820) do
   add_foreign_key "compliance_area_scores", "compliance_assessments"
   add_foreign_key "compliance_assessments", "accounts"
   add_foreign_key "compliance_assessments", "responses"
+  add_foreign_key "document_template_versions", "document_templates"
+  add_foreign_key "documents", "accounts"
+  add_foreign_key "documents", "responses"
   add_foreign_key "logic_rules", "questions", column: "source_question_id"
   add_foreign_key "logic_rules", "sections", column: "target_section_id"
   add_foreign_key "magic_links", "users"
