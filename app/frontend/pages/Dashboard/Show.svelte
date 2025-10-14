@@ -39,7 +39,20 @@
 
 <div class="min-h-screen bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8">Tableau de bord de conformité</h1>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-bold">Tableau de bord de conformité</h1>
+      {#if latest_assessment && questionnaire_id}
+        <button
+          onclick={() => router.post(`/questionnaires/${questionnaire_id}/responses`)}
+          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Nouvelle évaluation
+        </button>
+      {/if}
+    </div>
 
     <!-- Flash Message -->
     {#if showFlash && $page.props.flash?.notice}
