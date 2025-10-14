@@ -42,13 +42,13 @@
     </div>
   {/if}
 
-  <div class="space-y-4">
+  <div class="space-y-6">
     {#if question.question_type === 'yes_no'}
-      <div class="flex space-x-4">
+      <div class="flex gap-6">
         {#each question.answer_choices as choice (choice.id)}
           <button
             onclick={() => handleYesNo(choice.choice_text)}
-            class="flex-1 py-3 px-6 rounded-lg border-2 transition-all {selectedValue.choice_id === choice.id ? (choice.choice_text === 'Oui' ? 'border-green-500 bg-green-50 text-green-700' : 'border-red-500 bg-red-50 text-red-700') : 'border-gray-300 hover:border-gray-400'}"
+            class="flex-1 py-4 px-8 rounded-lg border-2 transition-all font-medium text-lg {selectedValue.choice_id === choice.id ? (choice.choice_text === 'Oui' ? 'border-green-500 bg-green-50 text-green-700' : 'border-red-500 bg-red-50 text-red-700') : 'border-gray-300 hover:border-gray-400'}"
           >
             {choice.choice_text}
           </button>
@@ -56,11 +56,11 @@
       </div>
 
     {:else if question.question_type === 'single_choice'}
-      <div class="space-y-2">
+      <div class="space-y-3">
         {#each question.answer_choices as choice (choice.id)}
           <button
             onclick={() => handleSingleChoice(choice.id)}
-            class="w-full text-left py-3 px-4 rounded-lg border-2 transition-all {selectedValue.choice_id === choice.id ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}"
+            class="w-full text-left py-4 px-5 rounded-lg border-2 transition-all {selectedValue.choice_id === choice.id ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}"
           >
             {choice.choice_text}
           </button>
@@ -68,9 +68,9 @@
       </div>
 
     {:else if question.question_type === 'multiple_choice'}
-      <div class="space-y-2">
+      <div class="space-y-3">
         {#each question.answer_choices as choice (choice.id)}
-          <label class="flex items-center py-3 px-4 rounded-lg border-2 border-gray-300 hover:border-gray-400 cursor-pointer">
+          <label class="flex items-center py-4 px-5 rounded-lg border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-all">
             <input
               type="checkbox"
               checked={selectedValue.choice_ids?.includes(choice.id)}
