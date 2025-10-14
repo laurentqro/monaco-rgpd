@@ -18,7 +18,11 @@ class AnswersControllerTest < ActionDispatch::IntegrationTest
         }
       }
     end
-    assert_response :no_content
+    assert_response :created
+
+    # Verify the response includes the answer ID
+    json_response = JSON.parse(response.body)
+    assert json_response["id"].present?
   end
 
   test "should update answer" do

@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
     answer = @response.answers.build(answer_params)
 
     if answer.save
-      head :no_content
+      render json: { id: answer.id }, status: :created
     else
       render json: { errors: answer.errors }, status: :unprocessable_entity
     end

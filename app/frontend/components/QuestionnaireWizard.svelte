@@ -6,9 +6,18 @@
 
   let currentQuestionIndex = $state(0);
   let answers = $state({});
+  let answerIds = $state({}); // Track answer IDs for updates
   let skippedSections = $state(new Set());
   let shouldExit = $state(false);
   let exitMessage = $state('');
+
+  // Load existing answers from response
+  if (response.answers) {
+    response.answers.forEach(answer => {
+      answers[answer.question_id] = answer.answer_value;
+      answerIds[answer.question_id] = answer.id;
+    });
+  }
 
   // Flatten all questions from all sections with section info
   const allQuestions = questionnaire.sections.flatMap(s =>
@@ -90,8 +99,21 @@
 
     // Save answer to backend
     try {
-      await fetch(`/responses/${response.id}/answers`, {
-        method: 'POST',
+      const answerId = answerIds[questionId];
+      let url, method;
+
+      if (answerId) {
+        // Update existing answer
+        url = `/responses/${response.id}/answers/${answerId}`;
+        method = 'PUT';
+      } else {
+        // Create new answer
+        url = `/responses/${response.id}/answers`;
+        method = 'POST';
+      }
+
+      const responseData = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
@@ -103,6 +125,14 @@
           }
         })
       });
+
+      // If this was a create, store the answer ID for future updates
+      if (method === 'POST' && responseData.ok) {
+        const data = await responseData.json();
+        if (data.id) {
+          answerIds[questionId] = data.id;
+        }
+      }
 
       // Auto-advance to next question
       if (!isLastQuestion) {

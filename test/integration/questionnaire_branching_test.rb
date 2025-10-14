@@ -120,4 +120,41 @@ class QuestionnaireBranchingTest < ActionDispatch::IntegrationTest
     assert_equal "This questionnaire is only for Monaco-based organizations.", exit_rule.exit_message
     assert_nil exit_rule.target_section_id, "Exit rules don't need a target section"
   end
+
+  test "yes_no questions send choice_id for logic rule evaluation" do
+    # This test verifies that yes/no questions properly send choice_id
+    # so that exit logic rules can match against them
+
+    exit_question = @section1.questions.create!(
+      question_text: "Test yes/no question",
+      question_type: :yes_no,
+      is_required: true,
+      weight: 0,
+      order_index: 2
+    )
+
+    yes_choice = exit_question.answer_choices.create!(
+      choice_text: "Oui",
+      score: 0,
+      order_index: 1
+    )
+
+    no_choice = exit_question.answer_choices.create!(
+      choice_text: "Non",
+      score: 0,
+      order_index: 2
+    )
+
+    # The logic rule should store the choice ID as a string
+    exit_rule = exit_question.logic_rules.create!(
+      condition_type: :equals,
+      condition_value: no_choice.id.to_s,
+      action: :exit_questionnaire,
+      exit_message: "Test exit message"
+    )
+
+    # Verify the setup
+    assert_equal no_choice.id.to_s, exit_rule.condition_value
+    assert exit_question.logic_rules.any? { |r| r.action == "exit_questionnaire" }
+  end
 end

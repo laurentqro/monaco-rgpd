@@ -3,9 +3,13 @@
 
   let selectedValue = $state(answer || {});
 
-  function handleYesNo(value) {
-    selectedValue = { value };
-    onanswer(selectedValue);
+  function handleYesNo(choiceText) {
+    // Find the answer choice ID that matches the text
+    const choice = question.answer_choices.find(c => c.choice_text === choiceText);
+    if (choice) {
+      selectedValue = { choice_id: choice.id };
+      onanswer(selectedValue);
+    }
   }
 
   function handleSingleChoice(choiceId) {
@@ -41,18 +45,14 @@
   <div class="space-y-4">
     {#if question.question_type === 'yes_no'}
       <div class="flex space-x-4">
-        <button
-          onclick={() => handleYesNo('Oui')}
-          class="flex-1 py-3 px-6 rounded-lg border-2 transition-all {selectedValue.value === 'Oui' ? 'border-green-500 bg-green-50 text-green-700' : 'border-gray-300 hover:border-gray-400'}"
-        >
-          Oui
-        </button>
-        <button
-          onclick={() => handleYesNo('Non')}
-          class="flex-1 py-3 px-6 rounded-lg border-2 transition-all {selectedValue.value === 'Non' ? 'border-red-500 bg-red-50 text-red-700' : 'border-gray-300 hover:border-gray-400'}"
-        >
-          Non
-        </button>
+        {#each question.answer_choices as choice (choice.id)}
+          <button
+            onclick={() => handleYesNo(choice.choice_text)}
+            class="flex-1 py-3 px-6 rounded-lg border-2 transition-all {selectedValue.choice_id === choice.id ? (choice.choice_text === 'Oui' ? 'border-green-500 bg-green-50 text-green-700' : 'border-red-500 bg-red-50 text-red-700') : 'border-gray-300 hover:border-gray-400'}"
+          >
+            {choice.choice_text}
+          </button>
+        {/each}
       </div>
 
     {:else if question.question_type === 'single_choice'}

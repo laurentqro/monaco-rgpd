@@ -77,7 +77,16 @@ class ResponsesController < ApplicationController
       compliance_assessment: response.compliance_assessment ? {
         overall_score: response.compliance_assessment.overall_score,
         risk_level: response.compliance_assessment.risk_level
-      } : nil
+      } : nil,
+      answers: response.answers.includes(:question).map { |a| answer_props(a) }
+    }
+  end
+
+  def answer_props(answer)
+    {
+      id: answer.id,
+      question_id: answer.question_id,
+      answer_value: answer.answer_value
     }
   end
 

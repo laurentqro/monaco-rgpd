@@ -1,8 +1,9 @@
 <script>
   import ComplianceScoreCard from '../../components/ComplianceScoreCard.svelte';
   import DocumentList from '../../components/DocumentList.svelte';
+  import { router } from '@inertiajs/svelte';
 
-  let { latest_assessment, documents, responses } = $props();
+  let { latest_assessment, documents, responses, questionnaire_id } = $props();
 
   function getRiskLevelColor(riskLevel) {
     const colors = {
@@ -76,12 +77,13 @@
             Votre registre Article 30
           </li>
         </ul>
-        <a
-          href="/questionnaires/1"
-          class="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+        <button
+          onclick={() => router.post(`/questionnaires/${questionnaire_id}/responses`)}
+          disabled={!questionnaire_id}
+          class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Commencer l'évaluation
-        </a>
+        </button>
         <p class="text-sm text-gray-500 mt-4">Temps estimé: 15-20 minutes</p>
       </div>
     {/if}

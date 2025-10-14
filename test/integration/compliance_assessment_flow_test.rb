@@ -26,7 +26,7 @@ class ComplianceAssessmentFlowTest < ActionDispatch::IntegrationTest
         answer_value: { choice_id: answer_choices(:yes_choice).id }
       }
     }
-    assert_response :no_content
+    assert_response :created
 
     assert_equal 1, response.answers.count
 
