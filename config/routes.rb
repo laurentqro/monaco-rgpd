@@ -13,6 +13,21 @@ Rails.application.routes.draw do
   # Account management
   resources :accounts, only: [:update]
 
+  # Questionnaires and Responses
+  resources :questionnaires, only: [:show] do
+    resources :responses, only: [:create, :show, :update]
+  end
+
+  resources :responses, only: [:index] do
+    resources :answers, only: [:create, :update]
+    member do
+      post :complete
+    end
+  end
+
+  # Dashboard
+  get "dashboard", to: "dashboard#show"
+
   # Settings
   namespace :settings do
     get :profile
