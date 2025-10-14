@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_102424) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_102826) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_102424) do
     t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
+  create_table "answer_choices", force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.text "choice_text", null: false
+    t.integer "order_index", null: false
+    t.decimal "score", precision: 5, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_index"], name: "index_answer_choices_on_order_index"
+    t.index ["question_id"], name: "index_answer_choices_on_question_id"
+  end
+
+  create_table "logic_rules", force: :cascade do |t|
+    t.bigint "source_question_id", null: false
+    t.bigint "target_section_id"
+    t.integer "condition_type", null: false
+    t.jsonb "condition_value", default: {}
+    t.integer "action", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_question_id"], name: "index_logic_rules_on_source_question_id"
+    t.index ["target_section_id"], name: "index_logic_rules_on_target_section_id"
+  end
+
   create_table "magic_links", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "token"
@@ -75,6 +98,43 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_102424) do
     t.datetime "updated_at", null: false
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "questionnaires", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "category"
+    t.integer "status", default: 0, null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_questionnaires_on_status"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.bigint "section_id", null: false
+    t.text "question_text", null: false
+    t.integer "question_type", null: false
+    t.text "help_text"
+    t.integer "order_index", null: false
+    t.boolean "is_required", default: false
+    t.jsonb "settings", default: {}
+    t.decimal "weight", precision: 5, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_index"], name: "index_questions_on_order_index"
+    t.index ["section_id"], name: "index_questions_on_section_id"
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.bigint "questionnaire_id", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.integer "order_index", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_index"], name: "index_sections_on_order_index"
+    t.index ["questionnaire_id"], name: "index_sections_on_questionnaire_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -235,8 +295,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_102424) do
   end
 
   add_foreign_key "admin_sessions", "admins"
+  add_foreign_key "answer_choices", "questions"
+  add_foreign_key "logic_rules", "questions", column: "source_question_id"
+  add_foreign_key "logic_rules", "sections", column: "target_section_id"
   add_foreign_key "magic_links", "users"
   add_foreign_key "notifications", "users"
+  add_foreign_key "questions", "sections"
+  add_foreign_key "sections", "questionnaires"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
