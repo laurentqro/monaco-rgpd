@@ -1,0 +1,15 @@
+one:
+  response: one
+  account: basic
+  overall_score: 75.0
+  max_possible_score: 100.0
+  risk_level: "attention_required"
+  status: 1
+
+two:
+  response: one
+  account: basic
+  overall_score: 90.0
+  max_possible_score: 100.0
+  risk_level: "compliant"
+  status: 1

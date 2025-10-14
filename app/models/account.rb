@@ -4,6 +4,7 @@ class Account < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
   has_one :active_subscription, -> { where(status: "active") }, class_name: "Subscription"
   has_many :responses, dependent: :destroy
+  has_many :compliance_assessments, dependent: :destroy
 
   enum :account_type, {
     solopreneur: 0,

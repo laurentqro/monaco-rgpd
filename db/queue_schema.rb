@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_103353) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_103820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,6 +73,41 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_103353) do
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["response_id", "question_id"], name: "index_answers_on_response_id_and_question_id", unique: true
     t.index ["response_id"], name: "index_answers_on_response_id"
+  end
+
+  create_table "compliance_area_scores", force: :cascade do |t|
+    t.bigint "compliance_assessment_id", null: false
+    t.bigint "compliance_area_id", null: false
+    t.decimal "score", precision: 5, scale: 2
+    t.decimal "max_score", precision: 5, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["compliance_area_id"], name: "index_compliance_area_scores_on_compliance_area_id"
+    t.index ["compliance_assessment_id"], name: "index_compliance_area_scores_on_compliance_assessment_id"
+  end
+
+  create_table "compliance_areas", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "code", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_compliance_areas_on_code", unique: true
+  end
+
+  create_table "compliance_assessments", force: :cascade do |t|
+    t.bigint "response_id", null: false
+    t.bigint "account_id", null: false
+    t.decimal "overall_score", precision: 5, scale: 2
+    t.decimal "max_possible_score", precision: 5, scale: 2
+    t.string "risk_level"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "created_at"], name: "index_compliance_assessments_on_account_id_and_created_at"
+    t.index ["account_id"], name: "index_compliance_assessments_on_account_id"
+    t.index ["response_id"], name: "index_compliance_assessments_on_response_id"
+    t.index ["status"], name: "index_compliance_assessments_on_status"
   end
 
   create_table "logic_rules", force: :cascade do |t|
@@ -326,6 +361,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_103353) do
   add_foreign_key "answer_choices", "questions"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "responses"
+  add_foreign_key "compliance_area_scores", "compliance_areas"
+  add_foreign_key "compliance_area_scores", "compliance_assessments"
+  add_foreign_key "compliance_assessments", "accounts"
+  add_foreign_key "compliance_assessments", "responses"
   add_foreign_key "logic_rules", "questions", column: "source_question_id"
   add_foreign_key "logic_rules", "sections", column: "target_section_id"
   add_foreign_key "magic_links", "users"

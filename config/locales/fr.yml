@@ -1,3 +1,9 @@
 fr:
   application_name: "Monaco RGPD"
   tagline: "Votre conformité RGPD simplifiée"
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "La validation a échoué : %{errors}"
+        blank: "doit être rempli"
+        taken: "n'est pas disponible"

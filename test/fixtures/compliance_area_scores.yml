@@ -1,0 +1,11 @@
+one:
+  compliance_assessment: one
+  compliance_area: lawfulness
+  score: 80.0
+  max_score: 100.0
+
+two:
+  compliance_assessment: one
+  compliance_area: transparency
+  score: 70.0
+  max_score: 100.0

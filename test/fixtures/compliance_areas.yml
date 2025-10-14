@@ -1,0 +1,14 @@
+lawfulness:
+  name: "Lawfulness of Processing"
+  code: "lawfulness"
+  description: "Ensures processing has legal basis"
+
+transparency:
+  name: "Transparency"
+  code: "transparency"
+  description: "Ensures clear communication with data subjects"
+
+security:
+  name: "Security"
+  code: "security"
+  description: "Ensures appropriate technical and organizational measures"
