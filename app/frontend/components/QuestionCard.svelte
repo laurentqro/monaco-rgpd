@@ -56,7 +56,7 @@
       </div>
 
     {:else if question.question_type === 'single_choice'}
-      <div class="space-y-3">
+      <div class="flex flex-col gap-4">
         {#each question.answer_choices as choice (choice.id)}
           <button
             onclick={() => handleSingleChoice(choice.id)}
@@ -68,7 +68,7 @@
       </div>
 
     {:else if question.question_type === 'multiple_choice'}
-      <div class="space-y-3">
+      <div class="flex flex-col gap-4">
         {#each question.answer_choices as choice (choice.id)}
           <label class="flex items-center py-4 px-5 rounded-lg border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-all">
             <input
