@@ -1,5 +1,6 @@
 <script>
   import { router } from '@inertiajs/svelte';
+  import DocumentList from '../../components/DocumentList.svelte';
 
   let { response, assessment, documents, answers } = $props();
 
@@ -110,32 +111,8 @@
 
     <!-- Documents Section -->
     {#if documents && documents.length > 0}
-      <div id="documents" class="bg-white rounded-lg shadow-md p-6 mt-8">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">Documents générés</h2>
-        <div class="grid gap-3">
-          {#each documents as doc}
-            <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
-              <div class="flex items-center">
-                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <span class="font-medium text-gray-900">{doc.title}</span>
-              </div>
-              {#if doc.status === 'ready' && doc.download_url}
-                <a
-                  href={doc.download_url}
-                  class="text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Télécharger
-                </a>
-              {:else if doc.status === 'generating'}
-                <span class="text-gray-500 text-sm">Génération...</span>
-              {:else}
-                <span class="text-red-600 text-sm">Erreur</span>
-              {/if}
-            </div>
-          {/each}
-        </div>
+      <div id="documents" class="mt-8">
+        <DocumentList {documents} />
       </div>
     {/if}
   </div>

@@ -69,7 +69,7 @@ class ResponsesController < ApplicationController
     render inertia: "Responses/Results", props: {
       response: response_props(@response),
       assessment: @response.compliance_assessment ? assessment_props(@response.compliance_assessment) : nil,
-      documents: @response.documents.map { |d| document_props(d) },
+      documents: @response.documents.ready.map { |d| document_props(d) },
       answers: answers_with_details
     }
   end
