@@ -25,4 +25,7 @@ require_relative "seeds/compliance_areas"
 # Load master questionnaire
 require_relative "seeds/master_questionnaire"
 
+# Load document templates
+require_relative "seeds/document_templates"
+
 puts "Seeds completed successfully!"
