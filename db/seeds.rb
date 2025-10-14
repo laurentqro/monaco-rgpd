@@ -18,3 +18,8 @@ unless Admin.exists?(email: "admin@example.com")
   )
   puts "Created super admin: admin@example.com / password123"
 end
+
+# Load compliance areas
+require_relative "seeds/compliance_areas"
+
+puts "Seeds completed successfully!"
