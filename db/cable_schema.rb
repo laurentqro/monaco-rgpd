@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_115843) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_121618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -286,6 +286,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_115843) do
     t.index ["processing_activity_id"], name: "index_processing_purposes_on_processing_activity_id"
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.string "polar_product_id", null: false
+    t.integer "price_amount", null: false
+    t.string "price_currency", default: "usd", null: false
+    t.jsonb "features", default: []
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_products_on_active"
+    t.index ["polar_product_id"], name: "index_products_on_polar_product_id", unique: true
+  end
+
   create_table "questionnaires", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -328,7 +342,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_115843) do
   create_table "responses", force: :cascade do |t|
     t.bigint "questionnaire_id", null: false
     t.bigint "account_id", null: false
-    t.bigint "respondent_id"
+    t.bigint "respondent_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "started_at"
     t.datetime "completed_at"
@@ -493,7 +507,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_115843) do
     t.datetime "ends_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "product_id"
+    t.string "polar_checkout_id"
     t.index ["account_id"], name: "index_subscriptions_on_account_id"
+    t.index ["polar_checkout_id"], name: "index_subscriptions_on_polar_checkout_id", unique: true
+    t.index ["product_id"], name: "index_subscriptions_on_product_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -519,7 +537,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_115843) do
   add_foreign_key "compliance_area_scores", "compliance_areas"
   add_foreign_key "compliance_area_scores", "compliance_assessments"
   add_foreign_key "compliance_assessments", "accounts"
-  add_foreign_key "compliance_assessments", "responses"
+  add_foreign_key "compliance_assessments", "responses", on_delete: :cascade
   add_foreign_key "data_category_details", "processing_activities"
   add_foreign_key "document_template_versions", "document_templates"
   add_foreign_key "documents", "accounts"
@@ -545,5 +563,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_115843) do
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "subscriptions", "accounts"
+  add_foreign_key "subscriptions", "products"
   add_foreign_key "users", "accounts"
 end

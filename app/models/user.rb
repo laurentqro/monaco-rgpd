@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :magic_links, dependent: :destroy
   has_many :notifications, dependent: :destroy
-  has_many :responses, foreign_key: :respondent_id, dependent: :nullify
+  has_many :responses, foreign_key: :respondent_id, dependent: :destroy
 
   enum :role, { member: 0, admin: 1, owner: 2 }
 
