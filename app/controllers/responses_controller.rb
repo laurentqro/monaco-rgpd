@@ -1,5 +1,5 @@
 class ResponsesController < ApplicationController
-  before_action :set_response, only: [:show, :update, :complete]
+  before_action :set_response, only: [:show, :update, :complete, :results]
 
   def index
     responses = Current.account.responses
@@ -51,7 +51,15 @@ class ResponsesController < ApplicationController
     # Trigger compliance assessment calculation
     CalculateComplianceScoreJob.perform_later(@response.id)
 
-    redirect_to dashboard_path, notice: "Évaluation complétée avec succès"
+    redirect_to results_response_path(@response)
+  end
+
+  def results
+    render inertia: "Responses/Results", props: {
+      response: response_props(@response),
+      assessment: @response.compliance_assessment ? assessment_props(@response.compliance_assessment) : nil,
+      documents: @response.documents.map { |d| document_props(d) }
+    }
   end
 
   private
@@ -93,5 +101,34 @@ class ResponsesController < ApplicationController
   def questionnaire_props(questionnaire)
     # Reuse from QuestionnairesController
     QuestionnairesController.new.send(:questionnaire_props, questionnaire)
+  end
+
+  def assessment_props(assessment)
+    {
+      overall_score: assessment.overall_score.round(1),
+      max_possible_score: assessment.max_possible_score,
+      risk_level: assessment.risk_level,
+      created_at: assessment.created_at,
+      compliance_area_scores: assessment.compliance_area_scores.includes(:compliance_area).map do |cas|
+        {
+          area_name: cas.compliance_area.name,
+          area_code: cas.compliance_area.code,
+          score: cas.score.round(1),
+          max_score: cas.max_score,
+          percentage: cas.percentage
+        }
+      end
+    }
+  end
+
+  def document_props(document)
+    {
+      id: document.id,
+      title: document.title,
+      document_type: document.document_type,
+      status: document.status,
+      generated_at: document.generated_at,
+      download_url: document.pdf_file.attached? ? rails_blob_path(document.pdf_file, disposition: "attachment") : nil
+    }
   end
 end

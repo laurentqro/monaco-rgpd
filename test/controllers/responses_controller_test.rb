@@ -34,9 +34,15 @@ class ResponsesControllerTest < ActionDispatch::IntegrationTest
   test "should complete response" do
     response = @response
     post complete_response_url(response)
-    assert_redirected_to dashboard_path
+    assert_redirected_to results_response_path(response)
     response.reload
     assert_equal "completed", response.status
     assert_not_nil response.completed_at
+  end
+
+  test "should get results" do
+    @response.update!(status: :completed, completed_at: Time.current)
+    get results_response_url(@response)
+    assert_response :success
   end
 end

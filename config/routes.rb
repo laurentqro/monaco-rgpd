@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :answers, only: [:create, :update]
     member do
       post :complete
+      get :results
     end
   end
 
