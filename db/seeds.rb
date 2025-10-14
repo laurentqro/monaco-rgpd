@@ -22,4 +22,7 @@ end
 # Load compliance areas
 require_relative "seeds/compliance_areas"
 
+# Load master questionnaire
+require_relative "seeds/master_questionnaire"
+
 puts "Seeds completed successfully!"
