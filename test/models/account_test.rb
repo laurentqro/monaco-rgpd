@@ -75,4 +75,32 @@ class AccountTest < ActiveSupport::TestCase
     account = Account.create!(name: "New", subdomain: "new")
     assert_not account.onboarding_completed?
   end
+
+  # Monaco RGPD Tests
+  test "should have valid account_type" do
+    account = accounts(:basic)
+    account.account_type = :solopreneur
+    assert account.valid?
+  end
+
+  test "should have valid entity_type" do
+    account = accounts(:basic)
+    account.entity_type = :company
+    assert account.valid?
+  end
+
+  test "should default to simple compliance_mode for solopreneur" do
+    account = Account.create!(
+      name: "Test Solopreneur",
+      subdomain: "test-solo",
+      account_type: :solopreneur
+    )
+    assert_equal "simple", account.compliance_mode
+  end
+
+  test "should require jurisdiction" do
+    account = Account.new(name: "Test", subdomain: "test")
+    account.jurisdiction = nil
+    assert_not account.valid?
+  end
 end
