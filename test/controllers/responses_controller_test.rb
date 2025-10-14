@@ -34,7 +34,8 @@ class ResponsesControllerTest < ActionDispatch::IntegrationTest
   test "should complete response" do
     response = @response
     post complete_response_url(response)
-    assert_redirected_to results_response_path(response)
+    assert_redirected_to dashboard_path
+    assert_equal "Évaluation terminée ! Votre score de conformité est en cours de calcul.", flash[:notice]
     response.reload
     assert_equal "completed", response.status
     assert_not_nil response.completed_at

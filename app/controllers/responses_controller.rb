@@ -51,7 +51,7 @@ class ResponsesController < ApplicationController
     # Trigger compliance assessment calculation
     CalculateComplianceScoreJob.perform_later(@response.id)
 
-    redirect_to results_response_path(@response)
+    redirect_to dashboard_path, notice: "Évaluation terminée ! Votre score de conformité est en cours de calcul."
   end
 
   def results

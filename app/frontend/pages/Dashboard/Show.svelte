@@ -1,9 +1,22 @@
 <script>
   import ComplianceScoreCard from '../../components/ComplianceScoreCard.svelte';
   import DocumentList from '../../components/DocumentList.svelte';
-  import { router } from '@inertiajs/svelte';
+  import { router, page } from '@inertiajs/svelte';
 
   let { latest_assessment, documents, responses, questionnaire_id } = $props();
+
+  // Flash message state
+  let showFlash = $state(!!$page.props.flash?.notice);
+
+  // Auto-hide flash after 5 seconds
+  $effect(() => {
+    if (showFlash) {
+      const timer = setTimeout(() => {
+        showFlash = false;
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  });
 
   function getRiskLevelColor(riskLevel) {
     const colors = {
@@ -27,6 +40,29 @@
 <div class="min-h-screen bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8">Tableau de bord de conformité</h1>
+
+    <!-- Flash Message -->
+    {#if showFlash && $page.props.flash?.notice}
+      <div class="mb-6 bg-green-50 border-l-4 border-green-400 p-4 rounded-lg shadow-md">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <svg class="w-6 h-6 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-green-700 font-medium">{$page.props.flash.notice}</p>
+          </div>
+          <button
+            onclick={() => showFlash = false}
+            class="text-green-400 hover:text-green-600"
+            aria-label="Fermer"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    {/if}
 
     {#if latest_assessment}
       <!-- Score Card -->
