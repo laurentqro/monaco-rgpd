@@ -1,0 +1,4 @@
+super_admin:
+  email: "super@example.com"
+  name: "Super Admin"
+  password_digest: <%= BCrypt::Password.create("password123", cost: 4) %>

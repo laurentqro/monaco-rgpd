@@ -1,0 +1,11 @@
+basic:
+  name: Basic Account
+  subdomain: basic
+  plan_type: basic
+  owner_id: <%= ActiveRecord::FixtureSet.identify(:owner) %>
+
+premium:
+  name: Premium Account
+  subdomain: premium
+  plan_type: premium
+  owner_id: <%= ActiveRecord::FixtureSet.identify(:premium_owner) %> 

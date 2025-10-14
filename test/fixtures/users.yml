@@ -1,0 +1,23 @@
+owner:
+  email: owner@example.com
+  name: Account Owner
+  role: 2
+  account: basic
+
+admin:
+  email: admin@example.com
+  name: Admin User
+  role: 1
+  account: basic
+
+member:
+  email: member@example.com
+  name: Member User
+  role: 0
+  account: basic
+
+premium_owner:
+  email: premium@example.com
+  name: Premium Owner
+  role: 2
+  account: premium

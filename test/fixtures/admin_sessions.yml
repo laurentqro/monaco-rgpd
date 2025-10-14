@@ -1,0 +1,4 @@
+one:
+  admin: super_admin
+  user_agent: "Test Browser"
+  ip_address: "127.0.0.1"

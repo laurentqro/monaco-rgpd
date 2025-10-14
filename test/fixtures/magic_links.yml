@@ -1,0 +1,4 @@
+valid:
+  user: owner
+  token: valid_token_123
+  expires_at: <%= 10.minutes.from_now %>

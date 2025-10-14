@@ -1,0 +1,23 @@
+{
+  "all": {
+    "sourceCodeDir": "app/frontend",
+    "watchAdditionalPaths": [
+      "app/views/**/*.erb",
+      "app/helpers/**/*.rb"
+    ]
+  },
+  "development": {
+    "autoBuild": true,
+    "publicOutputDir": "vite-dev",
+    "port": 3036,
+    "host": "localhost"
+  },
+  "test": {
+    "autoBuild": true,
+    "publicOutputDir": "vite-test",
+    "port": 3037
+  },
+  "production": {
+    "autoBuild": false
+  }
+}

@@ -1,0 +1,15 @@
+active:
+  account: basic
+  polar_subscription_id: sub_active_123
+  status: active
+  plan_name: Pro Plan
+  current_period_start: <%= 1.month.ago %>
+  current_period_end: <%= 1.month.from_now %>
+
+cancelled:
+  account: premium
+  polar_subscription_id: sub_cancelled_123
+  status: cancelled
+  plan_name: Enterprise Plan
+  cancelled_at: <%= 1.day.ago %>
+  ends_at: <%= 29.days.from_now %>

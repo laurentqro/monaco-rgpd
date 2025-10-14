@@ -1,0 +1,14 @@
+unread:
+  user: owner
+  notifiable: active (Subscription)
+  notification_type: subscription_created
+  title: Subscription Created
+  message: Your subscription has been created
+
+read:
+  user: owner
+  notifiable: active (Subscription)
+  notification_type: subscription_updated
+  title: Subscription Updated
+  message: Your subscription has been updated
+  read_at: <%= 1.day.ago %>

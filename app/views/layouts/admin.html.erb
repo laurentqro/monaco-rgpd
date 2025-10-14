@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html data-theme="light">
+  <head>
+    <title>Admin Panel - Rails SaaS Starter</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= vite_client_tag %>
+    <%= vite_javascript_tag 'application' %>
+    <%= inertia_ssr_head %>
+        <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
