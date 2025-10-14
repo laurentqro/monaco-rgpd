@@ -6,21 +6,79 @@
 
   let currentQuestionIndex = $state(0);
   let answers = $state({});
+  let skippedSections = $state(new Set());
 
-  // Flatten all questions from all sections
-  const allQuestions = $derived(
-    questionnaire.sections.flatMap(s =>
-      s.questions.map(q => ({ ...q, sectionTitle: s.title }))
-    )
+  // Flatten all questions from all sections with section info
+  const allQuestions = questionnaire.sections.flatMap(s =>
+    s.questions.map(q => ({ ...q, sectionId: s.id, sectionTitle: s.title }))
   );
 
-  const currentQuestion = $derived(allQuestions[currentQuestionIndex]);
-  const progress = $derived(((currentQuestionIndex + 1) / allQuestions.length * 100).toFixed(0));
-  const isLastQuestion = $derived(currentQuestionIndex === allQuestions.length - 1);
+  // Evaluate logic rules and determine which sections to skip
+  function evaluateLogicRules() {
+    const newSkippedSections = new Set();
+
+    allQuestions.forEach(question => {
+      const answer = answers[question.id];
+      if (!answer) return;
+
+      question.logic_rules?.forEach(rule => {
+        const shouldSkip = checkCondition(answer, rule.condition_type, rule.condition_value);
+
+        if (shouldSkip && rule.action === 'skip_to_section' && rule.target_section_id) {
+          // Find all sections between current and target, mark them as skipped
+          const currentSectionIndex = questionnaire.sections.findIndex(s => s.id === question.sectionId);
+          const targetSectionIndex = questionnaire.sections.findIndex(s => s.id === rule.target_section_id);
+
+          for (let i = currentSectionIndex + 1; i < targetSectionIndex; i++) {
+            newSkippedSections.add(questionnaire.sections[i].id);
+          }
+        }
+      });
+    });
+
+    skippedSections = newSkippedSections;
+  }
+
+  function checkCondition(answer, conditionType, conditionValue) {
+    // Extract the actual value from answer object
+    let actualValue = answer;
+    if (typeof answer === 'object') {
+      actualValue = answer.choice_id || answer.text || answer.rating || answer.choice_ids;
+    }
+
+    switch (conditionType) {
+      case 'equals':
+        return String(actualValue) === String(conditionValue);
+      case 'not_equals':
+        return String(actualValue) !== String(conditionValue);
+      case 'contains':
+        return Array.isArray(actualValue)
+          ? actualValue.includes(conditionValue)
+          : String(actualValue).includes(conditionValue);
+      case 'greater_than':
+        return Number(actualValue) > Number(conditionValue);
+      case 'less_than':
+        return Number(actualValue) < Number(conditionValue);
+      default:
+        return false;
+    }
+  }
+
+  // Filter visible questions based on skipped sections
+  const visibleQuestions = $derived(
+    allQuestions.filter(q => !skippedSections.has(q.sectionId))
+  );
+
+  const currentQuestion = $derived(visibleQuestions[currentQuestionIndex]);
+  const progress = $derived(((currentQuestionIndex + 1) / visibleQuestions.length * 100).toFixed(0));
+  const isLastQuestion = $derived(currentQuestionIndex === visibleQuestions.length - 1);
 
   async function handleAnswer(questionId, answerValue) {
     // Update local state
     answers[questionId] = answerValue;
+
+    // Re-evaluate logic rules to update visible questions
+    evaluateLogicRules();
 
     // Save answer to backend
     try {

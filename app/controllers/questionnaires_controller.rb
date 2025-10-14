@@ -40,7 +40,8 @@ class QuestionnairesController < ApplicationController
       help_text: question.help_text,
       is_required: question.is_required,
       weight: question.weight,
-      answer_choices: question.answer_choices.map { |ac| answer_choice_props(ac) }
+      answer_choices: question.answer_choices.map { |ac| answer_choice_props(ac) },
+      logic_rules: question.logic_rules.map { |lr| logic_rule_props(lr) }
     }
   end
 
@@ -49,6 +50,16 @@ class QuestionnairesController < ApplicationController
       id: choice.id,
       choice_text: choice.choice_text,
       score: choice.score
+    }
+  end
+
+  def logic_rule_props(rule)
+    {
+      id: rule.id,
+      condition_type: rule.condition_type,
+      condition_value: rule.condition_value,
+      action: rule.action,
+      target_section_id: rule.target_section_id
     }
   end
 end

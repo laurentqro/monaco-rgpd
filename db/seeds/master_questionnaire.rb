@@ -49,13 +49,56 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 5, choice_text: "50+")
 end
 
-# Section 2: Collecte et traitement des données
-section2 = questionnaire.sections.find_or_create_by!(order_index: 2) do |s|
+# Add logic rule to employee count question to skip employee section if no employees
+employee_count_question = section1.questions.find_by(order_index: 3)
+solo_choice = employee_count_question.answer_choices.find_by(choice_text: "0 (travailleur indépendant)")
+
+# Section 2: Données des employés (will be skipped if no employees)
+section_employees = questionnaire.sections.find_or_create_by!(order_index: 2) do |s|
+  s.title = "Données des employés"
+  s.description = "Comment traitez-vous les données de vos employés?"
+end
+
+section_employees.questions.find_or_create_by!(order_index: 1) do |q|
+  q.question_text = "Avez-vous informé vos employés de leurs droits concernant leurs données personnelles?"
+  q.question_type = :yes_no
+  q.help_text = "Article 13, Loi n° 1.565 - Information des employés"
+  q.is_required = true
+  q.weight = 2
+end.tap do |q|
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 100)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 0)
+end
+
+section_employees.questions.find_or_create_by!(order_index: 2) do |q|
+  q.question_text = "Les données des employés sont-elles sécurisées et accessibles uniquement aux RH?"
+  q.question_type = :single_choice
+  q.help_text = "Article 32, Loi n° 1.565 - Sécurité des données RH"
+  q.is_required = true
+  q.weight = 2
+end.tap do |q|
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui, totalement sécurisées", score: 100)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Partiellement", score: 50)
+  q.answer_choices.find_or_create_by!(order_index: 3, choice_text: "Non", score: 0)
+end
+
+# Section 3: Collecte et traitement des données
+section3 = questionnaire.sections.find_or_create_by!(order_index: 3) do |s|
   s.title = "Collecte et traitement des données"
   s.description = "Quelles données collectez-vous et comment?"
 end
 
-section2.questions.find_or_create_by!(order_index: 1) do |q|
+# Create logic rule: if employee count is 0, skip employee section
+if employee_count_question && solo_choice
+  employee_count_question.logic_rules.find_or_create_by!(
+    condition_type: :equals,
+    condition_value: solo_choice.id.to_s,
+    action: :skip_to_section,
+    target_section_id: section3.id
+  )
+end
+
+section3.questions.find_or_create_by!(order_index: 1) do |q|
   q.question_text = "Collectez-vous des données personnelles de clients?"
   q.question_type = :yes_no
   q.help_text = "Données personnelles: nom, email, adresse, téléphone, etc."
@@ -66,7 +109,7 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
-section2.questions.find_or_create_by!(order_index: 2) do |q|
+section3.questions.find_or_create_by!(order_index: 2) do |q|
   q.question_text = "Avez-vous une politique de confidentialité publiée et à jour?"
   q.question_type = :single_choice
   q.help_text = "Article 13, Loi n° 1.565"
@@ -78,7 +121,7 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 3, choice_text: "Non", score: 0)
 end
 
-section2.questions.find_or_create_by!(order_index: 3) do |q|
+section3.questions.find_or_create_by!(order_index: 3) do |q|
   q.question_text = "Disposez-vous d'un registre des traitements (Article 30)?"
   q.question_type = :single_choice
   q.help_text = "Le registre des traitements est obligatoire pour la plupart des organisations"
@@ -90,13 +133,13 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 3, choice_text: "Non", score: 0)
 end
 
-# Section 3: Droits des personnes
-section3 = questionnaire.sections.find_or_create_by!(order_index: 3) do |s|
+# Section 4: Droits des personnes
+section4 = questionnaire.sections.find_or_create_by!(order_index: 4) do |s|
   s.title = "Droits des personnes"
   s.description = "Comment respectez-vous les droits des personnes concernées?"
 end
 
-section3.questions.find_or_create_by!(order_index: 1) do |q|
+section4.questions.find_or_create_by!(order_index: 1) do |q|
   q.question_text = "Avez-vous une procédure pour traiter les demandes d'accès aux données?"
   q.question_type = :yes_no
   q.help_text = "Article 15, Loi n° 1.565 - Droit d'accès"
@@ -107,7 +150,7 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 0)
 end
 
-section3.questions.find_or_create_by!(order_index: 2) do |q|
+section4.questions.find_or_create_by!(order_index: 2) do |q|
   q.question_text = "Les personnes peuvent-elles facilement exercer leurs droits (rectification, effacement, opposition)?"
   q.question_type = :single_choice
   q.help_text = "Articles 16-21, Loi n° 1.565"
@@ -119,13 +162,13 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 3, choice_text: "Non", score: 0)
 end
 
-# Section 4: Sécurité des données
-section4 = questionnaire.sections.find_or_create_by!(order_index: 4) do |s|
+# Section 5: Sécurité des données
+section5 = questionnaire.sections.find_or_create_by!(order_index: 5) do |s|
   s.title = "Sécurité des données"
   s.description = "Quelles mesures de sécurité avez-vous mises en place?"
 end
 
-section4.questions.find_or_create_by!(order_index: 1) do |q|
+section5.questions.find_or_create_by!(order_index: 1) do |q|
   q.question_text = "Utilisez-vous le chiffrement pour protéger les données sensibles?"
   q.question_type = :single_choice
   q.help_text = "Article 32, Loi n° 1.565 - Sécurité des traitements"
@@ -137,7 +180,7 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 3, choice_text: "Non", score: 0)
 end
 
-section4.questions.find_or_create_by!(order_index: 2) do |q|
+section5.questions.find_or_create_by!(order_index: 2) do |q|
   q.question_text = "Effectuez-vous des sauvegardes régulières des données?"
   q.question_type = :yes_no
   q.is_required = true
@@ -147,7 +190,7 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 0)
 end
 
-section4.questions.find_or_create_by!(order_index: 3) do |q|
+section5.questions.find_or_create_by!(order_index: 3) do |q|
   q.question_text = "Limitez-vous l'accès aux données personnelles aux seules personnes autorisées?"
   q.question_type = :yes_no
   q.is_required = true
@@ -157,13 +200,13 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 0)
 end
 
-# Section 5: Relations avec les tiers
-section5 = questionnaire.sections.find_or_create_by!(order_index: 5) do |s|
+# Section 6: Relations avec les tiers
+section6 = questionnaire.sections.find_or_create_by!(order_index: 6) do |s|
   s.title = "Relations avec les tiers"
   s.description = "Comment gérez-vous les relations avec vos sous-traitants?"
 end
 
-section5.questions.find_or_create_by!(order_index: 1) do |q|
+section6.questions.find_or_create_by!(order_index: 1) do |q|
   q.question_text = "Faites-vous appel à des sous-traitants qui traitent des données personnelles?"
   q.question_type = :yes_no
   q.help_text = "Ex: hébergeur, service de paiement, comptable"
@@ -174,7 +217,7 @@ end.tap do |q|
   q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
-section5.questions.find_or_create_by!(order_index: 2) do |q|
+section6.questions.find_or_create_by!(order_index: 2) do |q|
   q.question_text = "Avez-vous signé des accords de sous-traitance (DPA) avec vos prestataires?"
   q.question_type = :single_choice
   q.help_text = "Article 28, Loi n° 1.565"
