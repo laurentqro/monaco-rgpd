@@ -3,8 +3,8 @@ class Account < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_one :active_subscription, -> { where(status: "active") }, class_name: "Subscription"
-  has_many :responses, dependent: :destroy
   has_many :compliance_assessments, dependent: :destroy
+  has_many :responses, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :processing_activities, dependent: :destroy
 
@@ -37,6 +37,7 @@ class Account < ApplicationRecord
 
   # Set compliance_mode based on account_type
   before_validation :set_compliance_mode, on: :create
+  before_destroy :delete_compliance_assessments_first
 
   def subscribed?
     active_subscription.present?
@@ -50,5 +51,9 @@ class Account < ApplicationRecord
 
   def set_compliance_mode
     self.compliance_mode ||= account_type_solopreneur? ? :simple : :modular
+  end
+
+  def delete_compliance_assessments_first
+    compliance_assessments.destroy_all
   end
 end

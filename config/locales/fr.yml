@@ -7,3 +7,5 @@ fr:
         record_invalid: "La validation a échoué : %{errors}"
         blank: "doit être rempli"
         taken: "n'est pas disponible"
+        invalid: "n'est pas valide"
+        required: "doit exister"

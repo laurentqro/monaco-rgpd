@@ -14,7 +14,7 @@ class AdminTest < ActiveSupport::TestCase
   test "requires email" do
     admin = Admin.new(name: "Admin", password: "password123")
     assert_not admin.valid?
-    assert_includes admin.errors[:email], "can't be blank"
+    assert_includes admin.errors[:email], "doit être rempli"
   end
 
   test "requires valid email format" do
@@ -26,7 +26,7 @@ class AdminTest < ActiveSupport::TestCase
     existing = admins(:super_admin)
     admin = Admin.new(email: existing.email, password: "password123")
     assert_not admin.valid?
-    assert_includes admin.errors[:email], "has already been taken"
+    assert_includes admin.errors[:email], "n'est pas disponible"
   end
 
   test "requires password" do

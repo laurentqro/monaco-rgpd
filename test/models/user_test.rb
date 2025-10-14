@@ -13,26 +13,26 @@ class UserTest < ActiveSupport::TestCase
   test "requires email" do
     user = User.new(name: "Test", account: accounts(:basic))
     assert_not user.valid?
-    assert_includes user.errors[:email], "can't be blank"
+    assert_includes user.errors[:email], "doit être rempli"
   end
 
   test "requires account" do
     user = User.new(email: "test@example.com", name: "Test")
     assert_not user.valid?
-    assert_includes user.errors[:account], "must exist"
+    assert_includes user.errors[:account], "doit être rempli"
   end
 
   test "email must be unique" do
     User.create!(email: "test@example.com", name: "First", account: accounts(:basic))
     user = User.new(email: "test@example.com", name: "Second", account: accounts(:basic))
     assert_not user.valid?
-    assert_includes user.errors[:email], "has already been taken"
+    assert_includes user.errors[:email], "n'est pas disponible"
   end
 
   test "email format validation" do
     user = User.new(email: "invalid", name: "Test", account: accounts(:basic))
     assert_not user.valid?
-    assert_includes user.errors[:email], "is invalid"
+    assert_includes user.errors[:email], "n'est pas valide"
   end
 
   test "belongs to account" do

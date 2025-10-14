@@ -12,20 +12,20 @@ class AccountTest < ActiveSupport::TestCase
   test "requires name" do
     account = Account.new(subdomain: "test")
     assert_not account.valid?
-    assert_includes account.errors[:name], "can't be blank"
+    assert_includes account.errors[:name], "doit être rempli"
   end
 
   test "requires subdomain" do
     account = Account.new(name: "Test")
     assert_not account.valid?
-    assert_includes account.errors[:subdomain], "can't be blank"
+    assert_includes account.errors[:subdomain], "doit être rempli"
   end
 
   test "subdomain must be unique" do
     Account.create!(name: "First", subdomain: "test")
     account = Account.new(name: "Second", subdomain: "test")
     assert_not account.valid?
-    assert_includes account.errors[:subdomain], "has already been taken"
+    assert_includes account.errors[:subdomain], "n'est pas disponible"
   end
 
   test "subdomain format validation" do

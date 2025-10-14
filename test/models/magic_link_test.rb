@@ -13,26 +13,26 @@ class MagicLinkTest < ActiveSupport::TestCase
   test "requires user" do
     link = MagicLink.new(token: "token", expires_at: 15.minutes.from_now)
     assert_not link.valid?
-    assert_includes link.errors[:user], "must exist"
+    assert_includes link.errors[:user], "doit être rempli"
   end
 
   test "requires token" do
     link = MagicLink.new(user: users(:owner), expires_at: 15.minutes.from_now)
     assert_not link.valid?
-    assert_includes link.errors[:token], "can't be blank"
+    assert_includes link.errors[:token], "doit être rempli"
   end
 
   test "requires expires_at" do
     link = MagicLink.new(user: users(:owner), token: "token")
     assert_not link.valid?
-    assert_includes link.errors[:expires_at], "can't be blank"
+    assert_includes link.errors[:expires_at], "doit être rempli"
   end
 
   test "token must be unique" do
     MagicLink.create!(user: users(:owner), token: "unique", expires_at: 15.minutes.from_now)
     link = MagicLink.new(user: users(:owner), token: "unique", expires_at: 15.minutes.from_now)
     assert_not link.valid?
-    assert_includes link.errors[:token], "has already been taken"
+    assert_includes link.errors[:token], "n'est pas disponible"
   end
 
   test "belongs to user" do

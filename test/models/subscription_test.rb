@@ -17,7 +17,7 @@ class SubscriptionTest < ActiveSupport::TestCase
       status: "active"
     )
     assert_not subscription.valid?
-    assert_includes subscription.errors[:account], "must exist"
+    assert_includes subscription.errors[:account], "doit être rempli"
   end
 
   test "requires polar_subscription_id" do
@@ -26,7 +26,7 @@ class SubscriptionTest < ActiveSupport::TestCase
       status: "active"
     )
     assert_not subscription.valid?
-    assert_includes subscription.errors[:polar_subscription_id], "can't be blank"
+    assert_includes subscription.errors[:polar_subscription_id], "doit être rempli"
   end
 
   test "requires status" do
@@ -35,7 +35,7 @@ class SubscriptionTest < ActiveSupport::TestCase
       polar_subscription_id: "sub_123"
     )
     assert_not subscription.valid?
-    assert_includes subscription.errors[:status], "can't be blank"
+    assert_includes subscription.errors[:status], "doit être rempli"
   end
 
   test "belongs to account" do

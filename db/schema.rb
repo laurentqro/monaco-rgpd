@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_112510) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_115843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -328,7 +328,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_112510) do
   create_table "responses", force: :cascade do |t|
     t.bigint "questionnaire_id", null: false
     t.bigint "account_id", null: false
-    t.bigint "respondent_id", null: false
+    t.bigint "respondent_id"
     t.integer "status", default: 0, null: false
     t.datetime "started_at"
     t.datetime "completed_at"

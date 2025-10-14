@@ -19,7 +19,7 @@ class NotificationTest < ActiveSupport::TestCase
       title: "Test"
     )
     assert_not notification.valid?
-    assert_includes notification.errors[:user], "must exist"
+    assert_includes notification.errors[:user], "doit être rempli"
   end
 
   test "requires notification_type" do
@@ -28,7 +28,7 @@ class NotificationTest < ActiveSupport::TestCase
       title: "Test"
     )
     assert_not notification.valid?
-    assert_includes notification.errors[:notification_type], "can't be blank"
+    assert_includes notification.errors[:notification_type], "doit être rempli"
   end
 
   test "requires title" do
@@ -37,7 +37,7 @@ class NotificationTest < ActiveSupport::TestCase
       notification_type: "test"
     )
     assert_not notification.valid?
-    assert_includes notification.errors[:title], "can't be blank"
+    assert_includes notification.errors[:title], "doit être rempli"
   end
 
   test "belongs to user" do
