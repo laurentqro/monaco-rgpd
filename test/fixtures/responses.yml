@@ -1,0 +1,6 @@
+one:
+  questionnaire: compliance
+  account: basic
+  respondent: owner
+  status: 0
+  started_at: <%= Time.current %>

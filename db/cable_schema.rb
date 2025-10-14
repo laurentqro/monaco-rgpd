@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_102826) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_103353) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,6 +61,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_102826) do
     t.datetime "updated_at", null: false
     t.index ["order_index"], name: "index_answer_choices_on_order_index"
     t.index ["question_id"], name: "index_answer_choices_on_question_id"
+  end
+
+  create_table "answers", force: :cascade do |t|
+    t.bigint "response_id", null: false
+    t.bigint "question_id", null: false
+    t.jsonb "answer_value", default: {}
+    t.decimal "calculated_score", precision: 5, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["response_id", "question_id"], name: "index_answers_on_response_id_and_question_id", unique: true
+    t.index ["response_id"], name: "index_answers_on_response_id"
   end
 
   create_table "logic_rules", force: :cascade do |t|
@@ -124,6 +136,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_102826) do
     t.datetime "updated_at", null: false
     t.index ["order_index"], name: "index_questions_on_order_index"
     t.index ["section_id"], name: "index_questions_on_section_id"
+  end
+
+  create_table "responses", force: :cascade do |t|
+    t.bigint "questionnaire_id", null: false
+    t.bigint "account_id", null: false
+    t.bigint "respondent_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "started_at"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "created_at"], name: "index_responses_on_account_id_and_created_at"
+    t.index ["account_id"], name: "index_responses_on_account_id"
+    t.index ["questionnaire_id"], name: "index_responses_on_questionnaire_id"
+    t.index ["respondent_id"], name: "index_responses_on_respondent_id"
+    t.index ["status"], name: "index_responses_on_status"
   end
 
   create_table "sections", force: :cascade do |t|
@@ -296,11 +324,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_102826) do
 
   add_foreign_key "admin_sessions", "admins"
   add_foreign_key "answer_choices", "questions"
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "responses"
   add_foreign_key "logic_rules", "questions", column: "source_question_id"
   add_foreign_key "logic_rules", "sections", column: "target_section_id"
   add_foreign_key "magic_links", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "questions", "sections"
+  add_foreign_key "responses", "accounts"
+  add_foreign_key "responses", "questionnaires"
+  add_foreign_key "responses", "users", column: "respondent_id"
   add_foreign_key "sections", "questionnaires"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
