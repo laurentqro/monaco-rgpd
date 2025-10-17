@@ -97,7 +97,7 @@ end
 # Section 4: Mise en œuvre des droits des personnes (DPO)
 # ============================================================================
 section4_dpo = questionnaire.sections.find_or_create_by!(order_index: 4) do |s|
-  s.title = "Mise en œuvre des droits des personnes"
+  s.title = "Mise en œuvre des droits"
   s.description = "Délégué à la Protection des Données (DPO - Data Protection Officer)"
 end
 
@@ -320,7 +320,7 @@ end
 # Section 5: Exercice des droits des personnes concernées
 # ============================================================================
 section5_rights = questionnaire.sections.find_or_create_by!(order_index: 5) do |s|
-  s.title = "Exercice des droits des personnes concernées"
+  s.title = "Exercice des droits"
   s.description = "Point de contact pour l'exercice des droits"
 end
 
@@ -391,5 +391,5 @@ puts "✓ Created master questionnaire with #{questionnaire.sections.count} sect
 puts "  - Section 1: Qualification de l'utilisateur (#{section1.questions.count} questions)"
 puts "  - Section 2: Cartographie des traitements (#{section2.questions.count} question)"
 puts "  - Section 3: Gestion des ressources humaines (#{section3_hr.questions.count} questions)"
-puts "  - Section 4: Mise en œuvre des droits des personnes (#{section4_dpo.questions.count} questions)"
-puts "  - Section 5: Exercice des droits des personnes concernées (#{section5_rights.questions.count} question)"
+puts "  - Section 4: Mise en œuvre des droits (#{section4_dpo.questions.count} questions)"
+puts "  - Section 5: Exercice des droits (#{section5_rights.questions.count} question)"
