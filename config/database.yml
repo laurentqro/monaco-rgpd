@@ -88,4 +88,4 @@ production:
   <<: *default
   database: monaco_rgpd_production
   username: monaco_rgpd
-  password: <%= ENV["MONACO_RGPD_DATABASE_PASSWORD"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
