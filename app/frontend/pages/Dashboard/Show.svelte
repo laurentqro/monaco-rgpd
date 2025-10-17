@@ -41,17 +41,28 @@
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-3xl font-bold">Tableau de bord de conformité</h1>
-      {#if latest_assessment && questionnaire_id}
+      <div class="flex items-center gap-4">
+        {#if latest_assessment && questionnaire_id}
+          <button
+            onclick={() => router.post(`/questionnaires/${questionnaire_id}/responses`)}
+            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Nouvelle évaluation
+          </button>
+        {/if}
         <button
-          onclick={() => router.post(`/questionnaires/${questionnaire_id}/responses`)}
-          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium flex items-center"
+          onclick={() => router.delete('/session')}
+          class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium flex items-center"
         >
           <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Nouvelle évaluation
+          Déconnexion
         </button>
-      {/if}
+      </div>
     </div>
 
     <!-- Flash Message -->
