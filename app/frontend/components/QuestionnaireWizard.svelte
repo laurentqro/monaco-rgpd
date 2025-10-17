@@ -101,6 +101,24 @@
   const progress = $derived(((currentQuestionIndex + 1) / visibleQuestions.length * 100).toFixed(0));
   const isLastQuestion = $derived(currentQuestionIndex === visibleQuestions.length - 1);
 
+  // Get visible sections for subway-line progress
+  const visibleSections = $derived(
+    questionnaire.sections.filter(s => !skippedSections.has(s.id))
+  );
+
+  // Determine current section and completed sections
+  const currentSectionId = $derived(currentQuestion?.sectionId);
+  const completedSectionIds = $derived.by(() => {
+    const completed = new Set();
+    for (let i = 0; i < currentQuestionIndex; i++) {
+      const q = visibleQuestions[i];
+      if (q && answers[q.id]) {
+        completed.add(q.sectionId);
+      }
+    }
+    return completed;
+  });
+
   async function handleAnswer(questionId, answerValue) {
     // Update local state
     answers[questionId] = answerValue;
@@ -206,17 +224,53 @@
       </div>
     </div>
   {:else}
-    <!-- Progress Bar -->
+    <!-- Subway-Line Progress -->
     <div class="mb-8">
-      <div class="flex justify-between items-center mb-2">
+      <div class="flex justify-between items-center mb-4">
         <span class="text-sm text-gray-600">{currentQuestion?.sectionTitle}</span>
         <span class="text-sm font-medium">{progress}%</span>
       </div>
-      <div class="w-full bg-gray-200 rounded-full h-2">
-        <div
-          class="bg-blue-600 h-2 rounded-full transition-all duration-300"
-          style="width: {progress}%"
-        ></div>
+
+      <!-- Section Circles (Subway Line Style) -->
+      <div class="relative">
+        <div class="flex justify-between items-center">
+          {#each visibleSections as section, i}
+            {@const isCompleted = completedSectionIds.has(section.id) && currentSectionId !== section.id}
+            {@const isCurrent = currentSectionId === section.id}
+            {@const isPending = !isCompleted && !isCurrent}
+
+            <div class="flex flex-col items-center flex-1 relative">
+              <!-- Connecting Line (except for last section) -->
+              {#if i < visibleSections.length - 1}
+                <div class="absolute top-4 left-1/2 w-full h-0.5 {isCompleted ? 'bg-blue-600' : 'bg-gray-300'}" style="z-index: 0;"></div>
+              {/if}
+
+              <!-- Section Circle -->
+              <div class="relative z-10">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 {
+                  isCompleted ? 'bg-blue-600 text-white' :
+                  isCurrent ? 'bg-blue-600 text-white ring-4 ring-blue-200' :
+                  'bg-gray-300 text-gray-600'
+                }">
+                  {#if isCompleted}
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                  {:else}
+                    <span class="text-xs font-semibold">{i + 1}</span>
+                  {/if}
+                </div>
+              </div>
+
+              <!-- Section Title -->
+              <div class="mt-2 text-center">
+                <span class="text-xs {isCurrent ? 'font-semibold text-blue-600' : 'text-gray-600'} block max-w-[100px] leading-tight">
+                  {section.title}
+                </span>
+              </div>
+            </div>
+          {/each}
+        </div>
       </div>
     </div>
 
