@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :magic_links, only: [:create]
   get "auth/verify/:token", to: "magic_links#verify", as: :verify_magic_link
 
+  # Non authenticated pages
+  get "home", to: "pages#home", as: :home
+
   # Authenticated app (authentication handled by ApplicationController)
   get "dashboard", to: "dashboard#show", as: :app_root
 
@@ -55,5 +58,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Root
-  root "sessions#new"
+  root "pages#home"
 end
