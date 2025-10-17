@@ -89,3 +89,5 @@ production:
   database: monaco_rgpd_production
   username: monaco_rgpd
   password: <%= ENV["POSTGRES_PASSWORD"] %>
+  host: <%= ENV["DB_HOST"] %>
+  port: 5432
