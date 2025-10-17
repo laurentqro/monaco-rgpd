@@ -258,7 +258,6 @@
             <span class="text-base font-bold text-gray-700">{progress}%</span>
           </div>
         </div>
-        <span class="text-sm text-gray-600 mt-2">Progression globale</span>
       </div>
 
       <!-- Section Circles (Subway Line Style) -->
