@@ -81,27 +81,6 @@
       <!-- Score Card -->
       <ComplianceScoreCard assessment={latest_assessment} responseId={latest_response_id} />
 
-      <!-- Compliance Areas Breakdown -->
-      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 class="text-xl font-bold mb-4">Conformité par domaine</h2>
-        <div class="space-y-4">
-          {#each latest_assessment.compliance_area_scores as area (area.area_name)}
-            <div>
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-sm font-medium">{area.area_name}</span>
-                <span class="text-sm font-bold">{area.percentage}%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  class="h-3 rounded-full {area.percentage >= 85 ? 'bg-green-500' : area.percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'}"
-                  style="width: {area.percentage}%"
-                ></div>
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
-
       <!-- Documents -->
       {#if documents && documents.length > 0}
         <DocumentList {documents} />
