@@ -60,6 +60,7 @@ class QuestionnairesController < ApplicationController
       condition_value: rule.condition_value,
       action: rule.action,
       target_section_id: rule.target_section_id,
+      target_question_id: rule.target_question_id,
       exit_message: rule.exit_message
     }
   end

@@ -8,6 +8,7 @@
   let answers = $state({});
   let answerIds = $state({}); // Track answer IDs for updates
   let skippedSections = $state(new Set());
+  let skippedQuestions = $state(new Set()); // Track questions to skip (for skip_to_question)
   let shouldExit = $state(false);
   let exitMessage = $state('');
 
@@ -24,9 +25,10 @@
     s.questions.map(q => ({ ...q, sectionId: s.id, sectionTitle: s.title }))
   );
 
-  // Evaluate logic rules and determine which sections to skip
+  // Evaluate logic rules and determine which sections/questions to skip
   function evaluateLogicRules() {
     const newSkippedSections = new Set();
+    const newSkippedQuestions = new Set();
 
     allQuestions.forEach(question => {
       const answer = answers[question.id];
@@ -48,12 +50,21 @@
             for (let i = currentSectionIndex + 1; i < targetSectionIndex; i++) {
               newSkippedSections.add(questionnaire.sections[i].id);
             }
+          } else if (rule.action === 'skip_to_question' && rule.target_question_id) {
+            // Find all questions between current and target, mark them as skipped
+            const currentQuestionIndex = allQuestions.findIndex(q => q.id === question.id);
+            const targetQuestionIndex = allQuestions.findIndex(q => q.id === rule.target_question_id);
+
+            for (let i = currentQuestionIndex + 1; i < targetQuestionIndex; i++) {
+              newSkippedQuestions.add(allQuestions[i].id);
+            }
           }
         }
       });
     });
 
     skippedSections = newSkippedSections;
+    skippedQuestions = newSkippedQuestions;
   }
 
   function checkCondition(answer, conditionType, conditionValue) {
@@ -81,9 +92,9 @@
     }
   }
 
-  // Filter visible questions based on skipped sections
+  // Filter visible questions based on skipped sections and skipped questions
   const visibleQuestions = $derived(
-    allQuestions.filter(q => !skippedSections.has(q.sectionId))
+    allQuestions.filter(q => !skippedSections.has(q.sectionId) && !skippedQuestions.has(q.id))
   );
 
   const currentQuestion = $derived(visibleQuestions[currentQuestionIndex]);
