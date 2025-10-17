@@ -1,6 +1,7 @@
 class LogicRule < ApplicationRecord
   belongs_to :source_question, class_name: "Question"
   belongs_to :target_section, class_name: "Section", optional: true
+  belongs_to :target_question, class_name: "Question", optional: true
 
   enum :condition_type, {
     equals: 0,
