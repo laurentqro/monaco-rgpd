@@ -57,7 +57,7 @@ Rails.application.configure do
 
   # Use Solid Queue for background jobs
   config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
+  # Using primary database (no separate queue database)
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
