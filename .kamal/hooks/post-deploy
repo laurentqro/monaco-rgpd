@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Run database migrations and setup after each deployment
+# This ensures all databases (primary, cache, queue, cable) stay up to date
+
+echo "Preparing databases..."
+kamal app exec --reuse "bin/rails db:prepare"
+
+echo "Database preparation completed successfully"
+echo "$KAMAL_PERFORMER deployed $KAMAL_VERSION to $KAMAL_DESTINATION in $KAMAL_RUNTIME seconds"
