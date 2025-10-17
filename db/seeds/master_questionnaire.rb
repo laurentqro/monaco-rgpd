@@ -119,8 +119,8 @@ email_surveillance_question = section3_hr.questions.find_or_create_by!(order_ind
   q.is_required = true
   q.weight = 2
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # Q1.2: Messagerie - Données sensibles
@@ -130,8 +130,8 @@ email_sensitive_question = section3_hr.questions.find_or_create_by!(order_index:
   q.is_required = true
   q.weight = 2
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # Q2: Ligne directe?
@@ -152,8 +152,8 @@ phone_surveillance_question = section3_hr.questions.find_or_create_by!(order_ind
   q.is_required = true
   q.weight = 2
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # Q2.2: Téléphonie - Données sensibles
@@ -163,8 +163,8 @@ phone_sensitive_question = section3_hr.questions.find_or_create_by!(order_index:
   q.is_required = true
   q.weight = 2
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # Q3: Accès aux locaux
@@ -174,9 +174,9 @@ access_method_question = section3_hr.questions.find_or_create_by!(order_index: 7
   q.is_required = true
   q.weight = 1
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Un badge")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Une clé")
-  q.answer_choices.find_or_create_by!(order_index: 3, choice_text: "Un dispositif biométrique")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Un badge", score: 100)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Une clé", score: 100)
+  q.answer_choices.find_or_create_by!(order_index: 3, choice_text: "Un dispositif biométrique", score: 50)
 end
 
 # Q4: Délégués du personnel?
@@ -197,8 +197,8 @@ delegates_surveillance_question = section3_hr.questions.find_or_create_by!(order
   q.is_required = true
   q.weight = 2
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # Q4.2: Délégués - Données sensibles
@@ -208,8 +208,8 @@ delegates_sensitive_question = section3_hr.questions.find_or_create_by!(order_in
   q.is_required = true
   q.weight = 2
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # Q5: Finalités de collecte (multiple choice)
@@ -264,11 +264,13 @@ other_data_question = section3_hr.questions.find_or_create_by!(order_index: 12) 
 end.tap do |q|
   q.answer_choices.find_or_create_by!(
     order_index: 1,
-    choice_text: "Oui"
+    choice_text: "Oui",
+    score: 0
   )
   q.answer_choices.find_or_create_by!(
     order_index: 2,
-    choice_text: "Non"
+    choice_text: "Non",
+    score: 100
   )
 end
 
@@ -281,11 +283,13 @@ connection_data_question = section3_hr.questions.find_or_create_by!(order_index:
 end.tap do |q|
   q.answer_choices.find_or_create_by!(
     order_index: 1,
-    choice_text: "Oui"
+    choice_text: "Oui",
+    score: 0
   )
   q.answer_choices.find_or_create_by!(
     order_index: 2,
-    choice_text: "Non"
+    choice_text: "Non",
+    score: 100
   )
 end
 
@@ -296,8 +300,8 @@ public_interest_question = section4_dpo.questions.find_or_create_by!(order_index
   q.is_required = true
   q.weight = 3
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # Q2: Activités de base nécessitant suivi régulier?
@@ -308,8 +312,8 @@ systematic_monitoring_question = section4_dpo.questions.find_or_create_by!(order
   q.is_required = true
   q.weight = 3
 end.tap do |q|
-  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui")
-  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non")
+  q.answer_choices.find_or_create_by!(order_index: 1, choice_text: "Oui", score: 0)
+  q.answer_choices.find_or_create_by!(order_index: 2, choice_text: "Non", score: 100)
 end
 
 # ============================================================================
