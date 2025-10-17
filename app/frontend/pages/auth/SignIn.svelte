@@ -51,10 +51,10 @@
       <!-- Header -->
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">
-          Rails SaaS Starter
+          MonacoRGPD
         </h1>
         <p class="text-gray-600">
-          Sign in with your email to get started
+          Connectez-vous avec votre email pour commencer
         </p>
       </div>
 

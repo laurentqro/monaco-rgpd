@@ -8,7 +8,7 @@ class MagicLinkMailer < ApplicationMailer
 
     mail(
       to: @user.email,
-      subject: "Sign in to Rails SaaS Starter"
+      subject: "Connectez-vous à MonacoRGPD"
     )
   end
 end

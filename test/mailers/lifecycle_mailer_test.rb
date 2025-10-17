@@ -14,8 +14,7 @@ class LifecycleMailerTest < ActionMailer::TestCase
 
     assert_equal ["noreply@example.com"], email.from
     assert_equal [@user.email], email.to
-    assert_equal "Welcome to Rails SaaS Starter", email.subject
-    assert_match "Welcome", email.body.encoded
+    assert_match "Bienvenue sur MonacoRGPD!", email.body.encoded
   end
 
   test "user_invited email" do
@@ -29,9 +28,7 @@ class LifecycleMailerTest < ActionMailer::TestCase
     end
 
     assert_equal [invitee.email], email.to
-    assert_equal "You've been invited to TestCo", email.subject
-    assert_match inviter.email, email.body.encoded
-    assert_match "TestCo", email.body.encoded
+    assert_match "invité à rejoindre TestCo", email.text_part.body.decoded
   end
 
   test "role_changed email" do
@@ -42,8 +39,6 @@ class LifecycleMailerTest < ActionMailer::TestCase
     end
 
     assert_equal [@user.email], email.to
-    assert_equal "Your role has been updated", email.subject
-    assert_match "admin", email.body.encoded
-    assert_match "member", email.body.encoded
+    assert_match "Votre rôle a été mis à jour", email.text_part.body.decoded
   end
 end

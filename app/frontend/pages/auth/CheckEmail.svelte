@@ -48,7 +48,7 @@
             <div class="mt-2 text-sm text-blue-700">
               <ol class="list-decimal list-inside space-y-1">
                 <li>Open your email inbox</li>
-                <li>Find the email from Rails SaaS Starter</li>
+                <li>Find the email from MonacoRGPD</li>
                 <li>Click the magic link in the email</li>
                 <li>You'll be automatically signed in</li>
               </ol>

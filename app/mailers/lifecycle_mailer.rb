@@ -5,7 +5,7 @@ class LifecycleMailer < ApplicationMailer
     @user = user
     mail(
       to: @user.email,
-      subject: "Welcome to Rails SaaS Starter"
+      subject: "Welcome to MonacoRGPD"
     )
   end
 
