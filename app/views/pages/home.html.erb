@@ -932,6 +932,7 @@ section {
 
 .monaco-made-logo {
     text-align: center;
+    margin: 0 auto;
     background: rgba(255, 255, 255, 0.1);
     padding: 48px;
     border-radius: var(--radius-xl);
@@ -1229,6 +1230,7 @@ section {
                 <li><a href="#fonctionnalites">Fonctionnalités</a></li>
                 <li><a href="#tarifs">Tarifs</a></li>
                 <li><a href="#apropos">À Propos</a></li>
+                <li><a href="<%= new_session_path %>">Connexion</a></li>
                 <li><a href="#contact" class="btn-secondary">Démo Gratuite</a></li>
             </ul>
         </nav>
@@ -1239,7 +1241,7 @@ section {
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Conformité RGPD monégasque en <span class="highlight">30 jours</span>, pas 6 mois.</h1>
+                    <h1>Conformité RGPD monégasque en <span class="highlight">30 jours.</span></h1>
                     <p class="hero-description">
                         La première plateforme logicielle conçue spécifiquement pour les entreprises monégasques.
                         Obtenez votre conformité RGPD complète avec l'expertise d'un DPO qualifié,
@@ -1595,7 +1597,7 @@ section {
                 </div>
                 <div class="monaco-made-logo">
                     <p class="monaco-badge">en partenariat avec</p>
-                    <img src="images/monacocloud.png" alt="Monaco Cloud - Hébergé à Monaco" class="monaco-logo">
+                    <%= image_tag "monacocloud.png", alt: "Monaco Cloud - Hébergé à Monaco", class: "monaco-logo", width: "300", height: "auto" %>
                 </div>
             </div>
         </div>
