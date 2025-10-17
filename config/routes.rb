@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "auth/verify/:token", to: "magic_links#verify", as: :verify_magic_link
 
   # Authenticated app (authentication handled by ApplicationController)
-  get "app", to: "app#index", as: :app_root
+  get "dashboard", to: "dashboard#show", as: :app_root
 
   # User management
   resources :users, only: [:update]
