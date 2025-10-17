@@ -227,8 +227,37 @@
     <!-- Subway-Line Progress -->
     <div class="mb-8">
       <div class="flex justify-between items-center mb-4">
-        <span class="text-sm text-gray-600">{currentQuestion?.sectionTitle}</span>
-        <span class="text-sm font-medium">{progress}%</span>
+        <!-- Donut Chart for Progress -->
+        <div class="relative inline-flex items-center justify-center">
+          <svg class="w-16 h-16 transform -rotate-90">
+            <!-- Background circle -->
+            <circle
+              cx="32"
+              cy="32"
+              r="28"
+              stroke="currentColor"
+              stroke-width="6"
+              fill="none"
+              class="text-gray-200"
+            />
+            <!-- Progress circle -->
+            <circle
+              cx="32"
+              cy="32"
+              r="28"
+              stroke="currentColor"
+              stroke-width="6"
+              fill="none"
+              stroke-linecap="round"
+              class="text-blue-600 transition-all duration-300"
+              style="stroke-dasharray: {28 * 2 * Math.PI}; stroke-dashoffset: {28 * 2 * Math.PI * (1 - progress / 100)};"
+            />
+          </svg>
+          <!-- Percentage Text in Center -->
+          <span class="absolute text-sm font-bold text-gray-700">{progress}%</span>
+        </div>
+
+        <span class="text-sm text-gray-600">Progression globale</span>
       </div>
 
       <!-- Section Circles (Subway Line Style) -->
