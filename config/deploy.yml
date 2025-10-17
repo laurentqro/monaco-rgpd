@@ -34,6 +34,10 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
+    - APP_HOST
+    - MAILER_FROM_EMAIL
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
@@ -47,6 +51,10 @@ env:
 
     # Match this to any external database server to configure Active Record correctly
     DB_HOST: 168.119.155.205
+
+    # SMTP Configuration for Brevo
+    SMTP_ADDRESS: smtp-relay.brevo.com
+    SMTP_PORT: 587
 
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
