@@ -233,7 +233,7 @@
 
       <!-- Section Circles (Subway Line Style) -->
       <div class="relative">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-start">
           {#each visibleSections as section, i}
             {@const isCompleted = completedSectionIds.has(section.id) && currentSectionId !== section.id}
             {@const isCurrent = currentSectionId === section.id}
@@ -263,7 +263,7 @@
               </div>
 
               <!-- Section Title -->
-              <div class="mt-2 text-center">
+              <div class="mt-2 text-center min-h-[3rem] flex items-start justify-center">
                 <span class="text-xs {isCurrent ? 'font-semibold text-blue-600' : 'text-gray-600'} block max-w-[100px] leading-tight">
                   {section.title}
                 </span>
