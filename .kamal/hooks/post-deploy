@@ -3,8 +3,15 @@
 # Run database migrations and setup after each deployment
 # This ensures all databases (primary, cache, queue, cable) stay up to date
 
-echo "Preparing databases..."
+echo "Preparing all databases..."
+
+# Prepare all databases (primary + shards)
 kamal app exec --reuse "bin/rails db:prepare"
 
-echo "Database preparation completed successfully"
+# Explicitly migrate each shard to ensure all tables are created
+kamal app exec --reuse "bin/rails db:migrate:cache"
+kamal app exec --reuse "bin/rails db:migrate:queue"
+kamal app exec --reuse "bin/rails db:migrate:cable"
+
+echo "All databases prepared and migrated successfully"
 echo "$KAMAL_PERFORMER deployed $KAMAL_VERSION to $KAMAL_DESTINATION in $KAMAL_RUNTIME seconds"
