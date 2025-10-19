@@ -1,68 +1,95 @@
 <script>
   import SettingsLayout from '../../components/SettingsLayout.svelte'
+  import { Button } from '$lib/components/ui/button'
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card'
+  import { Alert, AlertDescription } from '$lib/components/ui/alert'
+  import { Badge } from '$lib/components/ui/badge'
+  import { Avatar, AvatarFallback } from '$lib/components/ui/avatar'
+  import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from '$lib/components/ui/table'
 
   let { members, is_admin } = $props()
+
+  function getInitials(member) {
+    return member.name?.[0]?.toUpperCase() || member.email?.[0]?.toUpperCase() || 'U'
+  }
+
+  function getRoleBadgeVariant(role) {
+    if (role === 'owner') return 'default'
+    if (role === 'admin') return 'secondary'
+    return 'outline'
+  }
 </script>
 
 <SettingsLayout>
   {#snippet children()}
-    <div class="px-4 py-5 sm:p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-lg font-semibold text-gray-900">Team Members</h3>
-        {#if is_admin}
-          <button
-            disabled
-            class="px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed"
-            title="Team invitations coming soon"
-          >
-            Invite Member
-          </button>
-        {/if}
-      </div>
+    <Card>
+      <CardHeader>
+        <div class="flex justify-between items-center">
+          <div>
+            <CardTitle>Membres de l'équipe</CardTitle>
+            <CardDescription>Gérez les membres de votre équipe</CardDescription>
+          </div>
+          {#if is_admin}
+            <Button disabled variant="outline">
+              Inviter un membre
+            </Button>
+          {/if}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Membre</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Rôle</TableHead>
+              <TableHead class="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {#each members as member}
+              <TableRow>
+                <TableCell>
+                  <div class="flex items-center space-x-3">
+                    <Avatar>
+                      <AvatarFallback>{getInitials(member)}</AvatarFallback>
+                    </Avatar>
+                    <span class="font-medium">{member.name || member.email}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <span class="text-muted-foreground">{member.email}</span>
+                </TableCell>
+                <TableCell>
+                  <Badge variant={getRoleBadgeVariant(member.role)}>
+                    {member.role}
+                  </Badge>
+                </TableCell>
+                <TableCell class="text-right">
+                  {#if is_admin && member.role !== 'owner'}
+                    <Button disabled variant="ghost" size="sm">
+                      Gérer
+                    </Button>
+                  {/if}
+                </TableCell>
+              </TableRow>
+            {/each}
+          </TableBody>
+        </Table>
 
-      <div class="bg-white overflow-hidden">
-        <ul class="divide-y divide-gray-200">
-          {#each members as member}
-            <li class="px-4 py-4 flex items-center justify-between">
-              <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
-                  {member.name?.[0]?.toUpperCase() || member.email?.[0]?.toUpperCase()}
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-gray-900">
-                    {member.name || member.email}
-                  </p>
-                  <p class="text-sm text-gray-500">{member.email}</p>
-                </div>
-              </div>
-              <div class="flex items-center space-x-4">
-                <span class="px-3 py-1 text-xs font-medium rounded-full {
-                  member.role === 'owner' ? 'bg-purple-100 text-purple-800' :
-                  member.role === 'admin' ? 'bg-blue-100 text-blue-800' :
-                  'bg-gray-100 text-gray-800'
-                }">
-                  {member.role}
-                </span>
-                {#if is_admin && member.role !== 'owner'}
-                  <button
-                    disabled
-                    class="text-sm text-gray-400 cursor-not-allowed"
-                    title="Team management coming soon"
-                  >
-                    Manage
-                  </button>
-                {/if}
-              </div>
-            </li>
-          {/each}
-        </ul>
-      </div>
-
-      <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p class="text-sm text-blue-800">
-          <strong>Coming soon:</strong> Invite team members, manage roles, and remove users.
-        </p>
-      </div>
-    </div>
+        <Alert class="mt-6">
+          <AlertDescription>
+            <strong>Bientôt disponible :</strong> Inviter des membres, gérer les rôles et supprimer des utilisateurs.
+          </AlertDescription>
+        </Alert>
+      </CardContent>
+    </Card>
   {/snippet}
 </SettingsLayout>
