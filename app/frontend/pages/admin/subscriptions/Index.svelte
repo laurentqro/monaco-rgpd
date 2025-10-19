@@ -1,6 +1,9 @@
 <script>
   import AdminLayout from '../../../components/AdminLayout.svelte'
   import { router } from '@inertiajs/svelte'
+  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table'
+  import { Badge } from '$lib/components/ui/badge'
+  import { Button } from '$lib/components/ui/button'
 
   let { subscriptions, status = '' } = $props()
 
@@ -18,81 +21,81 @@
 
       <!-- Status filter -->
       <div class="mb-6 flex gap-2">
-        <button
+        <Button
+          variant={!status ? 'default' : 'outline'}
           onclick={() => filterByStatus('')}
-          class="px-4 py-2 rounded-lg {!status ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}"
         >
           All
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={status === 'active' ? 'default' : 'outline'}
           onclick={() => filterByStatus('active')}
-          class="px-4 py-2 rounded-lg {status === 'active' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}"
         >
           Active
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={status === 'trialing' ? 'default' : 'outline'}
           onclick={() => filterByStatus('trialing')}
-          class="px-4 py-2 rounded-lg {status === 'trialing' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}"
         >
           Trialing
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={status === 'past_due' ? 'default' : 'outline'}
           onclick={() => filterByStatus('past_due')}
-          class="px-4 py-2 rounded-lg {status === 'past_due' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}"
         >
           Past Due
-        </button>
+        </Button>
       </div>
 
       <!-- Subscriptions table -->
-      <div class="overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Account</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plan</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Period End</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+      <div class="overflow-hidden rounded-lg border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Account</TableHead>
+              <TableHead>Plan</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Period End</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead class="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {#each subscriptions as subscription}
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <TableRow>
+                <TableCell class="font-medium">
                   <a href="/admin/accounts/{subscription.account.id}" class="text-blue-600 hover:text-blue-900">
                     {subscription.account.name}
                   </a>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                </TableCell>
+                <TableCell>
                   {subscription.plan_type}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">
-                  <span class="px-2 py-1 text-xs rounded-full {
-                    subscription.status === 'active' ? 'bg-green-100 text-green-800' :
-                    subscription.status === 'trialing' ? 'bg-blue-100 text-blue-800' :
-                    subscription.status === 'past_due' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }">
+                </TableCell>
+                <TableCell>
+                  <Badge variant={
+                    subscription.status === 'active' ? 'default' :
+                    subscription.status === 'trialing' ? 'secondary' :
+                    subscription.status === 'past_due' ? 'destructive' :
+                    'outline'
+                  }>
                     {subscription.status}
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  </Badge>
+                </TableCell>
+                <TableCell>
                   {subscription.current_period_end ? new Date(subscription.current_period_end).toLocaleDateString() : '-'}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                </TableCell>
+                <TableCell>
                   {new Date(subscription.created_at).toLocaleDateString()}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                </TableCell>
+                <TableCell class="text-right">
                   <a href="/admin/accounts/{subscription.account.id}" class="text-blue-600 hover:text-blue-900">
                     View Account
                   </a>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             {/each}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
 
         {#if subscriptions.length === 0}
           <div class="text-center py-12 text-gray-500">

@@ -1,6 +1,9 @@
 <script>
   import AdminLayout from '../../../components/AdminLayout.svelte'
   import { router } from '@inertiajs/svelte'
+  import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card'
+  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table'
+  import { Button } from '$lib/components/ui/button'
 
   let { account, users, subscription } = $props()
 
@@ -16,41 +19,42 @@
     <div class="px-4 py-5 sm:p-6">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-lg font-semibold text-gray-900">{account.name}</h2>
-        <button
-          onclick={deleteAccount}
-          class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-        >
+        <Button variant="destructive" onclick={deleteAccount}>
           Delete Account
-        </button>
+        </Button>
       </div>
 
       <!-- Account details -->
-      <div class="bg-gray-50 rounded-lg p-4 mb-6">
-        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Subdomain</dt>
-            <dd class="mt-1 text-sm text-gray-900">{account.subdomain}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Plan</dt>
-            <dd class="mt-1 text-sm text-gray-900">{account.plan_type || 'Free'}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Subscribed</dt>
-            <dd class="mt-1 text-sm text-gray-900">{account.subscribed ? 'Yes' : 'No'}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Created</dt>
-            <dd class="mt-1 text-sm text-gray-900">{new Date(account.created_at).toLocaleDateString()}</dd>
-          </div>
-        </dl>
-      </div>
+      <Card class="mb-6">
+        <CardContent class="pt-6">
+          <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Subdomain</dt>
+              <dd class="mt-1 text-sm text-gray-900">{account.subdomain}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Plan</dt>
+              <dd class="mt-1 text-sm text-gray-900">{account.plan_type || 'Free'}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Subscribed</dt>
+              <dd class="mt-1 text-sm text-gray-900">{account.subscribed ? 'Yes' : 'No'}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Created</dt>
+              <dd class="mt-1 text-sm text-gray-900">{new Date(account.created_at).toLocaleDateString()}</dd>
+            </div>
+          </dl>
+        </CardContent>
+      </Card>
 
       <!-- Subscription -->
       {#if subscription}
-        <div class="mb-6">
-          <h3 class="text-base font-semibold text-gray-900 mb-3">Subscription</h3>
-          <div class="bg-gray-50 rounded-lg p-4">
+        <Card class="mb-6">
+          <CardHeader>
+            <CardTitle>Subscription</CardTitle>
+          </CardHeader>
+          <CardContent>
             <dl class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <dt class="text-sm font-medium text-gray-500">Status</dt>
@@ -67,40 +71,44 @@
                 </dd>
               </div>
             </dl>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       {/if}
 
       <!-- Users -->
-      <div>
-        <h3 class="text-base font-semibold text-gray-900 mb-3">Users ({users.length})</h3>
-        <div class="overflow-hidden rounded-lg border border-gray-200">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              {#each users as user}
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.name || '-'}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{user.role}</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                    <a href="/admin/users/{user.id}" class="text-blue-600 hover:text-blue-900">
-                      View
-                    </a>
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Users ({users.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div class="overflow-hidden rounded-lg border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead class="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {#each users as user}
+                  <TableRow>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.name || '-'}</TableCell>
+                    <TableCell class="capitalize">{user.role}</TableCell>
+                    <TableCell class="text-right">
+                      <a href="/admin/users/{user.id}" class="text-blue-600 hover:text-blue-900">
+                        View
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                {/each}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   {/snippet}
 </AdminLayout>
