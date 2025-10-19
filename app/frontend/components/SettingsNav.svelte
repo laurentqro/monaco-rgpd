@@ -1,33 +1,43 @@
 <!-- app/frontend/components/SettingsNav.svelte -->
 <script>
-  import { page } from '@inertiajs/svelte'
+  import { Tabs, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
+  import { page } from '@inertiajs/svelte';
+  import { router } from '@inertiajs/svelte';
 
-  const currentPath = $derived($page.url.split('?')[0].split('#')[0])
-
-  const navItems = [
-    { name: 'Profile', path: '/settings/profile', icon: 'user' },
-    { name: 'Account', path: '/settings/account', icon: 'building' },
-    { name: 'Team', path: '/settings/team', icon: 'users' },
-    { name: 'Billing', path: '/settings/billing', icon: 'credit-card' },
-    { name: 'Notifications', path: '/settings/notifications', icon: 'bell' }
-  ]
-
-  function isActive(path) {
-    return currentPath === path
-  }
+  const currentPath = $derived($page.url.split('?')[0].split('#')[0]);
 </script>
 
-<nav class="space-y-1">
-  {#each navItems as item}
-    <a
-      href={item.path}
-      class="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors {
-        isActive(item.path)
-          ? 'bg-blue-50 text-blue-700'
-          : 'text-gray-700 hover:bg-gray-100'
-      }"
+<Tabs value={currentPath} class="w-full">
+  <TabsList class="grid w-full grid-cols-5">
+    <TabsTrigger
+      value="/settings/profile"
+      onclick={() => router.visit('/settings/profile')}
     >
-      <span class="truncate">{item.name}</span>
-    </a>
-  {/each}
-</nav>
+      Profil
+    </TabsTrigger>
+    <TabsTrigger
+      value="/settings/account"
+      onclick={() => router.visit('/settings/account')}
+    >
+      Compte
+    </TabsTrigger>
+    <TabsTrigger
+      value="/settings/billing"
+      onclick={() => router.visit('/settings/billing')}
+    >
+      Facturation
+    </TabsTrigger>
+    <TabsTrigger
+      value="/settings/team"
+      onclick={() => router.visit('/settings/team')}
+    >
+      Équipe
+    </TabsTrigger>
+    <TabsTrigger
+      value="/settings/notifications"
+      onclick={() => router.visit('/settings/notifications')}
+    >
+      Notifications
+    </TabsTrigger>
+  </TabsList>
+</Tabs>
