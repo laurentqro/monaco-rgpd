@@ -34,13 +34,12 @@
     return texts[riskLevel] || 'Inconnu';
   }
 
-  function getRiskLevelColor(riskLevel) {
-    const colors = {
-      'compliant': 'green',
-      'attention_required': 'yellow',
-      'non_compliant': 'red'
-    };
-    return colors[riskLevel] || 'gray';
+  function getRiskLevelColorClass(riskLevel) {
+    // Use complete Tailwind classes for JIT compiler
+    return riskLevel === 'compliant' ? 'text-green-600' :
+           riskLevel === 'attention_required' ? 'text-yellow-600' :
+           riskLevel === 'non_compliant' ? 'text-red-600' :
+           'text-gray-600';
   }
 
   function formatDate(dateString) {
@@ -107,7 +106,7 @@
                   <Table.Cell>
                     {#if response.compliance_assessment}
                       <div class="flex items-center gap-2">
-                        <span class="text-2xl font-bold text-{getRiskLevelColor(response.compliance_assessment.risk_level)}-600">
+                        <span class="text-2xl font-bold {getRiskLevelColorClass(response.compliance_assessment.risk_level)}">
                           {Number(response.compliance_assessment.overall_score).toFixed(1)}%
                         </span>
                         <span class="text-xs text-gray-500">

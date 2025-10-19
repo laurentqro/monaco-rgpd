@@ -8,12 +8,6 @@
 
   const percentage = $derived((assessment.overall_score / assessment.max_possible_score * 100).toFixed(0));
 
-  const riskLevelColor = $derived({
-    'compliant': 'green',
-    'attention_required': 'yellow',
-    'non_compliant': 'red'
-  }[assessment.risk_level] || 'gray');
-
   const riskLevelText = $derived({
     'compliant': 'Risque faible',
     'attention_required': 'Risque moyen',
@@ -25,6 +19,14 @@
     'attention_required': 'secondary',
     'non_compliant': 'destructive'
   }[assessment.risk_level] || 'secondary');
+
+  // Use complete Tailwind classes for JIT compiler
+  const scoreColorClass = $derived(
+    assessment.risk_level === 'compliant' ? 'text-green-600' :
+    assessment.risk_level === 'attention_required' ? 'text-yellow-600' :
+    assessment.risk_level === 'non_compliant' ? 'text-red-600' :
+    'text-gray-600'
+  );
 </script>
 
 <Card class="mb-8">
@@ -37,7 +39,7 @@
       <div class="flex-1">
         <h2 class="text-lg font-medium text-gray-600 mb-2">Score global</h2>
         <div class="flex items-baseline space-x-3">
-          <span class="text-5xl font-bold text-{riskLevelColor}-600">{percentage}%</span>
+          <span class="text-5xl font-bold {scoreColorClass}">{percentage}%</span>
           <span class="text-xl text-gray-500">/ 100%</span>
         </div>
 
