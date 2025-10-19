@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   # Non authenticated pages
   get "home", to: "pages#home", as: :home
+  get "showcase", to: "showcase#index" if Rails.env.development?
 
   # Authenticated app (authentication handled by ApplicationController)
   get "dashboard", to: "dashboard#show", as: :app_root
