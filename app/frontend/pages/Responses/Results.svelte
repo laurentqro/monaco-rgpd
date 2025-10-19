@@ -1,6 +1,10 @@
 <script>
   import { router } from '@inertiajs/svelte';
   import DocumentList from '../../components/DocumentList.svelte';
+  import { Button } from '$lib/components/ui/button';
+  import * as Card from '$lib/components/ui/card';
+  import { Progress } from '$lib/components/ui/progress';
+  import { Badge } from '$lib/components/ui/badge';
 
   let { response, assessment, documents, answers } = $props();
 
@@ -48,52 +52,57 @@
   <div class="max-w-5xl mx-auto px-4">
     <!-- Header -->
     <div class="mb-8">
-      <button
+      <Button
+        variant="ghost"
         onclick={() => router.visit('/dashboard')}
-        class="text-gray-600 hover:text-gray-900 mb-4 flex items-center"
+        class="mb-4"
       >
-        <svg class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
         Retour au tableau de bord
-      </button>
+      </Button>
       <h1 class="text-3xl font-bold text-gray-900">Détails de l'évaluation</h1>
       <p class="text-gray-600 mt-2">
         {response.questionnaire.title} • Complétée le {new Date(response.completed_at).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
     </div>
 
-    <!-- Score Summary Card (compact) -->
+    <!-- Score Summary Card with Progress -->
     {#if assessment}
-      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-lg font-medium text-gray-600 mb-1">Score de conformité</h2>
-            <div class="flex items-baseline space-x-2">
-              <span class="text-3xl font-bold text-blue-600">{Number(assessment.overall_score).toFixed(1)}%</span>
-              <span class="text-gray-500">/ 100%</span>
+      <Card.Root class="mb-8">
+        <Card.Content class="p-6">
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <h2 class="text-lg font-medium text-gray-600 mb-3">Score de conformité</h2>
+              <div class="flex items-baseline space-x-2 mb-4">
+                <span class="text-3xl font-bold text-blue-600">{Number(assessment.overall_score).toFixed(1)}%</span>
+                <span class="text-gray-500">/ 100%</span>
+              </div>
+              <Progress value={assessment.overall_score} class="h-3" />
             </div>
+            {#if documents && documents.length > 0}
+              <Button
+                variant="secondary"
+                onclick={() => document.querySelector('#documents')?.scrollIntoView({ behavior: 'smooth' })}
+                class="ml-6"
+              >
+                Voir les documents ({documents.length})
+              </Button>
+            {/if}
           </div>
-          {#if documents && documents.length > 0}
-            <a
-              href="#documents"
-              class="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 font-medium"
-            >
-              Voir les documents ({documents.length})
-            </a>
-          {/if}
-        </div>
-      </div>
+        </Card.Content>
+      </Card.Root>
     {/if}
 
     <!-- Answers by Section -->
     <div class="space-y-6">
       {#each Object.entries(answersBySection()) as [sectionTitle, sectionAnswers]}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-xl font-bold text-gray-900">{sectionTitle}</h2>
-          </div>
-          <div class="p-6 space-y-6">
+        <Card.Root>
+          <Card.Header>
+            <Card.Title class="text-xl">{sectionTitle}</Card.Title>
+          </Card.Header>
+          <Card.Content class="space-y-6">
             {#each sectionAnswers as answer, index}
               <div class="pb-6 {index < sectionAnswers.length - 1 ? 'border-b border-gray-200' : ''}">
                 <h3 class="font-medium text-gray-900 mb-2">
@@ -104,8 +113,8 @@
                 </div>
               </div>
             {/each}
-          </div>
-        </div>
+          </Card.Content>
+        </Card.Root>
       {/each}
     </div>
 
