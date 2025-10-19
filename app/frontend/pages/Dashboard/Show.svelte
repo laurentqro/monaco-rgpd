@@ -1,22 +1,21 @@
 <script>
   import { Button } from '$lib/components/ui/button';
   import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
-  import { Alert, AlertDescription } from '$lib/components/ui/alert';
   import { Badge } from '$lib/components/ui/badge';
   import ComplianceScoreCard from '../../components/ComplianceScoreCard.svelte';
   import DocumentList from '../../components/DocumentList.svelte';
   import { router, page } from '@inertiajs/svelte';
+  import { toast } from 'svelte-sonner';
 
   let { latest_assessment, latest_response_id, documents, responses, questionnaire_id } = $props();
 
-  let showFlash = $state(!!$page.props.flash?.notice);
-
+  // Show toast notifications for flash messages
   $effect(() => {
-    if (showFlash) {
-      const timer = setTimeout(() => {
-        showFlash = false;
-      }, 5000);
-      return () => clearTimeout(timer);
+    if ($page.props.flash?.notice) {
+      toast.success($page.props.flash.notice);
+    }
+    if ($page.props.flash?.alert) {
+      toast.error($page.props.flash.alert);
     }
   });
 
@@ -65,27 +64,6 @@
         </Button>
       </div>
     </div>
-
-    <!-- Flash Message -->
-    {#if showFlash && $page.props.flash?.notice}
-      <Alert class="mb-6 border-l-4 border-green-400">
-        <div class="flex items-center justify-between">
-          <AlertDescription class="text-green-700 font-medium">
-            {$page.props.flash.notice}
-          </AlertDescription>
-          <Button
-            variant="ghost"
-            size="sm"
-            onclick={() => showFlash = false}
-            aria-label="Fermer"
-          >
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </Button>
-        </div>
-      </Alert>
-    {/if}
 
     {#if latest_assessment}
       <!-- Score Card -->

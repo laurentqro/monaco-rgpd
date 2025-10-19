@@ -17,7 +17,7 @@
   function submit() {
     $form.patch(`/users/${user.id}`, {
       onSuccess: () => {
-        // Success message handled by flash
+        // Success message shown via toast notification from SettingsLayout
       }
     })
   }

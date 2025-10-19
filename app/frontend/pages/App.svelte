@@ -3,6 +3,7 @@
   import { page } from '@inertiajs/svelte'
   import Header from '../components/Header.svelte'
   import ImpersonationBanner from '../components/ImpersonationBanner.svelte'
+  import Toaster from '../components/Toaster.svelte'
 
   const user = $derived($page.props.current_user)
   const account = $derived($page.props.current_account)
@@ -27,3 +28,5 @@
     </div>
   </main>
 </div>
+
+<Toaster />

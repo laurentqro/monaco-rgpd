@@ -3,11 +3,22 @@
   import { Button } from '$lib/components/ui/button'
   import { Card, CardContent } from '$lib/components/ui/card'
   import AdminNav from './AdminNav.svelte'
+  import { toast } from 'svelte-sonner';
 
   let { children } = $props()
 
   const admin = $derived($page.props.current_admin)
   const impersonating = $derived($page.props.impersonating_user)
+
+  // Show toast notifications for flash messages
+  $effect(() => {
+    if ($page.props.flash?.notice) {
+      toast.success($page.props.flash.notice);
+    }
+    if ($page.props.flash?.alert) {
+      toast.error($page.props.flash.alert);
+    }
+  });
 
   function signOut() {
     router.delete('/admin/session')

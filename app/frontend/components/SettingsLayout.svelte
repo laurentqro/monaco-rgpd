@@ -2,8 +2,20 @@
 <script>
   import Header from './Header.svelte'
   import SettingsNav from './SettingsNav.svelte'
+  import { page } from '@inertiajs/svelte';
+  import { toast } from 'svelte-sonner';
 
   let { children } = $props()
+
+  // Show toast notifications for flash messages
+  $effect(() => {
+    if ($page.props.flash?.notice) {
+      toast.success($page.props.flash.notice);
+    }
+    if ($page.props.flash?.alert) {
+      toast.error($page.props.flash.alert);
+    }
+  });
 </script>
 
 <div class="min-h-screen bg-gray-50">
