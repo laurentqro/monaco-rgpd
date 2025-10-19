@@ -11,7 +11,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': '/app/frontend'
+      '@': '/app/frontend',
+      '$lib': '/app/frontend/lib'
     }
   },
   build: {
