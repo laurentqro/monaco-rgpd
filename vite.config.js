@@ -2,6 +2,10 @@ import { defineConfig } from 'vite'
 import RubyPlugin from 'vite-plugin-ruby'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [
@@ -11,8 +15,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': '/app/frontend',
-      '$lib': '/app/frontend/lib'
+      '@': path.resolve(__dirname, 'app/frontend'),
+      '$lib': path.resolve(__dirname, 'app/frontend/lib')
     }
   },
   build: {
