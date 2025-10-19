@@ -1,4 +1,9 @@
 <script>
+  import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '$lib/components/ui/card';
+  import { Badge } from '$lib/components/ui/badge';
+  import { Button } from '$lib/components/ui/button';
+  import { Progress } from '$lib/components/ui/progress';
+
   let { assessment, responseId } = $props();
 
   const percentage = $derived((assessment.overall_score / assessment.max_possible_score * 100).toFixed(0));
@@ -14,37 +19,53 @@
     'attention_required': 'Risque moyen',
     'non_compliant': 'Risque élevé'
   }[assessment.risk_level] || 'Inconnu');
+
+  const badgeVariant = $derived({
+    'compliant': 'default',
+    'attention_required': 'secondary',
+    'non_compliant': 'destructive'
+  }[assessment.risk_level] || 'secondary');
 </script>
 
-<div class="bg-white rounded-lg shadow-md p-8 mb-8">
-  <div class="flex items-center justify-between">
-    <div class="flex-1">
-      <h2 class="text-lg font-medium text-gray-600 mb-2">Score global</h2>
-      <div class="flex items-baseline space-x-3">
-        <span class="text-5xl font-bold text-{riskLevelColor}-600">{percentage}%</span>
-        <span class="text-xl text-gray-500">/ 100%</span>
-      </div>
-      <p class="mt-3 text-lg">
-        Niveau de risque: <span class="font-bold text-{riskLevelColor}-600">{riskLevelText}</span>
-      </p>
-      <p class="mt-2 text-sm text-gray-500">
-        Dernière évaluation: {new Date(assessment.created_at).toLocaleDateString('fr-FR')}
-      </p>
-    </div>
+<Card class="mb-8">
+  <CardHeader>
+    <CardTitle>Score de Conformité</CardTitle>
+    <CardDescription>Votre niveau de conformité RGPD</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div class="flex items-center justify-between">
+      <div class="flex-1">
+        <h2 class="text-lg font-medium text-gray-600 mb-2">Score global</h2>
+        <div class="flex items-baseline space-x-3">
+          <span class="text-5xl font-bold text-{riskLevelColor}-600">{percentage}%</span>
+          <span class="text-xl text-gray-500">/ 100%</span>
+        </div>
 
-    <div class="flex flex-col space-y-2">
-      <a
-        href="/responses/{responseId}/results"
-        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-center"
-      >
-        Voir les détails
-      </a>
-      <a
-        href="/responses"
-        class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium text-center"
-      >
-        Historique des évaluations
-      </a>
+        <!-- Progress bar visualization -->
+        <div class="mt-4 mb-3">
+          <Progress value={Number(percentage)} class="h-3" />
+        </div>
+
+        <div class="mt-3 flex items-center gap-2">
+          <span class="text-lg">Niveau de risque:</span>
+          <Badge variant={badgeVariant} class="text-sm font-bold">
+            {riskLevelText}
+          </Badge>
+        </div>
+
+        <p class="mt-2 text-sm text-gray-500">
+          Dernière évaluation: {new Date(assessment.created_at).toLocaleDateString('fr-FR')}
+        </p>
+      </div>
+
+      <div class="flex flex-col space-y-2">
+        <Button href="/responses/{responseId}/results" class="font-medium">
+          Voir les détails
+        </Button>
+        <Button href="/responses" variant="outline" class="font-medium">
+          Historique des évaluations
+        </Button>
+      </div>
     </div>
-  </div>
-</div>
+  </CardContent>
+</Card>
