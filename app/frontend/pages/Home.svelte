@@ -1,5 +1,7 @@
 <script>
   import { onMount } from 'svelte';
+  import { Button } from '$lib/components/ui/button';
+  import * as Card from '$lib/components/ui/card';
 
   console.log('Home component loaded');
 

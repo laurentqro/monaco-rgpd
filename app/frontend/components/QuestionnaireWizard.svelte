@@ -1,6 +1,9 @@
 <script>
   import QuestionCard from './QuestionCard.svelte';
   import { router } from '@inertiajs/svelte';
+  import { Button } from '$lib/components/ui/button';
+  import { Alert, AlertDescription } from '$lib/components/ui/alert';
+  import { Progress } from '$lib/components/ui/progress';
 
   let { questionnaire, response } = $props();
 
@@ -198,31 +201,25 @@
 <div class="max-w-2xl mx-auto p-6">
   {#if shouldExit}
     <!-- Exit Message -->
-    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <svg class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-        <div class="ml-4 flex-1">
-          <h3 class="text-lg font-medium text-yellow-800">
-            Questionnaire non applicable
-          </h3>
-          <div class="mt-2 text-sm text-yellow-700">
-            <p>{exitMessage}</p>
-          </div>
-          <div class="mt-4">
-            <button
-              onclick={() => router.visit('/dashboard')}
-              class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
-            >
-              Retour au tableau de bord
-            </button>
-          </div>
-        </div>
+    <Alert class="border-l-4 border-yellow-400 bg-yellow-50">
+      <svg class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+      <div>
+        <h3 class="text-lg font-medium text-yellow-800 mb-2">
+          Questionnaire non applicable
+        </h3>
+        <AlertDescription class="text-sm text-yellow-700 mb-4">
+          {exitMessage}
+        </AlertDescription>
+        <Button
+          onclick={() => router.visit('/dashboard')}
+          class="bg-yellow-600 text-white hover:bg-yellow-700"
+        >
+          Retour au tableau de bord
+        </Button>
       </div>
-    </div>
+    </Alert>
   {:else}
     <!-- Subway-Line Progress -->
     <div class="mb-8">
@@ -314,33 +311,32 @@
 
     <!-- Navigation -->
     <div class="flex justify-between mt-8">
-      <button
+      <Button
         onclick={previousQuestion}
         disabled={currentQuestionIndex === 0}
-        class="px-4 py-2 text-gray-700 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        variant="outline"
       >
         ← Précédent
-      </button>
+      </Button>
 
       {#if isLastQuestion}
-        <button
+        <Button
           onclick={completeQuestionnaire}
-          class="px-6 py-2 text-white bg-green-600 rounded hover:bg-green-700"
+          class="bg-green-600 hover:bg-green-700"
         >
           Terminer l'évaluation
-        </button>
+        </Button>
       {:else}
-        <button
+        <Button
           onclick={() => {
             if (!isLastQuestion && answers[currentQuestion.id]) {
               currentQuestionIndex++;
             }
           }}
           disabled={!answers[currentQuestion.id]}
-          class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Suivant →
-        </button>
+        </Button>
       {/if}
     </div>
   {/if}

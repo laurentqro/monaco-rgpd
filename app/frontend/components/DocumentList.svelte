@@ -1,4 +1,8 @@
 <script>
+  import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
+  import { Button } from '$lib/components/ui/button';
+  import { Badge } from '$lib/components/ui/badge';
+
   let { documents } = $props();
 
   const documentTypeIcons = {
@@ -16,38 +20,39 @@
   };
 </script>
 
-<div class="bg-white rounded-lg shadow-md p-6">
-  <h2 class="text-xl font-bold mb-4">Vos documents</h2>
-  <div class="space-y-3">
-    {#each documents as document (document.id)}
-      <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
-        <div class="flex items-center space-x-3">
-          <span class="text-2xl">{documentTypeIcons[document.document_type] || '📄'}</span>
-          <div>
-            <p class="font-medium">{documentTypeNames[document.document_type] || document.document_type}</p>
-            <p class="text-sm text-gray-500">
-              Généré le {new Date(document.generated_at).toLocaleDateString('fr-FR')}
-            </p>
+<Card class="mt-8">
+  <CardHeader>
+    <CardTitle>Vos documents</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div class="space-y-3">
+      {#each documents as document (document.id)}
+        <div class="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">{documentTypeIcons[document.document_type] || '📄'}</span>
+            <div>
+              <p class="font-medium">{documentTypeNames[document.document_type] || document.document_type}</p>
+              <p class="text-sm text-muted-foreground">
+                Généré le {new Date(document.generated_at).toLocaleDateString('fr-FR')}
+              </p>
+            </div>
           </div>
+          {#if document.status === 'generating'}
+            <div class="flex items-center text-muted-foreground">
+              <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+              <span class="text-sm">Génération...</span>
+            </div>
+          {:else if document.status === 'failed'}
+            <Badge variant="destructive">Erreur</Badge>
+          {:else if document.download_url}
+            <Button variant="default" size="sm" href={document.download_url}>
+              Télécharger
+            </Button>
+          {:else}
+            <Badge variant="secondary">Indisponible</Badge>
+          {/if}
         </div>
-        {#if document.status === 'generating'}
-          <div class="flex items-center text-gray-600">
-            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2"></div>
-            <span class="text-sm">Génération...</span>
-          </div>
-        {:else if document.status === 'failed'}
-          <span class="text-red-600 text-sm font-medium">Erreur</span>
-        {:else if document.download_url}
-          <a
-            href={document.download_url}
-            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium"
-          >
-            Télécharger
-          </a>
-        {:else}
-          <span class="text-gray-400 text-sm">Indisponible</span>
-        {/if}
-      </div>
-    {/each}
-  </div>
-</div>
+      {/each}
+    </div>
+  </CardContent>
+</Card>

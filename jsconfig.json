@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["app/frontend/*"],
+      "$lib/*": ["app/frontend/lib/*"]
+    },
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "checkJs": true,
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": ["app/frontend/**/*"],
+  "exclude": ["node_modules", ".worktrees", "tmp", "log", "public/vite*"]
+}

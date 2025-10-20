@@ -1,11 +1,24 @@
 <script>
   import { page, router } from '@inertiajs/svelte'
+  import { Button } from '$lib/components/ui/button'
+  import { Card, CardContent } from '$lib/components/ui/card'
   import AdminNav from './AdminNav.svelte'
+  import { toast } from 'svelte-sonner';
 
   let { children } = $props()
 
   const admin = $derived($page.props.current_admin)
   const impersonating = $derived($page.props.impersonating_user)
+
+  // Show toast notifications for flash messages
+  $effect(() => {
+    if ($page.props.flash?.notice) {
+      toast.success($page.props.flash.notice);
+    }
+    if ($page.props.flash?.alert) {
+      toast.error($page.props.flash.alert);
+    }
+  });
 
   function signOut() {
     router.delete('/admin/session')
@@ -24,12 +37,14 @@
         <span class="font-medium">
           ⚠️ Impersonating: {impersonating.email}
         </span>
-        <button
+        <Button
           onclick={stopImpersonating}
-          class="px-3 py-1 bg-white text-orange-600 rounded hover:bg-orange-50"
+          variant="secondary"
+          size="sm"
+          class="bg-white text-orange-600 hover:bg-orange-50"
         >
           Stop Impersonating
-        </button>
+        </Button>
       </div>
     </div>
   {/if}
@@ -42,12 +57,13 @@
 
         <div class="flex items-center space-x-4">
           <span class="text-sm text-gray-700">{admin?.name}</span>
-          <button
+          <Button
             onclick={signOut}
-            class="text-sm text-gray-700 hover:text-gray-900"
+            variant="ghost"
+            size="sm"
           >
             Sign Out
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -63,9 +79,11 @@
 
       <!-- Main content -->
       <main class="lg:col-span-9">
-        <div class="bg-white shadow rounded-lg">
-          {@render children()}
-        </div>
+        <Card>
+          <CardContent class="p-6">
+            {@render children()}
+          </CardContent>
+        </Card>
       </main>
     </div>
   </div>

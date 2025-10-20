@@ -1,10 +1,17 @@
 <script>
+  import { Button } from '$lib/components/ui/button';
+  import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
+  import { Alert, AlertDescription } from '$lib/components/ui/alert';
+  import { Input } from '$lib/components/ui/input';
+  import { Textarea } from '$lib/components/ui/textarea';
+  import { Checkbox } from '$lib/components/ui/checkbox';
+  import { Label } from '$lib/components/ui/label';
+
   let { question, answer = null, onanswer } = $props();
 
   let selectedValue = $state(answer || {});
 
   function handleYesNo(choiceText) {
-    // Find the answer choice ID that matches the text
     const choice = question.answer_choices.find(c => c.choice_text === choiceText);
     if (choice) {
       selectedValue = { choice_id: choice.id };
@@ -33,72 +40,89 @@
   }
 </script>
 
-<div class="bg-white rounded-lg shadow-lg p-8">
-  <h2 class="text-2xl font-bold mb-4">{question.question_text}</h2>
-
-  {#if question.help_text}
-    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-      <p class="text-sm text-blue-700">{question.help_text}</p>
-    </div>
-  {/if}
-
-  <div class="space-y-6">
-    {#if question.question_type === 'yes_no'}
-      <div class="flex gap-6">
-        {#each question.answer_choices as choice (choice.id)}
-          <button
-            onclick={() => handleYesNo(choice.choice_text)}
-            class="flex-1 py-4 px-8 rounded-lg border-2 transition-all font-medium text-lg {selectedValue.choice_id === choice.id ? (choice.choice_text === 'Oui' ? 'border-green-500 bg-green-50 text-green-700' : 'border-red-500 bg-red-50 text-red-700') : 'border-gray-300 hover:border-gray-400'}"
-          >
-            {choice.choice_text}
-          </button>
-        {/each}
-      </div>
-
-    {:else if question.question_type === 'single_choice'}
-      <div class="flex flex-col gap-4">
-        {#each question.answer_choices as choice (choice.id)}
-          <button
-            onclick={() => handleSingleChoice(choice.id)}
-            class="w-full text-left py-4 px-5 rounded-lg border-2 transition-all {selectedValue.choice_id === choice.id ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}"
-          >
-            {choice.choice_text}
-          </button>
-        {/each}
-      </div>
-
-    {:else if question.question_type === 'multiple_choice'}
-      <div class="flex flex-col gap-4">
-        {#each question.answer_choices as choice (choice.id)}
-          <label class="flex items-center py-4 px-5 rounded-lg border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-all">
-            <input
-              type="checkbox"
-              checked={selectedValue.choice_ids?.includes(choice.id)}
-              onchange={(e) => handleMultipleChoice(choice.id, e.target.checked)}
-              class="mr-3 h-5 w-5 text-blue-600"
-            />
-            <span>{choice.choice_text}</span>
-          </label>
-        {/each}
-      </div>
-
-    {:else if question.question_type === 'text_short'}
-      <input
-        type="text"
-        value={selectedValue.text || ''}
-        oninput={(e) => handleText(e.target.value)}
-        class="w-full py-3 px-4 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-        placeholder="Votre réponse..."
-      />
-
-    {:else if question.question_type === 'text_long'}
-      <textarea
-        value={selectedValue.text || ''}
-        oninput={(e) => handleText(e.target.value)}
-        rows="5"
-        class="w-full py-3 px-4 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-        placeholder="Votre réponse..."
-      ></textarea>
+<Card>
+  <CardHeader>
+    <CardTitle id="question-title-{question.id}" class="text-2xl">{question.question_text}</CardTitle>
+  </CardHeader>
+  <CardContent>
+    {#if question.help_text}
+      <Alert class="mb-6" id="help-{question.id}">
+        <AlertDescription>{question.help_text}</AlertDescription>
+      </Alert>
     {/if}
-  </div>
-</div>
+
+    <div class="space-y-6">
+      {#if question.question_type === 'yes_no'}
+        <div class="flex gap-6" role="radiogroup" aria-labelledby="question-title-{question.id}">
+          {#each question.answer_choices as choice (choice.id)}
+            <Button
+              onclick={() => handleYesNo(choice.choice_text)}
+              variant={selectedValue.choice_id === choice.id ? "default" : "outline"}
+              class="flex-1 h-16 text-lg {selectedValue.choice_id === choice.id && choice.choice_text === 'Oui' ? 'bg-green-600 hover:bg-green-700' : ''} {selectedValue.choice_id === choice.id && choice.choice_text === 'Non' ? 'bg-red-600 hover:bg-red-700' : ''}"
+              role="radio"
+              aria-checked={selectedValue.choice_id === choice.id}
+            >
+              {choice.choice_text}
+            </Button>
+          {/each}
+        </div>
+
+      {:else if question.question_type === 'single_choice'}
+        <div class="flex flex-col gap-4" role="radiogroup" aria-labelledby="question-title-{question.id}">
+          {#each question.answer_choices as choice (choice.id)}
+            <Button
+              onclick={() => handleSingleChoice(choice.id)}
+              variant={selectedValue.choice_id === choice.id ? "default" : "outline"}
+              class="w-full h-auto py-4 px-5 text-left justify-start"
+              role="radio"
+              aria-checked={selectedValue.choice_id === choice.id}
+            >
+              {choice.choice_text}
+            </Button>
+          {/each}
+        </div>
+
+      {:else if question.question_type === 'multiple_choice'}
+        <div class="flex flex-col gap-4" role="group" aria-labelledby="question-title-{question.id}">
+          {#each question.answer_choices as choice (choice.id)}
+            <Label for="choice-{choice.id}" class="flex items-center p-4 rounded-lg border cursor-pointer hover:bg-gray-50">
+              <Checkbox
+                id="choice-{choice.id}"
+                checked={selectedValue.choice_ids?.includes(choice.id)}
+                onCheckedChange={(checked) => handleMultipleChoice(choice.id, checked)}
+                class="mr-3"
+              />
+              <span>{choice.choice_text}</span>
+            </Label>
+          {/each}
+        </div>
+
+      {:else if question.question_type === 'text_short'}
+        <div class="space-y-2">
+          <Label for="answer-{question.id}">Votre réponse</Label>
+          <Input
+            id="answer-{question.id}"
+            type="text"
+            value={selectedValue.text || ''}
+            oninput={(e) => handleText(e.target.value)}
+            placeholder="Votre réponse..."
+            aria-describedby={question.help_text ? 'help-{question.id}' : undefined}
+          />
+        </div>
+
+      {:else if question.question_type === 'text_long'}
+        <div class="space-y-2">
+          <Label for="answer-{question.id}">Votre réponse</Label>
+          <Textarea
+            id="answer-{question.id}"
+            value={selectedValue.text || ''}
+            oninput={(e) => handleText(e.target.value)}
+            rows={5}
+            placeholder="Votre réponse..."
+            aria-describedby={question.help_text ? 'help-{question.id}' : undefined}
+          />
+        </div>
+      {/if}
+    </div>
+  </CardContent>
+</Card>

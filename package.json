@@ -13,8 +13,17 @@
     "svelte": "^5.0.0"
   },
   "devDependencies": {
+    "@internationalized/date": "^3.10.0",
+    "@lucide/svelte": "^0.544.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "bits-ui": "^2.14.0",
+    "clsx": "^2.1.1",
+    "mode-watcher": "^1.1.0",
+    "svelte-sonner": "^1.0.5",
+    "tailwind-merge": "^3.3.1",
+    "tailwind-variants": "^3.1.1",
     "tailwindcss": "^4.0.0",
+    "tw-animate-css": "^1.4.0",
     "vite": "^5.4.20",
     "vite-plugin-ruby": "^5.1.1"
   }

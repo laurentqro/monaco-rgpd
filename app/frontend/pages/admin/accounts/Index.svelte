@@ -1,6 +1,9 @@
 <script>
   import AdminLayout from '../../../components/AdminLayout.svelte'
   import { router } from '@inertiajs/svelte'
+  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table'
+  import { Input } from '$lib/components/ui/input'
+  import { Button } from '$lib/components/ui/button'
 
   let { accounts, search = '' } = $props()
 
@@ -22,62 +25,59 @@
       <div class="mb-6">
         <form onsubmit={(e) => { e.preventDefault(); handleSearch(); }}>
           <div class="flex gap-2">
-            <input
+            <Input
               type="text"
               bind:value={searchQuery}
               placeholder="Search by name or subdomain..."
-              class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              class="flex-1"
             />
-            <button
-              type="submit"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
+            <Button type="submit">
               Search
-            </button>
+            </Button>
           </div>
         </form>
       </div>
 
       <!-- Accounts list -->
-      <div class="overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subdomain</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Plan</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Users</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+      <div class="overflow-hidden rounded-lg border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Subdomain</TableHead>
+              <TableHead>Plan</TableHead>
+              <TableHead>Users</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead class="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {#each accounts as account}
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <TableRow>
+                <TableCell class="font-medium">
                   {account.name}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                </TableCell>
+                <TableCell>
                   {account.subdomain}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                </TableCell>
+                <TableCell>
                   {account.plan_type || 'Free'}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                </TableCell>
+                <TableCell>
                   {account.users.length}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                </TableCell>
+                <TableCell>
                   {new Date(account.created_at).toLocaleDateString()}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                </TableCell>
+                <TableCell class="text-right">
                   <a href="/admin/accounts/{account.id}" class="text-blue-600 hover:text-blue-900">
                     View
                   </a>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             {/each}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
 
         {#if accounts.length === 0}
           <div class="text-center py-12 text-gray-500">
