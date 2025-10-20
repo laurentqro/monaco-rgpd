@@ -1,6 +1,6 @@
 <script>
   import { router } from '@inertiajs/svelte'
-  import { Button } from '@/components/ui/button';
+  import { Button } from '$lib/components/ui/button';
 
   let { user } = $props()
 

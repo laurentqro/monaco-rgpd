@@ -1,9 +1,9 @@
 <script>
   import QuestionCard from './QuestionCard.svelte';
   import { router } from '@inertiajs/svelte';
-  import { Button } from '@/components/ui/button';
-  import { Alert, AlertDescription } from '@/components/ui/alert';
-  import { Progress } from '@/components/ui/progress';
+  import { Button } from '$lib/components/ui/button';
+  import { Alert, AlertDescription } from '$lib/components/ui/alert';
+  import { Progress } from '$lib/components/ui/progress';
 
   let { questionnaire, response } = $props();
 
