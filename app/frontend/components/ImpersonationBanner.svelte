@@ -1,5 +1,6 @@
 <script>
   import { router } from '@inertiajs/svelte'
+  import { Button } from '@/components/ui/button';
 
   let { user } = $props()
 
@@ -13,11 +14,13 @@
     <span class="font-medium">
       ⚠️ Admin Impersonating: {user.email}
     </span>
-    <button
+    <Button
       onclick={stopImpersonating}
-      class="px-3 py-1 bg-white text-orange-600 rounded hover:bg-orange-50 font-medium"
+      variant="secondary"
+      size="sm"
+      class="bg-white text-orange-600 hover:bg-orange-50"
     >
       Stop Impersonating
-    </button>
+    </Button>
   </div>
 </div>
