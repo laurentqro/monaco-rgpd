@@ -1,7 +1,7 @@
 class DashboardController < ApplicationController
   def show
     latest_response = Current.account.responses
-      .includes(:compliance_assessment, :documents)
+      .includes(:compliance_assessment)
       .completed
       .order(created_at: :desc)
       .first
@@ -12,7 +12,6 @@ class DashboardController < ApplicationController
     render inertia: "Dashboard/Show", props: {
       latest_assessment: latest_response&.compliance_assessment ? assessment_props(latest_response.compliance_assessment) : nil,
       latest_response_id: latest_response&.id,
-      documents: latest_response ? latest_response.documents.ready.map { |d| document_props(d) } : [],
       responses: Current.account.responses.order(created_at: :desc).limit(5).map { |r| response_summary_props(r) },
       questionnaire_id: published_questionnaire&.id
     }
@@ -35,16 +34,6 @@ class DashboardController < ApplicationController
           percentage: cas.percentage
         }
       end
-    }
-  end
-
-  def document_props(document)
-    {
-      id: document.id,
-      title: document.title,
-      document_type: document.document_type,
-      generated_at: document.generated_at,
-      download_url: rails_blob_path(document.pdf_file, disposition: "attachment")
     }
   end
 
