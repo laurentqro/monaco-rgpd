@@ -1,6 +1,6 @@
 <!-- app/frontend/components/SettingsLayout.svelte -->
 <script>
-  import Header from './Header.svelte'
+  import AppLayout from '$lib/layouts/AppLayout.svelte';
   import SettingsNav from './SettingsNav.svelte'
   import { page } from '@inertiajs/svelte';
   import { toast } from 'svelte-sonner';
@@ -18,9 +18,7 @@
   });
 </script>
 
-<div class="min-h-screen bg-gray-50">
-  <Header />
-
+<AppLayout>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="lg:grid lg:grid-cols-12 lg:gap-x-8">
       <!-- Sidebar -->
@@ -39,4 +37,4 @@
       </main>
     </div>
   </div>
-</div>
+</AppLayout>
