@@ -2,9 +2,9 @@
   import { page } from '@inertiajs/svelte'
   import { SidebarProvider, SidebarInset, SidebarTrigger } from '$lib/components/ui/sidebar'
   import { Separator } from '$lib/components/ui/separator'
-  import AppSidebar from '@/components/navigation/AppSidebar.svelte'
+  import AppSidebar from '$lib/components/navigation/AppSidebar.svelte'
   import { Toaster } from '$lib/components/ui/sonner'
-  import ImpersonationBanner from '@/components/ImpersonationBanner.svelte'
+  import ImpersonationBanner from '$lib/components/ImpersonationBanner.svelte'
 
   let { children } = $props()
 
