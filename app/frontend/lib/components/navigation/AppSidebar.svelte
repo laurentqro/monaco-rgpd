@@ -91,23 +91,25 @@
     <Sidebar.SidebarMenu>
       <Sidebar.SidebarMenuItem>
         <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild let:builder>
-            <Sidebar.SidebarMenuButton use={builder.action} {...builder}>
-              <div class="flex items-center gap-2 flex-1">
-                <div class="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  <User class="size-4" />
+          <DropdownMenu.Trigger>
+            {#snippet children({ props })}
+              <Sidebar.SidebarMenuButton {...props}>
+                <div class="flex items-center gap-2 flex-1">
+                  <div class="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <User class="size-4" />
+                  </div>
+                  <div class="flex flex-col gap-0.5 flex-1 text-left">
+                    {#if currentUser?.name}
+                      <span class="text-sm font-medium">{currentUser.name}</span>
+                    {/if}
+                    {#if currentUser?.email}
+                      <span class="text-xs text-muted-foreground">{currentUser.email}</span>
+                    {/if}
+                  </div>
                 </div>
-                <div class="flex flex-col gap-0.5 flex-1 text-left">
-                  {#if currentUser?.name}
-                    <span class="text-sm font-medium">{currentUser.name}</span>
-                  {/if}
-                  {#if currentUser?.email}
-                    <span class="text-xs text-muted-foreground">{currentUser.email}</span>
-                  {/if}
-                </div>
-              </div>
-              <ChevronUp class="ml-auto size-4" />
-            </Sidebar.SidebarMenuButton>
+                <ChevronUp class="ml-auto size-4" />
+              </Sidebar.SidebarMenuButton>
+            {/snippet}
           </DropdownMenu.Trigger>
           <DropdownMenu.Content side="top" class="w-56">
             <DropdownMenu.Item onclick={() => handleNavigation('/settings/profile')}>
