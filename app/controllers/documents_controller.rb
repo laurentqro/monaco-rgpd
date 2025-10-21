@@ -1,11 +1,20 @@
 class DocumentsController < ApplicationController
   def index
-    documents = Current.account.documents
-      .includes(:response)
-      .order(generated_at: :desc)
+    # Get the latest completed response
+    latest_response = Current.account.responses
+      .completed
+      .order(created_at: :desc)
+      .first
+
+    # Get documents from the latest response
+    documents = latest_response ? latest_response.documents.ready.order(created_at: :desc) : []
 
     render inertia: 'Documents/Index', props: {
-      documents: documents.map { |d| document_props(d) }
+      documents: documents.map { |d| document_props(d) },
+      latest_assessment: latest_response&.compliance_assessment ? {
+        created_at: latest_response.created_at,
+        overall_score: latest_response.compliance_assessment.overall_score.round(1)
+      } : nil
     }
   end
 
