@@ -16,7 +16,7 @@
     ChevronDown,
     ChevronUp
   } from '@lucide/svelte'
-  import { mainNavigation, userMenuItems } from '$lib/config/navigation'
+  import { mainNavigation, secondaryNavigation, userMenuItems } from '$lib/config/navigation'
 
   let { currentUrl = $bindable('') } = $props()
 
@@ -69,6 +69,27 @@
       <Sidebar.SidebarGroupContent>
         <Sidebar.SidebarMenu>
           {#each mainNavigation as item (item.url)}
+            {@const IconComponent = iconMap[item.icon]}
+            <Sidebar.SidebarMenuItem>
+              <Sidebar.SidebarMenuButton
+                onclick={() => handleNavigation(item.url)}
+                isActive={isActive(item.url)}
+              >
+                {#if IconComponent}
+                  <IconComponent class="size-4" />
+                {/if}
+                <span>{item.title}</span>
+              </Sidebar.SidebarMenuButton>
+            </Sidebar.SidebarMenuItem>
+          {/each}
+        </Sidebar.SidebarMenu>
+      </Sidebar.SidebarGroupContent>
+    </Sidebar.SidebarGroup>
+
+    <Sidebar.SidebarGroup class="mt-auto">
+      <Sidebar.SidebarGroupContent>
+        <Sidebar.SidebarMenu>
+          {#each secondaryNavigation as item (item.url)}
             {@const IconComponent = iconMap[item.icon]}
             <Sidebar.SidebarMenuItem>
               <Sidebar.SidebarMenuButton

@@ -15,8 +15,8 @@ export const mainNavigation = [
     icon: 'ClipboardList',
   },
   {
-    title: 'Registre Article 30',
-    url: '/processing-activities',
+    title: 'Registre des traitements',
+    url: '/registre-traitements',
     icon: 'FolderOpen',
   },
   {
@@ -24,6 +24,9 @@ export const mainNavigation = [
     url: '/documents',
     icon: 'FileText',
   },
+]
+
+export const secondaryNavigation = [
   {
     title: 'Paramètres',
     url: '/settings',
