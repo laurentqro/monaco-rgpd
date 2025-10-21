@@ -9,7 +9,7 @@
   let { questionnaires = [] } = $props()
 
   function startQuestionnaire(questionnaireId) {
-    router.visit(`/questionnaires/${questionnaireId}`)
+    router.post(`/questionnaires/${questionnaireId}/responses`)
   }
 </script>
 
@@ -19,7 +19,7 @@
       <div>
         <h1 class="text-3xl font-bold tracking-tight">Questionnaires</h1>
         <p class="text-muted-foreground mt-1">
-          �valuez votre conformit� RGPD avec nos questionnaires guid�s
+          Évaluez votre conformité RGPD avec nos questionnaires guidés
         </p>
       </div>
     </div>
@@ -32,7 +32,7 @@
           </div>
           <h3 class="text-lg font-semibold mb-2">Aucun questionnaire disponible</h3>
           <p class="text-sm text-muted-foreground text-center max-w-md">
-            Les questionnaires de conformit� seront bient�t disponibles pour vous aider
+            Les questionnaires de conformité seront bientôt disponibles pour vous aider
             à évaluer votre niveau de conformité RGPD.
           </p>
         </CardContent>
