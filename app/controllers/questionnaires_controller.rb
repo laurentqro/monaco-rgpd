@@ -1,6 +1,14 @@
 class QuestionnairesController < ApplicationController
   before_action :set_questionnaire, only: [:show]
 
+  def index
+    questionnaires = Questionnaire.published
+
+    render inertia: "Questionnaires/Index", props: {
+      questionnaires: questionnaires.map { |q| questionnaire_props(q) }
+    }
+  end
+
   def show
     render inertia: "Questionnaires/Show", props: {
       questionnaire: questionnaire_props(@questionnaire)

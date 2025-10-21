@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :accounts, only: [:update]
 
   # Questionnaires and Responses
-  resources :questionnaires, only: [:show] do
+  resources :questionnaires, only: [:index, :show] do
     resources :responses, only: [:create, :show, :update]
   end
 
@@ -33,8 +33,8 @@ Rails.application.routes.draw do
   # Dashboard
   get "dashboard", to: "dashboard#show"
 
-  # Article 30 Register
-  resources :processing_activities, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  # Processing Activities
+  resources :processing_activities, path: 'registre-traitements', only: [:index, :show, :new, :create, :edit, :update, :destroy]
 
   # Documents
   resources :documents, only: [:index, :show, :create]

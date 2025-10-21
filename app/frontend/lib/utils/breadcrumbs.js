@@ -8,7 +8,7 @@ export function generateBreadcrumbs(url) {
   const routeLabels = {
     'dashboard': 'Tableau de bord',
     'questionnaires': 'Questionnaires',
-    'processing-activities': 'Registre Article 30',
+    'registre-traitements': 'Registre des traitements',
     'documents': 'Documents',
     'responses': 'Réponses',
     'settings': 'Paramètres',
