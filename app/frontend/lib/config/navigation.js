@@ -50,7 +50,7 @@ export const userMenuItems = [
   },
   {
     title: 'Se déconnecter',
-    url: '/auth/sign-out',
+    url: '/session',
     icon: 'LogOut',
   },
 ]

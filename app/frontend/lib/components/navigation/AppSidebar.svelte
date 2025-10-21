@@ -41,7 +41,7 @@
   }
 
   function handleSignOut() {
-    router.post('/auth/sign-out')
+    router.delete('/session')
   }
 
   // Get current user from Inertia shared props
