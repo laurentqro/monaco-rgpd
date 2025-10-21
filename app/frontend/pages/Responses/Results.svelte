@@ -1,4 +1,5 @@
 <script>
+  import AppLayout from '$lib/layouts/AppLayout.svelte';
   import { router } from '@inertiajs/svelte';
   import DocumentList from '../../components/DocumentList.svelte';
   import { Button } from '$lib/components/ui/button';
@@ -48,8 +49,9 @@
   });
 </script>
 
-<div class="min-h-screen bg-gray-50 py-8">
-  <div class="max-w-5xl mx-auto px-4">
+<AppLayout>
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-5xl mx-auto px-4">
     <!-- Header -->
     <div class="mb-8">
       <Button
@@ -124,5 +126,6 @@
         <DocumentList {documents} />
       </div>
     {/if}
+    </div>
   </div>
-</div>
+</AppLayout>

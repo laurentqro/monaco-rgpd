@@ -1,4 +1,5 @@
 <script>
+  import AppLayout from '$lib/layouts/AppLayout.svelte';
   import { router } from '@inertiajs/svelte';
   import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
@@ -52,8 +53,9 @@
   }
 </script>
 
-<div class="min-h-screen bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 py-8">
+<AppLayout>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold">Historique des évaluations</h1>
       <Button
@@ -151,5 +153,6 @@
         </Card.Content>
       </Card.Root>
     {/if}
+    </div>
   </div>
-</div>
+</AppLayout>
