@@ -1,4 +1,5 @@
 <script>
+  import AppLayout from '$lib/layouts/AppLayout.svelte';
   import { Button } from '$lib/components/ui/button';
   import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
@@ -38,6 +39,7 @@
   }
 </script>
 
+<AppLayout>
 <div class="min-h-screen bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
@@ -108,3 +110,4 @@
     {/if}
   </div>
 </div>
+</AppLayout>
