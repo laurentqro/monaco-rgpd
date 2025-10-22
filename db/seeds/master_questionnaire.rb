@@ -338,3 +338,100 @@ s4q2_systematic.answer_choices.create!([
   { order_index: 1, choice_text: "Oui", score: 0 },
   { order_index: 2, choice_text: "Non", score: 100 }
 ])
+
+# ============================================================================
+# Logic Rules Configuration
+# ============================================================================
+# All logic rules are defined here after all questions exist
+# This ensures all question/section IDs are available for targeting
+
+puts "\nConfiguring logic rules..."
+
+# Rule 1: S1Q1 - Exit if not in Monaco
+s1q1_no = s1q1_monaco.answer_choices.find_by(choice_text: "Non")
+s1q1_monaco.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s1q1_no.id.to_s,
+  action: :exit_questionnaire,
+  exit_message: "Nous ne couvrons que Monaco pour le moment, mais laissez votre email et on vous contactera quand nous couvrirons d'autres pays que Monaco."
+)
+
+# Rule 2: S1Q2 - Exit if Association
+s1q2_association = s1q2_org_type.answer_choices.find_by(choice_text: "Association")
+s1q2_org_type.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s1q2_association.id.to_s,
+  action: :exit_questionnaire,
+  exit_message: "Conseil personnalisé"
+)
+
+# Rule 3: S1Q2 - Exit if Organisme public
+s1q2_public = s1q2_org_type.answer_choices.find_by(choice_text: "Organisme public")
+s1q2_org_type.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s1q2_public.id.to_s,
+  action: :exit_questionnaire,
+  exit_message: "Conseil personnalisé"
+)
+
+# Rule 4: S1Q2 - Exit if Profession libérale
+s1q2_liberal = s1q2_org_type.answer_choices.find_by(choice_text: "Profession libérale")
+s1q2_org_type.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s1q2_liberal.id.to_s,
+  action: :exit_questionnaire,
+  exit_message: "Conseil personnalisé"
+)
+
+# Rule 5: S1Q2 - Exit if Personne physique
+s1q2_individual = s1q2_org_type.answer_choices.find_by(choice_text: "Personne physique agissant dans un cadre domestique")
+s1q2_org_type.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s1q2_individual.id.to_s,
+  action: :exit_questionnaire,
+  exit_message: "Non assujetti"
+)
+
+# Rule 6: S1Q4 - Exit if no personal data
+s1q4_no = s1q4_personal_data.answer_choices.find_by(choice_text: "Non")
+s1q4_personal_data.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s1q4_no.id.to_s,
+  action: :exit_questionnaire,
+  exit_message: "Si vous ne traitez pas de données personnelles, vous n'êtes pas concerné par les obligations RGPD pour le moment."
+)
+
+# Rule 7: S2Q1 - Skip Section 3 if no personnel
+s2q1_no = s2q1_personnel.answer_choices.find_by(choice_text: "Non")
+s2q1_personnel.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s2q1_no.id.to_s,
+  action: :skip_to_section,
+  target_section_id: section4_dpo.id
+)
+
+# Rule 8: S2Q2 - Exit if video surveillance (needs custom handling)
+s2q2_yes = s2q2_video.answer_choices.find_by(choice_text: "Oui")
+s2q2_video.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s2q2_yes.id.to_s,
+  action: :exit_questionnaire,
+  exit_message: "La vidéosurveillance nécessite une analyse personnalisée. Merci de nous contacter."
+)
+
+# Rule 9: S2Q7 - Skip to after website questions if no website
+s2q7_no = s2q7_website.answer_choices.find_by(choice_text: "Non")
+s2q7_website.logic_rules.create!(
+  condition_type: :equals,
+  condition_value: s2q7_no.id.to_s,
+  action: :skip_to_section,
+  target_section_id: section3_hr.id
+)
+
+puts "\n✓ Created master questionnaire with #{questionnaire.sections.count} sections"
+puts "  - Section 1: #{section1.title} (#{section1.questions.count} questions)"
+puts "  - Section 2: #{section2.title} (#{section2.questions.count} questions)"
+puts "  - Section 3: #{section3_hr.title} (#{section3_hr.questions.count} questions)"
+puts "  - Section 4: #{section4_dpo.title} (#{section4_dpo.questions.count} questions)"
+puts "  - Total questions: #{questionnaire.questions.count}"
+puts "  - Total logic rules: #{LogicRule.where(question_id: questionnaire.questions.pluck(:id)).count}"
