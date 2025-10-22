@@ -231,3 +231,60 @@ s2q9_personnel_info.answer_choices.create!([
   { order_index: 1, choice_text: "Oui", score: 0 },
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
+
+# ============================================================================
+# Section 3: Traitements - Gestion des ressources humaines
+# ============================================================================
+section3_hr = questionnaire.sections.create!(
+  order_index: 3,
+  title: "Gestion des ressources humaines",
+  description: "Vous avez du personnel ou projetez d'en avoir. En langage RGPD, vous mettez en œuvre un traitement de données personnelles dont la finalité est la gestion des ressources humaines. Pour vous aider, un cadre de référence vous permet de vous assurer de votre conformité. Si vous sortez de ce cadre, un audit personnalisé est nécessaire."
+)
+
+# Q1: Raisons de collecte RH
+s3q1_hr_purposes = section3_hr.questions.create!(
+  order_index: 1,
+  question_text: "Pour quelles raisons collectez-vous des données sur vos salariés ? Collectez-vous des données à d'autres fins ?",
+  question_type: :yes_no,
+  help_text: "Voici les finalités admises dans le cadre de référence:\n\n" \
+             "• la gestion administrative des personnels, notamment la procédure d'embauche, de renouvellement et de fin de contrat, le suivi administratif des visites médicales obligatoires des salariés, la gestion des déclarations relatives aux accidents du travail et maladies professionnelles; la tenue et la mise à jour des fiches administratives des salariés, gestion des compétences, le suivi des formations, le suivi des congés et absences, la production d'états statistiques non nominative, etc.\n" \
+             "• la gestion des rémunérations et accomplissement des formalités administratives afférentes\n" \
+             "• l'organisation du travail (gestion des outils de travail, du calendrier, etc)\n" \
+             "• la gestion des carrières et de la mobilité\n" \
+             "• la gestion de la tenue des registres obligatoires, rapports avec les instances représentatives du personnel\n" \
+             "• la communication interne\n" \
+             "• gestion des aides sociales",
+  is_required: true,
+  weight: 2
+)
+
+s3q1_hr_purposes.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui (⚠️ susceptible de sortir du cadre de référence)", score: 0 },
+  { order_index: 2, choice_text: "Non (✅)", score: 100 }
+])
+
+# Q2: Types de données RH
+s3q2_hr_data = section3_hr.questions.create!(
+  order_index: 2,
+  question_text: "Quelles données collectez-vous sur vos salariés ?",
+  question_type: :yes_no,
+  help_text: "Collectez-vous des données autres que celles listées ci-après ?\n\n" \
+             "Données de référence:\n" \
+             "• Identité /situation de famille\n" \
+             "• Nom, prénom, photographie, sexe, date et lieu de naissance, nationalité, situation de famille, numéro de matricule interne, numéro d'immatriculation délivré par un organisme de sécurité sociale/identité du conjoint et des enfants à charge\n" \
+             "• Adresses et coordonnées\n" \
+             "• Coordonnées professionnelles et personnelles, coordonnées des personnes à contacter en cas d'urgence\n" \
+             "• Formation, diplômes, vie professionnelle\n" \
+             "• Nature de l'emploi, poste occupé, fonction ou titre, distinctions honorifiques\n" \
+             "• Copies de document officiels\n" \
+             "• Pas de copie mais informations l'identification et numéro de la pièce relatives à l'identité, date et lieu de délivrance, date de validité\n" \
+             "• Données d'identification électronique identifiant de la personne concernée/ compte utilisateur\n" \
+             "• Informations relatives au contrat de travail/ à la carrière/ aux déclarations d'accident et de maladie professionnelles/ aux évaluations/ à la validation des acquis/ aux formations/aux visites médicales/ au permis de conduire/ aux congés",
+  is_required: true,
+  weight: 2
+)
+
+s3q2_hr_data.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui (⚠️ susceptible de sortir du cadre de référence)", score: 0 },
+  { order_index: 2, choice_text: "Non (✅)", score: 100 }
+])
