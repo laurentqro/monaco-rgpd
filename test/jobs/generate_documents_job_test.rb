@@ -4,7 +4,7 @@ class GenerateDocumentsJobTest < ActiveJob::TestCase
   test "should enqueue job with response id" do
     response = responses(:completed_response)
 
-    assert_enqueued_with(job: GenerateDocumentsJob, args: [response.id]) do
+    assert_enqueued_with(job: GenerateDocumentsJob, args: [ response.id ]) do
       GenerateDocumentsJob.perform_later(response.id)
     end
   end

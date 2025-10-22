@@ -9,7 +9,7 @@ class ProcessingActivityTest < ActiveSupport::TestCase
       name: "Gestion administrative des salariés",
       has_dpo: true,
       surveillance_purpose: false,
-      data_subjects: ["employees"],
+      data_subjects: [ "employees" ],
       sensitive_data: false
     )
 

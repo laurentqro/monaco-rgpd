@@ -1,6 +1,6 @@
 class ProcessingActivitiesController < ApplicationController
   def index
-    render inertia: 'ProcessingActivities/Index', props: {
+    render inertia: "ProcessingActivities/Index", props: {
       activities: []
     }
   end

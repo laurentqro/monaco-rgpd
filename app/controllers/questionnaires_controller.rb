@@ -1,5 +1,5 @@
 class QuestionnairesController < ApplicationController
-  before_action :set_questionnaire, only: [:show]
+  before_action :set_questionnaire, only: [ :show ]
 
   def index
     questionnaires = Questionnaire.published

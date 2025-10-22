@@ -30,6 +30,6 @@ class CreateComplianceAssessments < ActiveRecord::Migration[8.0]
 
     add_index :compliance_areas, :code, unique: true
     add_index :compliance_assessments, :status
-    add_index :compliance_assessments, [:account_id, :created_at]
+    add_index :compliance_assessments, [ :account_id, :created_at ]
   end
 end

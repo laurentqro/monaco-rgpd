@@ -11,7 +11,7 @@ class Answer < ApplicationRecord
   private
 
   def calculate_score
-    return unless question.weight.present?
+    nil unless question.weight.present?
 
     # Score calculation logic will be implemented based on question type
     # For now, store as-is

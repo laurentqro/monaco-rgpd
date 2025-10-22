@@ -1,5 +1,5 @@
 class Admin::AccountsController < Admin::BaseController
-  before_action :set_account, only: [:show, :update, :destroy]
+  before_action :set_account, only: [ :show, :update, :destroy ]
 
   def index
     accounts = Account.all.order(created_at: :desc)
@@ -10,19 +10,19 @@ class Admin::AccountsController < Admin::BaseController
     end
 
     render inertia: "admin/accounts/Index", props: {
-      accounts: accounts.as_json(only: [:id, :name, :subdomain, :plan_type, :created_at],
-        methods: [:subscribed?],
-        include: { users: { only: [:id] } }),
+      accounts: accounts.as_json(only: [ :id, :name, :subdomain, :plan_type, :created_at ],
+        methods: [ :subscribed? ],
+        include: { users: { only: [ :id ] } }),
       search: params[:search]
     }
   end
 
   def show
     render inertia: "admin/accounts/Show", props: {
-      account: @account.as_json(only: [:id, :name, :subdomain, :plan_type, :created_at, :updated_at],
-        methods: [:subscribed?, :onboarding_completed?]),
-      users: @account.users.as_json(only: [:id, :email, :name, :role, :created_at]),
-      subscription: @account.active_subscription&.as_json(only: [:id, :status, :plan_type, :current_period_end])
+      account: @account.as_json(only: [ :id, :name, :subdomain, :plan_type, :created_at, :updated_at ],
+        methods: [ :subscribed?, :onboarding_completed? ]),
+      users: @account.users.as_json(only: [ :id, :email, :name, :role, :created_at ]),
+      subscription: @account.active_subscription&.as_json(only: [ :id, :status, :plan_type, :current_period_end ])
     }
   end
 

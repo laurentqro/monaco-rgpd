@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::BaseController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [ :show, :update, :destroy ]
 
   def index
     users = User.includes(:account).order(created_at: :desc)
@@ -10,18 +10,18 @@ class Admin::UsersController < Admin::BaseController
     end
 
     render inertia: "admin/users/Index", props: {
-      users: users.as_json(only: [:id, :email, :name, :role, :created_at],
-        include: { account: { only: [:id, :name] } }),
+      users: users.as_json(only: [ :id, :email, :name, :role, :created_at ],
+        include: { account: { only: [ :id, :name ] } }),
       search: params[:search]
     }
   end
 
   def show
     render inertia: "admin/users/Show", props: {
-      user: @user.as_json(only: [:id, :email, :name, :role, :avatar_url, :created_at, :updated_at]),
-      account: @user.account.as_json(only: [:id, :name, :subdomain]),
+      user: @user.as_json(only: [ :id, :email, :name, :role, :avatar_url, :created_at, :updated_at ]),
+      account: @user.account.as_json(only: [ :id, :name, :subdomain ]),
       sessions: @user.sessions.order(created_at: :desc).limit(10)
-        .as_json(only: [:id, :ip_address, :user_agent, :created_at])
+        .as_json(only: [ :id, :ip_address, :user_agent, :created_at ])
     }
   end
 

@@ -11,11 +11,11 @@ class ApplicationController < ActionController::Base
   inertia_share do
     if authenticated?
       {
-        current_user: Current.user&.as_json(only: [:id, :email, :name, :avatar_url, :role]),
-        current_account: Current.account&.as_json(only: [:id, :name, :subdomain, :plan_type]),
+        current_user: Current.user&.as_json(only: [ :id, :email, :name, :avatar_url, :role ]),
+        current_account: Current.account&.as_json(only: [ :id, :name, :subdomain, :plan_type ]),
         authenticated: true,
-        is_super_admin: ENV.fetch('SUPER_ADMIN_EMAILS', '').split(',').include?(Current.user&.email),
-        impersonating_user: session[:impersonating_user_id] ? Current.user&.as_json(only: [:id, :email, :name]) : nil
+        is_super_admin: ENV.fetch("SUPER_ADMIN_EMAILS", "").split(",").include?(Current.user&.email),
+        impersonating_user: session[:impersonating_user_id] ? Current.user&.as_json(only: [ :id, :email, :name ]) : nil
       }
     else
       {

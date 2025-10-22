@@ -7,7 +7,7 @@ class UsersController < ApplicationController
       redirect_to settings_profile_path, notice: "Profile updated successfully"
     else
       render inertia: "settings/Profile", props: {
-        user: @user.as_json(only: [:id, :email, :name, :avatar_url, :role]),
+        user: @user.as_json(only: [ :id, :email, :name, :avatar_url, :role ]),
         errors: @user.errors.messages
       }, status: :unprocessable_entity
     end

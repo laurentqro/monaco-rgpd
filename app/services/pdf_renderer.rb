@@ -26,7 +26,7 @@ class PdfRenderer
 
       # Add footer with page numbers
       pdf.number_pages "<page> / <total>",
-        at: [pdf.bounds.right - 50, 0],
+        at: [ pdf.bounds.right - 50, 0 ],
         align: :right,
         size: 10
     end.render

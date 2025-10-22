@@ -1,7 +1,7 @@
 class Admin::AdminsController < Admin::BaseController
   def index
     render inertia: "admin/admins/Index", props: {
-      admins: Admin.order(created_at: :desc).as_json(only: [:id, :email, :name, :created_at])
+      admins: Admin.order(created_at: :desc).as_json(only: [ :id, :email, :name, :created_at ])
     }
   end
 

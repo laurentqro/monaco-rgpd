@@ -12,8 +12,8 @@ class SecurityMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal ["noreply@example.com"], email.from
-    assert_equal [@user.email], email.to
+    assert_equal [ "noreply@example.com" ], email.from
+    assert_equal [ @user.email ], email.to
     assert_equal "Your password was changed", email.subject
     assert_match "password was recently changed", email.body.encoded
   end
@@ -25,7 +25,7 @@ class SecurityMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [@user.email], email.to
+    assert_equal [ @user.email ], email.to
     assert_equal "New login to your account", email.subject
     assert_match "192.168.1.1", email.body.encoded
     assert_match "Chrome on MacOS", email.body.encoded
@@ -38,7 +38,7 @@ class SecurityMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [@user.email], email.to
+    assert_equal [ @user.email ], email.to
     assert_equal "Account deletion requested", email.subject
     assert_match "account deletion has been requested", email.body.encoded
   end

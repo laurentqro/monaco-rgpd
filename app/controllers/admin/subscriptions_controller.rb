@@ -8,8 +8,8 @@ class Admin::SubscriptionsController < Admin::BaseController
 
     render inertia: "admin/subscriptions/Index", props: {
       subscriptions: subscriptions.as_json(
-        only: [:id, :status, :plan_type, :current_period_end, :created_at],
-        include: { account: { only: [:id, :name] } }
+        only: [ :id, :status, :plan_type, :current_period_end, :created_at ],
+        include: { account: { only: [ :id, :name ] } }
       ),
       status: params[:status]
     }

@@ -11,7 +11,7 @@ class MagicLinkMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [user.email], email.to
+    assert_equal [ user.email ], email.to
     assert_match "Connectez-vous à MonacoRGPD", email.subject
     assert_match magic_link.token, email.body.encoded
   end

@@ -21,7 +21,7 @@ class CreateResponsesAndAnswers < ActiveRecord::Migration[8.0]
     end
 
     add_index :responses, :status
-    add_index :responses, [:account_id, :created_at]
-    add_index :answers, [:response_id, :question_id], unique: true
+    add_index :responses, [ :account_id, :created_at ]
+    add_index :answers, [ :response_id, :question_id ], unique: true
   end
 end

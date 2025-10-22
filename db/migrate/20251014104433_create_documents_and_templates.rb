@@ -36,6 +36,6 @@ class CreateDocumentsAndTemplates < ActiveRecord::Migration[8.0]
     add_index :document_templates, :is_active
     add_index :documents, :document_type
     add_index :documents, :status
-    add_index :documents, [:account_id, :created_at]
+    add_index :documents, [ :account_id, :created_at ]
   end
 end

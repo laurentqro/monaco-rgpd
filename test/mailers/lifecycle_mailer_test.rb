@@ -12,8 +12,8 @@ class LifecycleMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal ["noreply@example.com"], email.from
-    assert_equal [@user.email], email.to
+    assert_equal [ "noreply@example.com" ], email.from
+    assert_equal [ @user.email ], email.to
     assert_match "Bienvenue sur MonacoRGPD!", email.body.encoded
   end
 
@@ -27,7 +27,7 @@ class LifecycleMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [invitee.email], email.to
+    assert_equal [ invitee.email ], email.to
     assert_match "invité à rejoindre TestCo", email.text_part.body.decoded
   end
 
@@ -38,7 +38,7 @@ class LifecycleMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [@user.email], email.to
+    assert_equal [ @user.email ], email.to
     assert_match "Votre rôle a été mis à jour", email.text_part.body.decoded
   end
 end

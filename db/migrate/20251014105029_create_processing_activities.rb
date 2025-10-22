@@ -96,7 +96,7 @@ class CreateProcessingActivities < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :processing_activities, [:account_id, :created_at]
+    add_index :processing_activities, [ :account_id, :created_at ]
     add_index :processing_purposes, :order_index
     add_index :access_categories, :order_index
     add_index :recipient_categories, :order_index

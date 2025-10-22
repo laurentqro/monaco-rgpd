@@ -9,7 +9,7 @@ class DocumentsController < ApplicationController
     # Get documents from the latest response
     documents = latest_response ? latest_response.documents.ready.order(created_at: :desc) : []
 
-    render inertia: 'Documents/Index', props: {
+    render inertia: "Documents/Index", props: {
       documents: documents.map { |d| document_props(d) },
       latest_assessment: latest_response&.compliance_assessment ? {
         created_at: latest_response.created_at,

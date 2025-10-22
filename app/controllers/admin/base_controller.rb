@@ -12,8 +12,8 @@ class Admin::BaseController < ApplicationController
   inertia_share do
     if admin_authenticated?
       {
-        current_admin: current_admin.as_json(only: [:id, :email, :name]),
-        impersonating_user: Current.user&.as_json(only: [:id, :email, :name])
+        current_admin: current_admin.as_json(only: [ :id, :email, :name ]),
+        impersonating_user: Current.user&.as_json(only: [ :id, :email, :name ])
       }
     else
       {}

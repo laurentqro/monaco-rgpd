@@ -58,7 +58,7 @@ module Authentication
                       .uniq
 
       # Remove the current IP to see if there are OTHER previous sessions
-      previous_ips = recent_ips - [current_ip]
+      previous_ips = recent_ips - [ current_ip ]
 
       # If user has previous sessions from other IPs (meaning this is a new IP), publish event
       if previous_ips.any?

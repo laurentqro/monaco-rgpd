@@ -1,5 +1,5 @@
 class DocumentGenerator
-  DOCUMENT_TYPES = [:privacy_policy, :processing_register, :consent_form, :employee_notice]
+  DOCUMENT_TYPES = [ :privacy_policy, :processing_register, :consent_form, :employee_notice ]
 
   def initialize(response)
     @response = response

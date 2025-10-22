@@ -7,7 +7,7 @@ class AccountsController < ApplicationController
       redirect_to settings_account_path, notice: "Account updated successfully"
     else
       render inertia: "settings/Account", props: {
-        account: @account.as_json(only: [:id, :name, :subdomain, :plan_type]),
+        account: @account.as_json(only: [ :id, :name, :subdomain, :plan_type ]),
         is_admin: current_user.admin?,
         errors: @account.errors.messages
       }, status: :unprocessable_entity

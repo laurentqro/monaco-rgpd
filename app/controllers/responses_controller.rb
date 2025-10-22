@@ -1,5 +1,5 @@
 class ResponsesController < ApplicationController
-  before_action :set_response, only: [:show, :update, :complete, :results]
+  before_action :set_response, only: [ :show, :update, :complete, :results ]
 
   def index
     responses = Current.account.responses
@@ -56,7 +56,7 @@ class ResponsesController < ApplicationController
 
   def results
     # Get all answers with their questions and answer choices for display
-    answers_with_details = @response.answers.includes(question: [:answer_choices, :section]).map do |answer|
+    answers_with_details = @response.answers.includes(question: [ :answer_choices, :section ]).map do |answer|
       {
         question_text: answer.question.question_text,
         question_type: answer.question.question_type,
