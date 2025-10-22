@@ -88,7 +88,7 @@
             </li>
             <li class="flex items-center">
               <span class="text-green-500 mr-2">✓</span>
-              Votre registre Article 30
+              Votre registre des traitements
             </li>
           </ul>
           <Button

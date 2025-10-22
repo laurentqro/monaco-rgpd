@@ -24,7 +24,7 @@ Monaco RGPD is a Rails 8 + Inertia.js + Svelte 5 SaaS platform for GDPR complian
 4. **Response** - User's questionnaire submission
 5. **ComplianceAssessment** - Calculated compliance score
 6. **Document** - Generated compliance documents
-7. **ProcessingActivity** - Article 30 register entry
+7. **ProcessingActivity** - Article 27 register entry
 
 ### Key Relationships
 

@@ -2,9 +2,9 @@
 
 > **For Claude:** Use `${SUPERPOWERS_SKILLS_ROOT}/skills/collaboration/executing-plans/SKILL.md` to implement this plan task-by-task.
 
-**Goal:** Build Monaco's first comprehensive GDPR compliance SaaS platform helping solopreneurs/SMEs achieve full compliance with Loi n° 1.565 through guided questionnaires, document generation, and APDP-compliant Article 30 registers.
+**Goal:** Build Monaco's first comprehensive GDPR compliance SaaS platform helping solopreneurs/SMEs achieve full compliance with Loi n° 1.565 through guided questionnaires, document generation, and APDP-compliant Article 27 registers.
 
-**Architecture:** Rails 8 + Inertia.js + Svelte 5 multi-tenant SaaS built on rails-saas-starter foundation. Master questionnaire seeded in database, multiple responses per account for compliance tracking, nested Article 30 register structure matching APDP requirements, background document generation with Liquid templates.
+**Architecture:** Rails 8 + Inertia.js + Svelte 5 multi-tenant SaaS built on rails-saas-starter foundation. Master questionnaire seeded in database, multiple responses per account for compliance tracking, nested Article 27 register structure matching APDP requirements, background document generation with Liquid templates.
 
 **Tech Stack:** Rails 8.0.3, PostgreSQL 18, Inertia.js, Svelte 5, Tailwind CSS, SolidQueue, Liquid templating, Prawn (PDF generation)
 
@@ -1078,7 +1078,7 @@ git commit -m "feat: create document and template models with Liquid support"
 
 ---
 
-## Phase 5: Article 30 Register (APDP-Compliant)
+## Phase 5: Article 27 Register (APDP-Compliant)
 
 ### Task 7: Create Processing Activity Models
 
@@ -2522,7 +2522,7 @@ Create `app/frontend/pages/Dashboard/Show.svelte`:
           </li>
           <li class="flex items-center">
             <span class="text-green-500 mr-2">✓</span>
-            Votre registre Article 30
+            Votre registre Article 27
           </li>
         </ul>
         <a
@@ -2821,7 +2821,7 @@ end.tap do |q|
 end
 
 section2.questions.find_or_create_by!(order_index: 3) do |q|
-  q.question_text = "Disposez-vous d'un registre des traitements (Article 30)?"
+  q.question_text = "Disposez-vous d'un registre des traitements (Article 27)?"
   q.question_type = :single_choice
   q.help_text = "Le registre des traitements est obligatoire pour la plupart des organisations"
   q.is_required = true
@@ -3030,7 +3030,7 @@ templates_data = [
   },
   {
     document_type: :processing_register,
-    title: "Registre des traitements (Article 30)",
+    title: "Registre des traitements (Article 27)",
     content: <<~LIQUID
       # REGISTRE DES TRAITEMENTS
       # Article 30 - Loi n° 1.565
@@ -3367,7 +3367,7 @@ Monaco RGPD is a Rails 8 + Inertia.js + Svelte 5 SaaS platform for GDPR complian
 4. **Response** - User's questionnaire submission
 5. **ComplianceAssessment** - Calculated compliance score
 6. **Document** - Generated compliance documents
-7. **ProcessingActivity** - Article 30 register entry
+7. **ProcessingActivity** - Article 27 register entry
 
 ### Key Relationships
 

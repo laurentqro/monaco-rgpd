@@ -584,7 +584,7 @@ Replace custom elements with shadcn components:
             </li>
             <li class="flex items-center">
               <span class="text-green-500 mr-2">✓</span>
-              Votre registre Article 30
+              Votre registre Article 27
             </li>
           </ul>
           <Button

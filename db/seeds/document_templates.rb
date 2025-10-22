@@ -62,10 +62,10 @@ templates_data = [
   },
   {
     document_type: :processing_register,
-    title: "Registre des traitements (Article 30)",
+    title: "Registre des traitements (Article 27)",
     content: <<~LIQUID
       # REGISTRE DES TRAITEMENTS
-      # Article 30 - Loi n° 1.565
+      # Article 27 - Loi n° 1.565
 
       **Organisation:** {{ account.name }}
       **Type:** {{ account.entity_type }}

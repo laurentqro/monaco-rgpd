@@ -1412,7 +1412,7 @@ section {
                         <h3>Registre des Traitements</h3>
                     </div>
                     <p>Obligatoire pour 50+ employés. Cartographie complète des données, finalités et bases légales</p>
-                    <span class="feature-badge">Article 30</span>
+                    <span class="feature-badge">Article 27</span>
                 </div>
 
                 <div class="feature-card">

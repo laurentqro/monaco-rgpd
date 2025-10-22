@@ -8,9 +8,9 @@
 <AppLayout>
   <div class="flex flex-col gap-4">
     <div>
-      <h1 class="text-3xl font-bold">Registre Article 30</h1>
+      <h1 class="text-3xl font-bold">Registre des traitements</h1>
       <p class="text-muted-foreground">
-        Gérez vos activités de traitement conformément à l'Article 30 du RGPD
+        Gérez vos activités de traitement conformément à l'article 27 de la Loi n° 1.565 relative à la protection des données personnelles
       </p>
     </div>
 
