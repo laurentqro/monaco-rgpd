@@ -288,3 +288,53 @@ s3q2_hr_data.answer_choices.create!([
   { order_index: 1, choice_text: "Oui (⚠️ susceptible de sortir du cadre de référence)", score: 0 },
   { order_index: 2, choice_text: "Non (✅)", score: 100 }
 ])
+
+# ============================================================================
+# Section 4: DPO (Délégué à la Protection des Données)
+# ============================================================================
+section4_dpo = questionnaire.sections.create!(
+  order_index: 4,
+  title: "DPO",
+  description: "Voyons si vous êtes tenu par la loi de nommer un DPO.\n\n" \
+               "Le Délégué à la Protection des Données (DPO - Data Protection Officer).\n\n" \
+               "Le DPO doit être désigné en raison de ses compétences professionnelles et de sa connaissance du droit et des pratiques en matière de protection des données. Il peut être un salarié interne ou un prestataire externe. Enfin, il doit être impliqué de manière appropriée et en temps utile dans toutes les décisions et projets liés à la protection des données, en tenant compte des risques propres aux traitements effectués.\n\n" \
+               "Le DPO est chargé d'informer et de conseiller le responsable du traitement, le sous-traitant et leurs employés sur leurs obligations en matière de protection des données. Il veille au respect de la législation et des procédures internes, notamment en matière de répartition des responsabilités, de sensibilisation, de formation et d'audit. Il conseille également sur la réalisation des analyses d'impact, coopère avec l'autorité de protection et sert de point de contact pour toute question relative au traitement des données.\n\n" \
+               "Répondez aux questions suivantes pour déterminer s'il vous en faut un:"
+)
+
+# Q1: Personne de droit privé avec mission d'intérêt général
+s4q1_public_interest = section4_dpo.questions.create!(
+  order_index: 1,
+  question_text: "Êtes-vous une personne de droit privé investie d'une mission d'intérêt général ou le concessionnaire d'un service public ?",
+  question_type: :yes_no,
+  is_required: true,
+  weight: 3
+)
+
+s4q1_public_interest.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q2: Suivi régulier et systématique
+s4q2_systematic = section4_dpo.questions.create!(
+  order_index: 2,
+  question_text: "Vos activités de base consistent-elles en des opérations de traitement qui, du fait de leur nature, de leur portée ou de leurs finalités, exigent un suivi régulier et systématique à grande échelle des personnes concernées ?",
+  question_type: :yes_no,
+  help_text: "Le terme \"régulier\" doit s'entendre comme:\n" \
+             "• continu ou se produisant à intervalles réguliers au cours d'une période donnée; ou\n" \
+             "• récurrent ou se répétant à des moments fixes; ou\n" \
+             "• ayant lieu de manière constante ou périodique.\n\n" \
+             "Le terme \"systématique\" s'entend quant à lui comme:\n" \
+             "• se produisant conformément à un système; ou\n" \
+             "• préétabli, organisé ou méthodique; ou\n" \
+             "• ayant lieu dans le cadre d'un programme général de collecte de données; ou\n" \
+             "• effectué dans le cadre d'une stratégie",
+  is_required: true,
+  weight: 3
+)
+
+s4q2_systematic.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
