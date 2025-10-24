@@ -9,11 +9,25 @@ if existing
 end
 
 # Create fresh questionnaire
+questionnaire_intro = <<~MARKDOWN
+  Bienvenue dans l'évaluation de conformité RGPD pour Monaco.
+
+  Cette évaluation vous guidera à travers les exigences de la **Loi n° 1.565**
+  relative à la protection des données à caractère personnel et vous aidera à:
+
+  - Identifier vos obligations légales
+  - Évaluer votre niveau de conformité actuel
+  - Recevoir des recommandations personnalisées
+
+  *Durée estimée: 15-20 minutes*
+MARKDOWN
+
 questionnaire = Questionnaire.create!(
   title: "Évaluation RGPD Monaco",
   description: "Évaluation de conformité à la Loi n° 1.565",
   category: "compliance_assessment",
-  status: :published
+  status: :published,
+  intro_text: questionnaire_intro
 )
 
 puts "Created questionnaire: #{questionnaire.title}"
@@ -21,10 +35,23 @@ puts "Created questionnaire: #{questionnaire.title}"
 # ============================================================================
 # Section 1: Qualification de l'utilisateur
 # ============================================================================
+section1_intro = <<~MARKDOWN
+  Pour déterminer si vous êtes concerné par la loi n° 1.565, nous devons d'abord
+  qualifier votre situation.
+
+  Cette section permettra de vérifier:
+  - Votre établissement à Monaco
+  - Le type de votre organisation
+  - Votre traitement de données personnelles
+
+  *Toutes les questions sont obligatoires.*
+MARKDOWN
+
 section1 = questionnaire.sections.create!(
   order_index: 1,
   title: "Qualification de l'utilisateur",
-  description: "Informations sur votre organisation et son éligibilité"
+  description: "Informations sur votre organisation et son éligibilité",
+  intro_text: section1_intro
 )
 
 # Q1: Organisation établie à Monaco?
@@ -76,10 +103,21 @@ s1q3_org_size.answer_choices.create!([
 ])
 
 # Q4: Traitez-vous des données personnelles?
+s1q4_intro = <<~MARKDOWN
+  Une **donnée personnelle** est toute information se rapportant à une personne
+  physique identifiée ou identifiable.
+
+  Cela inclut des informations évidentes (nom, email) mais aussi des identifiants
+  indirects (adresse IP, cookies, numéro de client).
+
+  Si vous ne traitez aucune donnée personnelle, vous n'êtes pas concerné par le RGPD.
+MARKDOWN
+
 s1q4_personal_data = section1.questions.create!(
   order_index: 4,
   question_text: "Traitez-vous des données personnelles ?",
   question_type: :yes_no,
+  intro_text: s1q4_intro,
   help_text: "Voici quelques exemples de données personnelles:\n\n" \
              "• Identité : nom, prénom, numéro de sécurité sociale, adresse IP, identifiant en ligne\n" \
              "• Caractéristiques physiques/physiologiques : photo, empreintes digitales, ADN\n" \
@@ -292,6 +330,20 @@ s3q2_hr_data.answer_choices.create!([
 # ============================================================================
 # Section 4: DPO (Délégué à la Protection des Données)
 # ============================================================================
+section4_intro = <<~MARKDOWN
+  Le **Délégué à la Protection des Données (DPO)** est un acteur clé de la conformité RGPD.
+
+  Dans certains cas, sa désignation est **obligatoire** selon la loi n° 1.565.
+  Les questions suivantes permettront de déterminer si c'est votre cas.
+
+  **Rôle du DPO:**
+  - Conseiller le responsable du traitement
+  - Veiller à la conformité RGPD
+  - Point de contact avec l'autorité de contrôle
+
+  *Le DPO peut être interne ou externe à votre organisation.*
+MARKDOWN
+
 section4_dpo = questionnaire.sections.create!(
   order_index: 4,
   title: "DPO",
@@ -299,7 +351,8 @@ section4_dpo = questionnaire.sections.create!(
                "Le Délégué à la Protection des Données (DPO - Data Protection Officer).\n\n" \
                "Le DPO doit être désigné en raison de ses compétences professionnelles et de sa connaissance du droit et des pratiques en matière de protection des données. Il peut être un salarié interne ou un prestataire externe. Enfin, il doit être impliqué de manière appropriée et en temps utile dans toutes les décisions et projets liés à la protection des données, en tenant compte des risques propres aux traitements effectués.\n\n" \
                "Le DPO est chargé d'informer et de conseiller le responsable du traitement, le sous-traitant et leurs employés sur leurs obligations en matière de protection des données. Il veille au respect de la législation et des procédures internes, notamment en matière de répartition des responsabilités, de sensibilisation, de formation et d'audit. Il conseille également sur la réalisation des analyses d'impact, coopère avec l'autorité de protection et sert de point de contact pour toute question relative au traitement des données.\n\n" \
-               "Répondez aux questions suivantes pour déterminer s'il vous en faut un:"
+               "Répondez aux questions suivantes pour déterminer s'il vous en faut un:",
+  intro_text: section4_intro
 )
 
 # Q1: Personne de droit privé avec mission d'intérêt général
@@ -317,10 +370,24 @@ s4q1_public_interest.answer_choices.create!([
 ])
 
 # Q2: Suivi régulier et systématique
+s4q2_intro = <<~MARKDOWN
+  Le **suivi régulier et systématique à grande échelle** est l'un des critères
+  rendant la désignation d'un DPO obligatoire.
+
+  Exemples d'activités concernées:
+  - Publicité comportementale en ligne
+  - Profilage et scoring clients
+  - Géolocalisation continue
+  - Programmes de fidélité à grande échelle
+
+  *Si vous répondez "Oui", la désignation d'un DPO sera très probablement obligatoire.*
+MARKDOWN
+
 s4q2_systematic = section4_dpo.questions.create!(
   order_index: 2,
   question_text: "Vos activités de base consistent-elles en des opérations de traitement qui, du fait de leur nature, de leur portée ou de leurs finalités, exigent un suivi régulier et systématique à grande échelle des personnes concernées ?",
   question_type: :yes_no,
+  intro_text: s4q2_intro,
   help_text: "Le terme \"régulier\" doit s'entendre comme:\n" \
              "• continu ou se produisant à intervalles réguliers au cours d'une période donnée; ou\n" \
              "• récurrent ou se répétant à des moments fixes; ou\n" \
