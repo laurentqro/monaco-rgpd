@@ -309,6 +309,11 @@
       </div>
     </div>
 
+    <!-- Questionnaire Intro Text (at the very beginning) -->
+    {#if currentQuestionIndex === 0 && questionnaire.intro_text}
+      <IntroText content={questionnaire.intro_text} />
+    {/if}
+
     <!-- Section Intro Text -->
     {#if isFirstQuestionOfSection && currentSection?.intro_text}
       <IntroText content={currentSection.intro_text} />
