@@ -315,7 +315,7 @@
     {/if}
 
     <!-- Section Intro Text -->
-    {#if isFirstQuestionOfSection && currentSection?.intro_text}
+    {#if isFirstQuestionOfSection && currentQuestionIndex !== 0 && currentSection?.intro_text}
       <IntroText content={currentSection.intro_text} />
     {/if}
 
