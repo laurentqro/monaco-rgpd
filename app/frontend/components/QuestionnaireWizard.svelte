@@ -1,5 +1,6 @@
 <script>
   import QuestionCard from './QuestionCard.svelte';
+  import IntroText from './IntroText.svelte';
   import { router } from '@inertiajs/svelte';
   import { Button } from '$lib/components/ui/button';
   import { Alert, AlertDescription } from '$lib/components/ui/alert';
@@ -111,6 +112,14 @@
 
   // Determine current section and completed sections
   const currentSectionId = $derived(currentQuestion?.sectionId);
+  const currentSection = $derived(
+    questionnaire.sections.find(s => s.id === currentSectionId)
+  );
+  const isFirstQuestionOfSection = $derived.by(() => {
+    if (currentQuestionIndex === 0) return true;
+    const prevQuestion = visibleQuestions[currentQuestionIndex - 1];
+    return prevQuestion?.sectionId !== currentSectionId;
+  });
   const completedSectionIds = $derived.by(() => {
     const completed = new Set();
     for (let i = 0; i < currentQuestionIndex; i++) {
@@ -299,6 +308,11 @@
         </div>
       </div>
     </div>
+
+    <!-- Section Intro Text -->
+    {#if isFirstQuestionOfSection && currentSection?.intro_text}
+      <IntroText content={currentSection.intro_text} />
+    {/if}
 
     <!-- Question Card -->
     {#if currentQuestion}
