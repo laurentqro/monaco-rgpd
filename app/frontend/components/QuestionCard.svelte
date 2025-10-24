@@ -6,6 +6,7 @@
   import { Textarea } from '$lib/components/ui/textarea';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
+  import IntroText from './IntroText.svelte';
 
   let { question, answer = null, onanswer } = $props();
 
@@ -42,6 +43,7 @@
 
 <Card>
   <CardHeader>
+    <IntroText content={question.intro_text} />
     <CardTitle id="question-title-{question.id}" class="text-2xl">{question.question_text}</CardTitle>
   </CardHeader>
   <CardContent>
