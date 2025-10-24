@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_17_093259) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_24_132153) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -311,6 +311,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_093259) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "intro_text"
     t.index ["status"], name: "index_questionnaires_on_status"
   end
 
@@ -325,6 +326,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_093259) do
     t.decimal "weight", precision: 5, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "intro_text"
     t.index ["order_index"], name: "index_questions_on_order_index"
     t.index ["section_id"], name: "index_questions_on_section_id"
   end
@@ -365,6 +367,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_17_093259) do
     t.integer "order_index", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "intro_text"
     t.index ["order_index"], name: "index_sections_on_order_index"
     t.index ["questionnaire_id"], name: "index_sections_on_questionnaire_id"
   end
