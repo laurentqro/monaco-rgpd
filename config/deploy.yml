@@ -93,11 +93,9 @@ builder:
   #   - GITHUB_TOKEN
   #   - RAILS_MASTER_KEY
 
-# Configure SSH options for CI/CD deployment
-ssh:
-  options:
-    # Accept new host keys in CI environment
-    StrictHostKeyChecking: accept-new
+# Use a different ssh user than root
+# ssh:
+#   user: app
 
 # Use accessory services (secrets come from .kamal/secrets).
 accessories:
