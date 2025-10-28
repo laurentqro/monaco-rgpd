@@ -138,7 +138,7 @@ GEM
       zeitwerk (>= 2.6.18, < 3.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
-    liquid (5.8.7)
+    liquid (5.9.0)
       bigdecimal
       strscan (>= 3.1.1)
     logger (1.7.0)
@@ -409,7 +409,7 @@ DEPENDENCIES
   importmap-rails
   inertia_rails
   kamal
-  liquid (~> 5.5)
+  liquid (~> 5.9)
   minitest-reporters
   pg (~> 1.1)
   prawn (~> 2.4)
