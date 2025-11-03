@@ -49,4 +49,46 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     patch account_path(@account), params: { account: { subdomain: other_account.subdomain } }
     assert_response :unprocessable_entity
   end
+
+  test "complete_profile updates account fields" do
+    sign_in_as @owner
+
+    patch complete_profile_account_path(@account), params: {
+      account: {
+        address: "12 Avenue des Spélugues, 98000 Monaco",
+        phone: "+377 93 15 26 00",
+        rci_number: "12S34567",
+        legal_form: "sarl"
+      }
+    }
+
+    assert_response :success
+    @account.reload
+    assert_equal "12 Avenue des Spélugues, 98000 Monaco", @account.address
+    assert_equal "+377 93 15 26 00", @account.phone
+    assert_equal "12S34567", @account.rci_number
+    assert_equal "sarl", @account.legal_form
+  end
+
+  test "complete_profile requires authentication" do
+    patch complete_profile_account_path(@account), params: { account: { address: "Test" } }
+
+    assert_redirected_to new_session_path
+  end
+
+  test "complete_profile allows partial updates" do
+    sign_in_as @owner
+
+    patch complete_profile_account_path(@account), params: {
+      account: {
+        address: "12 Avenue des Spélugues",
+        phone: "+377 93 15 26 00"
+      }
+    }
+
+    assert_response :success
+    @account.reload
+    assert_equal "12 Avenue des Spélugues", @account.address
+    assert_equal "+377 93 15 26 00", @account.phone
+  end
 end

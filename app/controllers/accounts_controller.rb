@@ -14,6 +14,16 @@ class AccountsController < ApplicationController
     end
   end
 
+  def complete_profile
+    if @account.update(profile_params)
+      render json: { success: true }
+    else
+      render json: {
+        errors: @account.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_account
@@ -28,5 +38,9 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(:name, :subdomain)
+  end
+
+  def profile_params
+    params.require(:account).permit(:address, :phone, :rci_number, :legal_form)
   end
 end
