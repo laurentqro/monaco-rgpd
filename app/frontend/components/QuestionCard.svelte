@@ -5,12 +5,27 @@
   import { Textarea } from '$lib/components/ui/textarea';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
+  import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '$lib/components/ui/accordion';
   import IntroText from './IntroText.svelte';
-  import HelpPopover from './HelpPopover.svelte';
+  import { marked } from 'marked';
+  import DOMPurify from 'dompurify';
 
   let { question, answer = null, onanswer } = $props();
 
   let selectedValue = $state(answer || {});
+
+  // Configure marked for safe rendering
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+    headerIds: false,
+    mangle: false
+  });
+
+  // Render help_text as markdown
+  const helpTextHtml = $derived(
+    question.help_text ? DOMPurify.sanitize(marked.parse(question.help_text)) : ''
+  );
 
   function handleYesNo(choiceText) {
     const choice = question.answer_choices.find(c => c.choice_text === choiceText);
@@ -44,14 +59,23 @@
 <Card>
   <CardHeader>
     <IntroText content={question.intro_text} />
-    <CardTitle id="question-title-{question.id}" class="text-2xl flex items-center">
-      <span>{question.question_text}</span>
-      {#if question.help_text}
-        <HelpPopover content={question.help_text} />
-      {/if}
+    <CardTitle id="question-title-{question.id}" class="text-2xl">
+      {question.question_text}
     </CardTitle>
   </CardHeader>
   <CardContent>
+    {#if question.help_text}
+      <Accordion class="mb-6">
+        <AccordionItem value="help">
+          <AccordionTrigger class="text-amber-700 hover:text-amber-800 py-2 text-sm font-normal">
+            Afficher l'aide
+          </AccordionTrigger>
+          <AccordionContent class="bg-amber-50 border border-amber-200 rounded-md p-4 text-amber-900 help-content">
+            {@html helpTextHtml}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    {/if}
 
     <div class="space-y-6">
       {#if question.question_type === 'yes_no'}
@@ -126,3 +150,43 @@
     </div>
   </CardContent>
 </Card>
+
+<style>
+  /* Style markdown content in help accordion */
+  :global(.help-content p) {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+
+  :global(.help-content p:last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.help-content ul),
+  :global(.help-content ol) {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    line-height: 1.5;
+  }
+
+  :global(.help-content ul) {
+    list-style-type: disc;
+  }
+
+  :global(.help-content ol) {
+    list-style-type: decimal;
+  }
+
+  :global(.help-content li) {
+    margin-bottom: 0.25rem;
+  }
+
+  :global(.help-content strong) {
+    font-weight: 600;
+  }
+
+  :global(.help-content a) {
+    color: #d97706;
+    text-decoration: underline;
+  }
+</style>
