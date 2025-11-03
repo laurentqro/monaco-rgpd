@@ -1,31 +1,16 @@
 <script>
   import { Button } from '$lib/components/ui/button';
   import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
-  import { Alert, AlertDescription } from '$lib/components/ui/alert';
   import { Input } from '$lib/components/ui/input';
   import { Textarea } from '$lib/components/ui/textarea';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
   import IntroText from './IntroText.svelte';
-  import { marked } from 'marked';
-  import DOMPurify from 'dompurify';
+  import HelpPopover from './HelpPopover.svelte';
 
   let { question, answer = null, onanswer } = $props();
 
   let selectedValue = $state(answer || {});
-
-  // Configure marked for safe rendering
-  marked.setOptions({
-    breaks: true,      // Convert \n to <br>
-    gfm: true,         // GitHub flavored markdown
-    headerIds: false,  // Don't generate header IDs
-    mangle: false      // Don't mangle email addresses
-  });
-
-  // Render help_text as markdown
-  const helpTextHtml = $derived(
-    question.help_text ? DOMPurify.sanitize(marked.parse(question.help_text)) : ''
-  );
 
   function handleYesNo(choiceText) {
     const choice = question.answer_choices.find(c => c.choice_text === choiceText);
@@ -59,18 +44,14 @@
 <Card>
   <CardHeader>
     <IntroText content={question.intro_text} />
-    <CardTitle id="question-title-{question.id}" class="text-2xl">{question.question_text}</CardTitle>
+    <CardTitle id="question-title-{question.id}" class="text-2xl flex items-center">
+      <span>{question.question_text}</span>
+      {#if question.help_text}
+        <HelpPopover content={question.help_text} />
+      {/if}
+    </CardTitle>
   </CardHeader>
   <CardContent>
-    {#if question.help_text}
-      <Alert variant="warning" class="mb-6" id="help-{question.id}">
-        <AlertDescription>
-          <div class="prose prose-sm max-w-none">
-            {@html helpTextHtml}
-          </div>
-        </AlertDescription>
-      </Alert>
-    {/if}
 
     <div class="space-y-6">
       {#if question.question_type === 'yes_no'}
@@ -127,7 +108,6 @@
             value={selectedValue.text || ''}
             oninput={(e) => handleText(e.target.value)}
             placeholder="Votre réponse..."
-            aria-describedby={question.help_text ? 'help-{question.id}' : undefined}
           />
         </div>
 
@@ -140,40 +120,9 @@
             oninput={(e) => handleText(e.target.value)}
             rows={5}
             placeholder="Votre réponse..."
-            aria-describedby={question.help_text ? 'help-{question.id}' : undefined}
           />
         </div>
       {/if}
     </div>
   </CardContent>
 </Card>
-
-<style>
-  /* Ensure prose styles work for help text markdown */
-  :global(.prose p) {
-    margin-bottom: 0.5rem;
-  }
-
-  :global(.prose p:last-child) {
-    margin-bottom: 0;
-  }
-
-  :global(.prose ul),
-  :global(.prose ol) {
-    margin: 0.5rem 0;
-    padding-left: 1.5rem;
-  }
-
-  :global(.prose li) {
-    margin-bottom: 0.25rem;
-  }
-
-  :global(.prose strong) {
-    font-weight: 600;
-  }
-
-  :global(.prose a) {
-    color: #d97706;
-    text-decoration: underline;
-  }
-</style>
