@@ -37,7 +37,11 @@ Rails.application.routes.draw do
   resources :processing_activities, path: "registre-traitements", only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
 
   # Documents
-  resources :documents, only: [ :index, :show, :create ]
+  resources :documents, only: [ :index, :show, :create ] do
+    collection do
+      post :generate_privacy_policy
+    end
+  end
 
   # Settings
   namespace :settings do
