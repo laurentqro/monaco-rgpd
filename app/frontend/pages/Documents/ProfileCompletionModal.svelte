@@ -28,7 +28,8 @@
     { value: 'sci', label: 'Société Civile Immobilière (SCI)' }
   ]
 
-  function handleSubmit() {
+  function handleSubmit(event) {
+    event.preventDefault()
     $form.patch('/account/complete_profile', {
       onSuccess: () => {
         oncompleted?.()
@@ -62,7 +63,7 @@
       </DialogDescription>
     </DialogHeader>
 
-    <form onsubmit|preventDefault={handleSubmit} class="space-y-4">
+    <form onsubmit={handleSubmit} class="space-y-4">
       <div class="space-y-2">
         <Label for="address">Adresse complète</Label>
         <Textarea
