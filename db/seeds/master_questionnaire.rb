@@ -20,6 +20,7 @@ questionnaire_intro = <<~MARKDOWN
   - Recevoir des recommandations personnalisées
 
   *Durée estimée: 15-20 minutes*
+  *Toutes les questions sont obligatoires.*
 MARKDOWN
 
 questionnaire = Questionnaire.create!(
@@ -38,8 +39,6 @@ puts "Created questionnaire: #{questionnaire.title}"
 section1_intro = <<~MARKDOWN
   Pour déterminer si vous êtes concerné par la loi n° 1.565, nous devons d'abord
   qualifier la situation de votre organisation.
-
-  *Toutes les questions sont obligatoires.*
 MARKDOWN
 
 section1 = questionnaire.sections.create!(

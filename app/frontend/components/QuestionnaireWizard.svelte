@@ -244,7 +244,7 @@
     </Alert>
   {:else if !hasStarted}
     <!-- Start Screen -->
-    <div class="text-center py-12">
+    <div class="py-12">
       <h1 class="text-3xl font-bold text-gray-900 mb-8">
         {questionnaire.title}
       </h1>
