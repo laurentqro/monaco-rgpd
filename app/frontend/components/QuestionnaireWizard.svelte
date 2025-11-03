@@ -15,6 +15,7 @@
   let skippedQuestions = $state(new Set()); // Track questions to skip (for skip_to_question)
   let shouldExit = $state(false);
   let exitMessage = $state('');
+  let exitTriggerQuestionId = $state(null); // Track which question triggered the exit
 
   // Track if the questionnaire has been started
   // If there are existing answers, they've already started
@@ -56,9 +57,10 @@
 
         if (conditionMet) {
           if (rule.action === 'exit_questionnaire') {
-            // Trigger exit
+            // Trigger exit and track which question caused it
             shouldExit = true;
             exitMessage = rule.exit_message || "Ce questionnaire n'est pas applicable à votre situation.";
+            exitTriggerQuestionId = question.id;
           } else if (rule.action === 'skip_to_section' && rule.target_section_id) {
             // Find all sections between current and target, mark them as skipped
             const currentSectionIndex = questionnaire.sections.findIndex(s => s.id === question.sectionId);
@@ -203,6 +205,21 @@
     }
   }
 
+  function goBackFromExit() {
+    // Find the question that triggered the exit
+    const exitQuestionIndex = visibleQuestions.findIndex(q => q.id === exitTriggerQuestionId);
+
+    if (exitQuestionIndex !== -1) {
+      // Navigate back to that question
+      currentQuestionIndex = exitQuestionIndex;
+    }
+
+    // Reset exit state
+    shouldExit = false;
+    exitMessage = '';
+    exitTriggerQuestionId = null;
+  }
+
   async function completeQuestionnaire() {
     try {
       await fetch(`/responses/${response.id}/complete`, {
@@ -234,12 +251,21 @@
         <AlertDescription class="text-sm text-yellow-700 mb-4">
           {exitMessage}
         </AlertDescription>
-        <Button
-          onclick={() => router.visit('/dashboard')}
-          class="bg-yellow-600 text-white hover:bg-yellow-700"
-        >
-          Retour au tableau de bord
-        </Button>
+        <div class="flex gap-3">
+          <Button
+            onclick={goBackFromExit}
+            variant="outline"
+            class="border-yellow-600 text-yellow-700 hover:bg-yellow-100"
+          >
+            ← Revenir à la question
+          </Button>
+          <Button
+            onclick={() => router.visit('/dashboard')}
+            class="bg-yellow-600 text-white hover:bg-yellow-700"
+          >
+            Retour au tableau de bord
+          </Button>
+        </div>
       </div>
     </Alert>
   {:else if !hasStarted}
