@@ -38,7 +38,11 @@ class ComplianceAssessmentFlowTest < ActionDispatch::IntegrationTest
     assert_equal "completed", response.status
     assert_not_nil response.completed_at
 
-    # 4. Verify compliance assessment job enqueued
-    assert_enqueued_jobs 1, only: CalculateComplianceScoreJob
+    # 4. Verify compliance assessment was calculated synchronously
+    assert_not_nil response.compliance_assessment
+    assert response.compliance_assessment.overall_score >= 0
+
+    # 5. Verify document generation job enqueued
+    assert_enqueued_jobs 1, only: GenerateDocumentsJob
   end
 end

@@ -48,10 +48,14 @@ class ResponsesController < ApplicationController
       completed_at: Time.current
     )
 
-    # Trigger compliance assessment calculation
-    CalculateComplianceScoreJob.perform_later(@response.id)
+    # Calculate compliance score synchronously
+    scorer = ComplianceScorer.new(@response)
+    scorer.calculate
 
-    redirect_to dashboard_path, notice: "Évaluation terminée ! Votre score de conformité est en cours de calcul."
+    # Trigger document generation after assessment is calculated
+    GenerateDocumentsJob.perform_later(@response.id)
+
+    redirect_to dashboard_path, notice: "Évaluation terminée ! Votre score de conformité a été calculé."
   end
 
   def results

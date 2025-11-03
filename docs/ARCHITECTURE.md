@@ -49,8 +49,9 @@ Questionnaire
 
 ## Background Jobs
 
-- **CalculateComplianceScoreJob** - Calculates compliance score after response completion
 - **GenerateDocumentsJob** - Generates PDF documents from templates
+
+Note: Compliance score calculation is performed synchronously when a questionnaire response is completed.
 
 ## Security
 
