@@ -9,8 +9,8 @@ class PrivacyPolicyGenerator
   def generate
     validate_account_completeness!
 
-    # Will implement in next task
-    nil
+    html = render_template
+    convert_to_pdf(html)
   end
 
   def sections_to_include
@@ -49,5 +49,41 @@ class PrivacyPolicyGenerator
       .joins(:question)
       .find_by(questions: { question_text: question_text })
     answer&.answer_value
+  end
+
+  def render_template
+    ApplicationController.render(
+      template: "documents/privacy_policy/show",
+      layout: false,
+      assigns: {
+        account: @account,
+        sections: sections_to_include
+      }
+    )
+  end
+
+  def convert_to_pdf(html)
+    Grover.new(html, **pdf_options).to_pdf
+  end
+
+  def pdf_options
+    {
+      format: "A4",
+      margin: {
+        top: "2cm",
+        bottom: "2cm",
+        left: "2.5cm",
+        right: "2.5cm"
+      },
+      display_header_footer: true,
+      footer_template: footer_html,
+      timeout: 60_000  # 60 seconds
+    }
+  end
+
+  def footer_html
+    '<div style="font-size:9px; text-align:center; width:100%; color:#666;">
+      <span class="pageNumber"></span> / <span class="totalPages"></span>
+    </div>'
   end
 end

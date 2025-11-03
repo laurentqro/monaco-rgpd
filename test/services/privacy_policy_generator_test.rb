@@ -63,4 +63,13 @@ class PrivacyPolicyGeneratorTest < ActiveSupport::TestCase
 
     assert_includes sections, :base
   end
+
+  test "generate returns PDF data" do
+    generator = PrivacyPolicyGenerator.new(@account, @response)
+
+    pdf_data = generator.generate
+
+    assert pdf_data.present?
+    assert pdf_data.start_with?("%PDF"), "Should return PDF binary data"
+  end
 end
