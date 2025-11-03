@@ -38,6 +38,19 @@
   .intro-text :global(ul),
   .intro-text :global(ol) {
     margin: 0.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .intro-text :global(ul) {
+    list-style-type: disc;
+  }
+
+  .intro-text :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .intro-text :global(li) {
+    margin-bottom: 0.25rem;
   }
 
   .intro-text :global(strong) {
