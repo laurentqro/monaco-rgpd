@@ -15,10 +15,8 @@ Rails.application.routes.draw do
   resources :users, only: [ :update ]
 
   # Account management
-  resources :accounts, only: [ :update ] do
-    member do
-      patch :complete_profile
-    end
+  resource :account, only: [ :update ] do
+    patch :complete_profile, on: :collection
   end
 
   # Questionnaires and Responses

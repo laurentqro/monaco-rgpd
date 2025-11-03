@@ -1,37 +1,34 @@
 class AccountsController < ApplicationController
-  before_action :set_account
-  before_action :require_admin
+  before_action :require_admin_for_update, only: [:update]
 
   def update
-    if @account.update(account_params)
+    if Current.account.update(account_params)
       redirect_to settings_account_path, notice: "Account updated successfully"
     else
       render inertia: "settings/Account", props: {
-        account: @account.as_json(only: [ :id, :name, :subdomain, :plan_type ]),
+        account: Current.account.as_json(only: [ :id, :name, :subdomain, :plan_type ]),
         is_admin: current_user.admin?,
-        errors: @account.errors.messages
+        errors: Current.account.errors.messages
       }, status: :unprocessable_entity
     end
   end
 
+  # Complete account profile with required fields for document generation
+  # Users can only update their own account profile
   def complete_profile
-    if @account.update(profile_params)
+    if Current.account.update(profile_params)
       render json: { success: true }
     else
       render json: {
-        errors: @account.errors.full_messages
+        errors: Current.account.errors.full_messages
       }, status: :unprocessable_entity
     end
   end
 
   private
 
-  def set_account
-    @account = Account.find(params[:id])
-  end
-
-  def require_admin
-    unless @account == current_account && current_user.admin?
+  def require_admin_for_update
+    unless current_user.admin?
       redirect_to app_root_path, alert: "Unauthorized"
     end
   end
@@ -40,6 +37,7 @@ class AccountsController < ApplicationController
     params.require(:account).permit(:name, :subdomain)
   end
 
+  # Whitelist profile completion fields (address, phone, RCI, legal form)
   def profile_params
     params.require(:account).permit(:address, :phone, :rci_number, :legal_form)
   end
