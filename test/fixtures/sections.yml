@@ -2,3 +2,7 @@ data_protection:
   questionnaire: compliance
   title: "Protection des données"
   order_index: 1
+  intro_text: |
+    Cette section évalue votre conformité en matière de protection des données.
+
+    Nous allons examiner vos **pratiques actuelles** et identifier les améliorations nécessaires.

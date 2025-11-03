@@ -2,3 +2,8 @@ compliance:
   title: "RGPD Compliance Assessment"
   category: "compliance_assessment"
   status: 1
+  intro_text: |
+    Bienvenue dans l'évaluation de conformité RGPD pour Monaco.
+
+    Cette évaluation vous guidera à travers les exigences de la **Loi n° 1.565**
+    relative à la protection des données à caractère personnel.

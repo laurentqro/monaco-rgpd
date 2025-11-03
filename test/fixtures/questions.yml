@@ -5,3 +5,7 @@ one:
   order_index: 1
   is_required: true
   weight: 1.0
+  intro_text: |
+    Le **Délégué à la Protection des Données (DPO)** est un acteur clé de la conformité RGPD.
+
+    Sa désignation peut être **obligatoire** selon votre situation.

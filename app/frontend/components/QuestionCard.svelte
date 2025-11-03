@@ -48,7 +48,7 @@
   </CardHeader>
   <CardContent>
     {#if question.help_text}
-      <Alert class="mb-6" id="help-{question.id}">
+      <Alert variant="warning" class="mb-6" id="help-{question.id}">
         <AlertDescription>{question.help_text}</AlertDescription>
       </Alert>
     {/if}

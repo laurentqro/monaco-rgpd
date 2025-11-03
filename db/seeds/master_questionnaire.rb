@@ -104,11 +104,9 @@ s1q3_org_size.answer_choices.create!([
 
 # Q4: Traitez-vous des données personnelles?
 s1q4_intro = <<~MARKDOWN
-  Une **donnée personnelle** est toute information se rapportant à une personne
-  physique identifiée ou identifiable.
+  Une **donnée personnelle** est toute information se rapportant à une personne physique identifiée ou identifiable.
 
-  Cela inclut des informations évidentes (nom, email) mais aussi des identifiants
-  indirects (adresse IP, cookies, numéro de client).
+  Cela inclut des informations évidentes (nom, email) mais aussi des identifiants indirects (adresse IP, cookies, numéro de client).
 
   Si vous ne traitez aucune donnée personnelle, vous n'êtes pas concerné par le RGPD.
 MARKDOWN
@@ -297,8 +295,8 @@ s3q1_hr_purposes = section3_hr.questions.create!(
 )
 
 s3q1_hr_purposes.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui (⚠️ susceptible de sortir du cadre de référence)", score: 0 },
-  { order_index: 2, choice_text: "Non (✅)", score: 100 }
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
 ])
 
 # Q2: Types de données RH
@@ -323,8 +321,8 @@ s3q2_hr_data = section3_hr.questions.create!(
 )
 
 s3q2_hr_data.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui (⚠️ susceptible de sortir du cadre de référence)", score: 0 },
-  { order_index: 2, choice_text: "Non (✅)", score: 100 }
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
 ])
 
 # ============================================================================

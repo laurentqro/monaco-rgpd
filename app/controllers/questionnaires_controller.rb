@@ -26,6 +26,7 @@ class QuestionnairesController < ApplicationController
       id: questionnaire.id,
       title: questionnaire.title,
       description: questionnaire.description,
+      intro_text: questionnaire.intro_text,
       sections: questionnaire.sections.map { |s| section_props(s) }
     }
   end
@@ -35,6 +36,7 @@ class QuestionnairesController < ApplicationController
       id: section.id,
       title: section.title,
       description: section.description,
+      intro_text: section.intro_text,
       order_index: section.order_index,
       questions: section.questions.map { |q| question_props(q) }
     }
@@ -45,6 +47,7 @@ class QuestionnairesController < ApplicationController
       id: question.id,
       question_text: question.question_text,
       question_type: question.question_type,
+      intro_text: question.intro_text,
       help_text: question.help_text,
       is_required: question.is_required,
       weight: question.weight,
