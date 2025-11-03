@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politique de confidentialité - <%= @account.name %></title>
+  <%= stylesheet_link_tag "documents/privacy_policy", media: "all" %>
+</head>
+<body>
+  <%= render "documents/privacy_policy/sections/header", account: @account %>
+
+  <%= render "documents/privacy_policy/sections/controller_identity", account: @account %>
+
+  <%# Conditional sections will be added in next tasks %>
+</body>
+</html>

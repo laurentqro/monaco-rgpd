@@ -1,0 +1,17 @@
+<div class="section">
+  <h2>Article I - Identité du responsable du traitement</h2>
+
+  <p>
+    Le responsable du traitement est <%= account.name %>,
+    <%= account.legal_form_full_name %>, immatriculée au Répertoire du
+    Commerce et de l'Industrie de Monaco sous le numéro <%= account.rci_number %>.
+  </p>
+
+  <p>
+    <strong>Adresse :</strong> <%= simple_format(account.address) %>
+  </p>
+
+  <p>
+    <strong>Téléphone :</strong> <%= account.phone %>
+  </p>
+</div>
