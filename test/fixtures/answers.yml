@@ -3,3 +3,18 @@ answer_one:
   question: one
   answer_value:
     choice_id: <%= ActiveRecord::FixtureSet.identify(:yes_choice) %>
+
+has_personnel_yes:
+  response: one
+  question: has_personnel
+  answer_value: "Oui"
+
+has_email_yes:
+  response: one
+  question: has_email
+  answer_value: "Oui"
+
+has_telephony_no:
+  response: one
+  question: has_telephony
+  answer_value: "Non"

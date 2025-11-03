@@ -9,3 +9,21 @@ one:
     Le **Délégué à la Protection des Données (DPO)** est un acteur clé de la conformité RGPD.
 
     Sa désignation peut être **obligatoire** selon votre situation.
+
+has_personnel:
+  section: data_protection
+  question_text: "Avez-vous du personnel ?"
+  question_type: yes_no
+  order_index: 2
+
+has_email:
+  section: data_protection
+  question_text: "Vos employés disposent-ils d'une adresse email professionnelle ?"
+  question_type: yes_no
+  order_index: 3
+
+has_telephony:
+  section: data_protection
+  question_text: "Vos employés disposent-ils d'une ligne directe (fixe ou mobile) ?"
+  question_type: yes_no
+  order_index: 4

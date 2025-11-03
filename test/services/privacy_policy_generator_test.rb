@@ -28,4 +28,39 @@ class PrivacyPolicyGeneratorTest < ActiveSupport::TestCase
 
     assert_not_nil generator
   end
+
+  test "includes hr_administration section when has employees" do
+    # Use fixture with "Avez-vous du personnel ?" = "Oui"
+    generator = PrivacyPolicyGenerator.new(@account, @response)
+
+    sections = generator.sections_to_include
+
+    assert_includes sections, :hr_administration
+  end
+
+  test "includes email_management section when has professional email" do
+    # Use fixture with email = "Oui"
+    generator = PrivacyPolicyGenerator.new(@account, @response)
+
+    sections = generator.sections_to_include
+
+    assert_includes sections, :email_management
+  end
+
+  test "excludes telephony section when no telephony" do
+    # Use fixture with telephony = "Non"
+    generator = PrivacyPolicyGenerator.new(@account, @response)
+
+    sections = generator.sections_to_include
+
+    assert_not_includes sections, :telephony
+  end
+
+  test "always includes base sections" do
+    generator = PrivacyPolicyGenerator.new(@account, @response)
+
+    sections = generator.sections_to_include
+
+    assert_includes sections, :base
+  end
 end
