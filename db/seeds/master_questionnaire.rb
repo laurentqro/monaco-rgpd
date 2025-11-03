@@ -15,9 +15,9 @@ questionnaire_intro = <<~MARKDOWN
   Cette évaluation vous guidera à travers les exigences de la **Loi n° 1.565**
   relative à la protection des données à caractère personnel et vous aidera à:
 
-  - Identifier vos obligations légales
-  - Évaluer votre niveau de conformité actuel
-  - Recevoir des recommandations personnalisées
+  * Identifier vos obligations légales
+  * Évaluer votre niveau de conformité actuel
+  * Recevoir des recommandations personnalisées
 
   *Durée estimée: 15-20 minutes*
   *Toutes les questions sont obligatoires.*
@@ -97,26 +97,22 @@ s1q3_org_size.answer_choices.create!([
 ])
 
 # Q4: Traitez-vous des données personnelles?
-s1q4_intro = <<~MARKDOWN
-  Une **donnée personnelle** est toute information se rapportant à une personne physique identifiée ou identifiable.
+s1q4_help_text = <<~MARKDOWN
+  Voici quelques exemples de données personnelles:
 
-  Cela inclut des informations évidentes (nom, email) mais aussi des identifiants indirects (adresse IP, cookies, numéro de client).
-
-  Si vous ne traitez aucune donnée personnelle, vous n'êtes pas concerné par le RGPD.
+  * Identité : nom, prénom, numéro de sécurité sociale, adresse IP, identifiant en ligne
+  * Caractéristiques physiques / physiologiques : photo, empreintes digitales, ADN
+  * Informations professionnelles : poste, salaire, évaluations
+  * Données de localisation : adresse, géolocalisation (GPS)
+  * Habitudes / comportements : historique de navigation, achats, centres d'intérêt
+  * Données sensibles : origine ethnique, opinions politiques, religion, santé, orientation sexuelle, données biométriques ou génétiques
 MARKDOWN
 
 s1q4_personal_data = section1.questions.create!(
   order_index: 4,
   question_text: "Traitez-vous des données personnelles ?",
   question_type: :yes_no,
-  intro_text: s1q4_intro,
-  help_text: "Voici quelques exemples de données personnelles:\n\n" \
-             "• Identité : nom, prénom, numéro de sécurité sociale, adresse IP, identifiant en ligne\n" \
-             "• Caractéristiques physiques/physiologiques : photo, empreintes digitales, ADN\n" \
-             "• Informations professionnelles : poste, salaire, évaluations\n" \
-             "• Données de localisation : adresse, géolocalisation (GPS)\n" \
-             "• Habitudes/comportements : historique de navigation, achats, centres d'intérêt\n" \
-             "• Données sensibles : origine ethnique, opinions politiques, religion, santé, orientation sexuelle, données biométriques ou génétiques",
+  help_text: s1q4_help_text,
   is_required: true,
   weight: 0
 )
@@ -265,25 +261,38 @@ s2q9_personnel_info.answer_choices.create!([
 # ============================================================================
 # Section 3: Traitements - Gestion des ressources humaines
 # ============================================================================
+section3_intro = <<~MARKDOWN
+  Vous avez du personnel ou projetez d'en avoir. En langage RGPD, vous mettez en œuvre un traitement de données personnelles dont la finalité est la gestion des ressources humaines.
+
+  Pour vous aider, un cadre de référence vous permet de vous assurer de votre conformité.
+
+  Si vous sortez de ce cadre, un audit personnalisé est nécessaire.
+MARKDOWN
+
 section3_hr = questionnaire.sections.create!(
   order_index: 3,
   title: "Gestion des ressources humaines",
-  description: "Vous avez du personnel ou projetez d'en avoir. En langage RGPD, vous mettez en œuvre un traitement de données personnelles dont la finalité est la gestion des ressources humaines. Pour vous aider, un cadre de référence vous permet de vous assurer de votre conformité. Si vous sortez de ce cadre, un audit personnalisé est nécessaire."
+  intro_text: section3_intro
 )
 
 # Q1: Raisons de collecte RH
+s3q1_intro = <<~MARKDOWN
+  Voici les finalités admises dans le cadre de référence:
+
+  * la gestion administrative des personnels, notamment la procédure d'embauche, de renouvellement et de fin de contrat, le suivi administratif des visites médicales obligatoires des salariés, la gestion des déclarations relatives aux accidents du travail et maladies professionnelles; la tenue et la mise à jour des fiches administratives des salariés, gestion des compétences, le suivi des formations, le suivi des congés et absences, la production d'états statistiques non nominatifs, etc.
+  * la gestion des rémunérations et accomplissement des formalités administratives afférentes
+  * l'organisation du travail (gestion des outils de travail, du calendrier, etc)
+  * la gestion des carrières et de la mobilité
+  * la gestion de la tenue des registres obligatoires, rapports avec les instances représentatives du personnel
+  * la communication interne
+  * gestion des aides sociales
+MARKDOWN
+
 s3q1_hr_purposes = section3_hr.questions.create!(
   order_index: 1,
-  question_text: "Pour quelles raisons collectez-vous des données sur vos salariés ? Collectez-vous des données à d'autres fins ?",
+  question_text: "Collectez-vous des données à d'autres fins que celles listées ci-dessus ?",
   question_type: :yes_no,
-  help_text: "Voici les finalités admises dans le cadre de référence:\n\n" \
-             "• la gestion administrative des personnels, notamment la procédure d'embauche, de renouvellement et de fin de contrat, le suivi administratif des visites médicales obligatoires des salariés, la gestion des déclarations relatives aux accidents du travail et maladies professionnelles; la tenue et la mise à jour des fiches administratives des salariés, gestion des compétences, le suivi des formations, le suivi des congés et absences, la production d'états statistiques non nominative, etc.\n" \
-             "• la gestion des rémunérations et accomplissement des formalités administratives afférentes\n" \
-             "• l'organisation du travail (gestion des outils de travail, du calendrier, etc)\n" \
-             "• la gestion des carrières et de la mobilité\n" \
-             "• la gestion de la tenue des registres obligatoires, rapports avec les instances représentatives du personnel\n" \
-             "• la communication interne\n" \
-             "• gestion des aides sociales",
+  intro_text: s3q1_intro,
   is_required: true,
   weight: 2
 )
@@ -294,22 +303,36 @@ s3q1_hr_purposes.answer_choices.create!([
 ])
 
 # Q2: Types de données RH
+s3q2_intro = <<~MARKDOWN
+  Voici les données de référence:
+
+  * Identité / situation de famille,
+  * Nom, prénom, photographie, sexe, date et lieu de naissance, nationalité, situation de famille, numéro de matricule interne, numéro d'immatriculation délivré par un organisme de sécurité sociale, identité du conjoint et des enfants à charge,
+  * Adresses et coordonnées,
+  * Coordonnées professionnelles et personnelles, coordonnées des personnes à contacter en cas d'urgence
+  * Formation, diplômes, vie professionnelle,
+  * Nature de l'emploi, poste occupé, fonction ou titre, distinctions honorifiques,
+  * Copies de documents officiels,
+  * Pas de copie mais informations sur l'identification et numéro de la pièce relatives à l'identité, date et lieu de délivrance, date de validité,
+  * Données d'identification électronique identifiant de la personne concernée / compte utilisateur,
+
+  * Informations relatives:
+    * au contrat de travail,
+    * à la carrière,
+    * aux déclarations d'accidents et de maladies professionnelles,
+    * aux évaluations,
+    *  à la validation des acquis,
+    * aux formations,
+    * aux visites médicales,
+    * au permis de conduire,
+    * aux congés.
+MARKDOWN
+
 s3q2_hr_data = section3_hr.questions.create!(
   order_index: 2,
-  question_text: "Quelles données collectez-vous sur vos salariés ?",
+  question_text: "Collectez-vous des données autres que celles listées ci-dessus ?",
   question_type: :yes_no,
-  help_text: "Collectez-vous des données autres que celles listées ci-après ?\n\n" \
-             "Données de référence:\n" \
-             "• Identité /situation de famille\n" \
-             "• Nom, prénom, photographie, sexe, date et lieu de naissance, nationalité, situation de famille, numéro de matricule interne, numéro d'immatriculation délivré par un organisme de sécurité sociale/identité du conjoint et des enfants à charge\n" \
-             "• Adresses et coordonnées\n" \
-             "• Coordonnées professionnelles et personnelles, coordonnées des personnes à contacter en cas d'urgence\n" \
-             "• Formation, diplômes, vie professionnelle\n" \
-             "• Nature de l'emploi, poste occupé, fonction ou titre, distinctions honorifiques\n" \
-             "• Copies de document officiels\n" \
-             "• Pas de copie mais informations l'identification et numéro de la pièce relatives à l'identité, date et lieu de délivrance, date de validité\n" \
-             "• Données d'identification électronique identifiant de la personne concernée/ compte utilisateur\n" \
-             "• Informations relatives au contrat de travail/ à la carrière/ aux déclarations d'accident et de maladie professionnelles/ aux évaluations/ à la validation des acquis/ aux formations/aux visites médicales/ au permis de conduire/ aux congés",
+  intro_text: s3q2_intro,
   is_required: true,
   weight: 2
 )
@@ -323,27 +346,29 @@ s3q2_hr_data.answer_choices.create!([
 # Section 4: DPO (Délégué à la Protection des Données)
 # ============================================================================
 section4_intro = <<~MARKDOWN
-  Le **Délégué à la Protection des Données (DPO)** est un acteur clé de la conformité RGPD.
+  Le Délégué à la Protection des Données (DPO) doit être désigné en raison de ses compétences professionnelles et de sa connaissance du droit et des pratiques en matière de protection des données. Il peut être un salarié interne ou un prestataire externe. Enfin, il doit être impliqué de manière appropriée et en temps utile dans toutes les décisions et projets liés à la protection des données, en tenant compte des risques propres aux traitements effectués.
 
-  Dans certains cas, sa désignation est **obligatoire** selon la loi n° 1.565.
-  Les questions suivantes permettront de déterminer si c'est votre cas.
+  Le DPO est chargé d'informer et de conseiller le responsable du traitement, le sous-traitant et leurs employés sur leurs obligations en matière de protection des données. Il veille au respect de la législation et des procédures internes, notamment en matière de répartition des responsabilités, de sensibilisation, de formation et d'audit. Il conseille également sur la réalisation des analyses d'impact, coopère avec l'autorité de protection et sert de point de contact pour toute question relative au traitement des données.
 
-  **Rôle du DPO:**
-  - Conseiller le responsable du traitement
-  - Veiller à la conformité RGPD
-  - Point de contact avec l'autorité de contrôle
+  Répondez aux questions de cette section afin de déterminer si vous êtes tenus par la loi de nommer un DPO.
+MARKDOWN
 
-  *Le DPO peut être interne ou externe à votre organisation.*
+section4_description = <<~MARKDOWN
+  Voyons si vous êtes tenu par la loi de nommer un DPO.
+
+  Le Délégué à la Protection des Données (DPO - Data Protection Officer).
+
+  Le DPO doit être désigné en raison de ses compétences professionnelles et de sa connaissance du droit et des pratiques en matière de protection des données. Il peut être un salarié interne ou un prestataire externe. Enfin, il doit être impliqué de manière appropriée et en temps utile dans toutes les décisions et projets liés à la protection des données, en tenant compte des risques propres aux traitements effectués.
+
+  Le DPO est chargé d'informer et de conseiller le responsable du traitement, le sous-traitant et leurs employés sur leurs obligations en matière de protection des données. Il veille au respect de la législation et des procédures internes, notamment en matière de répartition des responsabilités, de sensibilisation, de formation et d'audit. Il conseille également sur la réalisation des analyses d'impact, coopère avec l'autorité de protection et sert de point de contact pour toute question relative au traitement des données.
+
+  Répondez aux questions suivantes pour déterminer s'il vous en faut un:
 MARKDOWN
 
 section4_dpo = questionnaire.sections.create!(
   order_index: 4,
-  title: "DPO",
-  description: "Voyons si vous êtes tenu par la loi de nommer un DPO.\n\n" \
-               "Le Délégué à la Protection des Données (DPO - Data Protection Officer).\n\n" \
-               "Le DPO doit être désigné en raison de ses compétences professionnelles et de sa connaissance du droit et des pratiques en matière de protection des données. Il peut être un salarié interne ou un prestataire externe. Enfin, il doit être impliqué de manière appropriée et en temps utile dans toutes les décisions et projets liés à la protection des données, en tenant compte des risques propres aux traitements effectués.\n\n" \
-               "Le DPO est chargé d'informer et de conseiller le responsable du traitement, le sous-traitant et leurs employés sur leurs obligations en matière de protection des données. Il veille au respect de la législation et des procédures internes, notamment en matière de répartition des responsabilités, de sensibilisation, de formation et d'audit. Il conseille également sur la réalisation des analyses d'impact, coopère avec l'autorité de protection et sert de point de contact pour toute question relative au traitement des données.\n\n" \
-               "Répondez aux questions suivantes pour déterminer s'il vous en faut un:",
+  title: "Avez-vous besoin de nommer un Délégué à la Protection des Données (DPO) ?",
+  description: section4_description,
   intro_text: section4_intro
 )
 
@@ -362,33 +387,26 @@ s4q1_public_interest.answer_choices.create!([
 ])
 
 # Q2: Suivi régulier et systématique
-s4q2_intro = <<~MARKDOWN
-  Le **suivi régulier et systématique à grande échelle** est l'un des critères
-  rendant la désignation d'un DPO obligatoire.
+s4q2_help_text = <<~MARKDOWN
+  Le terme **"régulier"** doit s'entendre comme:
 
-  Exemples d'activités concernées:
-  - Publicité comportementale en ligne
-  - Profilage et scoring clients
-  - Géolocalisation continue
-  - Programmes de fidélité à grande échelle
+  * continu ou se produisant à intervalles réguliers au cours d'une période donnée; ou
+  * récurrent ou se répétant à des moments fixes; ou
+  * ayant lieu de manière constante ou périodique.
 
-  *Si vous répondez "Oui", la désignation d'un DPO sera très probablement obligatoire.*
+  Le terme **"systématique"** s'entend quant à lui comme:
+
+  * se produisant conformément à un système; ou
+  * préétabli, organisé ou méthodique; ou
+  * ayant lieu dans le cadre d'un programme général de collecte de données; ou
+  * effectué dans le cadre d'une stratégie
 MARKDOWN
 
 s4q2_systematic = section4_dpo.questions.create!(
   order_index: 2,
   question_text: "Vos activités de base consistent-elles en des opérations de traitement qui, du fait de leur nature, de leur portée ou de leurs finalités, exigent un suivi régulier et systématique à grande échelle des personnes concernées ?",
   question_type: :yes_no,
-  intro_text: s4q2_intro,
-  help_text: "Le terme \"régulier\" doit s'entendre comme:\n" \
-             "• continu ou se produisant à intervalles réguliers au cours d'une période donnée; ou\n" \
-             "• récurrent ou se répétant à des moments fixes; ou\n" \
-             "• ayant lieu de manière constante ou périodique.\n\n" \
-             "Le terme \"systématique\" s'entend quant à lui comme:\n" \
-             "• se produisant conformément à un système; ou\n" \
-             "• préétabli, organisé ou méthodique; ou\n" \
-             "• ayant lieu dans le cadre d'un programme général de collecte de données; ou\n" \
-             "• effectué dans le cadre d'une stratégie",
+  help_text: s4q2_help_text,
   is_required: true,
   weight: 3
 )
