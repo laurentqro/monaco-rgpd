@@ -11,6 +11,20 @@
 
   <%= render "documents/privacy_policy/sections/controller_identity", account: @account %>
 
-  <%# Conditional sections will be added in next tasks %>
+  <%= render "documents/privacy_policy/sections/processing_overview", account: @account %>
+
+  <% if @sections.include?(:hr_administration) %>
+    <%= render "documents/privacy_policy/sections/hr_administration", account: @account %>
+  <% end %>
+
+  <% if @sections.include?(:email_management) %>
+    <%= render "documents/privacy_policy/sections/email_management", account: @account %>
+  <% end %>
+
+  <% if @sections.include?(:telephony) %>
+    <%= render "documents/privacy_policy/sections/telephony", account: @account %>
+  <% end %>
+
+  <%= render "documents/privacy_policy/sections/data_subject_rights", account: @account %>
 </body>
 </html>
