@@ -347,7 +347,7 @@
 
     <!-- Section Intro Text -->
     {#if isFirstQuestionOfSection && currentSection?.intro_text}
-      <IntroText content={currentSection.intro_text} />
+      <IntroText content={currentSection.intro_text} variant="plain" />
     {/if}
 
     <!-- Question Card -->
