@@ -37,19 +37,14 @@ puts "Created questionnaire: #{questionnaire.title}"
 # ============================================================================
 section1_intro = <<~MARKDOWN
   Pour déterminer si vous êtes concerné par la loi n° 1.565, nous devons d'abord
-  qualifier votre situation.
-
-  Cette section permettra de vérifier:
-  - Votre établissement à Monaco
-  - Le type de votre organisation
-  - Votre traitement de données personnelles
+  qualifier la situation de votre organisation.
 
   *Toutes les questions sont obligatoires.*
 MARKDOWN
 
 section1 = questionnaire.sections.create!(
   order_index: 1,
-  title: "Qualification de l'utilisateur",
+  title: "Qualification",
   description: "Informations sur votre organisation et son éligibilité",
   intro_text: section1_intro
 )
