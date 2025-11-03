@@ -19,16 +19,18 @@
 
 {#if content}
   <div class="intro-text bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded-r">
-    <div class="prose prose-sm max-w-none text-gray-700">
+    <div class="text-sm text-gray-700">
       {@html html}
     </div>
   </div>
 {/if}
 
 <style>
-  /* Ensure prose styles work within our scoped component */
+  /* Ensure consistent styling for markdown content */
   .intro-text :global(p) {
     margin-bottom: 0.5rem;
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.25rem;
   }
 
   .intro-text :global(p:last-child) {
@@ -39,6 +41,8 @@
   .intro-text :global(ol) {
     margin: 0.5rem 0;
     padding-left: 1.5rem;
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.25rem;
   }
 
   .intro-text :global(ul) {
