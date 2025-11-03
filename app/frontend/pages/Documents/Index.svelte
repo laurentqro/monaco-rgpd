@@ -1,6 +1,7 @@
 <script>
   import AppLayout from '$lib/layouts/AppLayout.svelte'
   import { router } from '@inertiajs/svelte'
+  import { toast } from 'svelte-sonner'
   import { Button } from '$lib/components/ui/button'
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card'
   import { FileText } from '@lucide/svelte'
@@ -27,13 +28,14 @@
         if (errors.error === 'incomplete_profile') {
           showProfileModal = true
         } else if (errors.error === 'no_completed_questionnaire') {
-          alert('Veuillez compléter le questionnaire avant de générer des documents.')
+          toast.error('Veuillez compléter le questionnaire avant de générer des documents.')
         } else {
-          alert('Une erreur est survenue lors de la génération du document.')
+          toast.error('Une erreur est survenue lors de la génération du document.')
         }
       },
       onSuccess: () => {
         // Document download handled by browser
+        toast.success('Document généré avec succès')
       }
     })
   }

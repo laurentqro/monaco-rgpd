@@ -62,7 +62,7 @@
       </DialogDescription>
     </DialogHeader>
 
-    <form onsubmit={handleSubmit} class="space-y-4">
+    <form onsubmit|preventDefault={handleSubmit} class="space-y-4">
       <div class="space-y-2">
         <Label for="address">Adresse complète</Label>
         <Textarea
