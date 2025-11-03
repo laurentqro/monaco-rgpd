@@ -16,12 +16,25 @@
   let shouldExit = $state(false);
   let exitMessage = $state('');
 
+  // Track if the questionnaire has been started
+  // If there are existing answers, they've already started
+  let hasStarted = $state(false);
+
   // Load existing answers from response
   if (response.answers) {
     response.answers.forEach(answer => {
       answers[answer.question_id] = answer.answer_value;
       answerIds[answer.question_id] = answer.id;
     });
+
+    // If there are answers, they've already started
+    if (response.answers.length > 0) {
+      hasStarted = true;
+    }
+  }
+
+  function startQuestionnaire() {
+    hasStarted = true;
   }
 
   // Flatten all questions from all sections with section info
@@ -229,6 +242,27 @@
         </Button>
       </div>
     </Alert>
+  {:else if !hasStarted}
+    <!-- Start Screen -->
+    <div class="text-center py-12">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">
+        {questionnaire.title}
+      </h1>
+
+      {#if questionnaire.intro_text}
+        <div class="mb-8">
+          <IntroText content={questionnaire.intro_text} />
+        </div>
+      {/if}
+
+      <Button
+        onclick={startQuestionnaire}
+        class="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 h-auto"
+        size="lg"
+      >
+        Commencer l'évaluation
+      </Button>
+    </div>
   {:else}
     <!-- Subway-Line Progress -->
     <div class="mb-8">
@@ -309,13 +343,10 @@
       </div>
     </div>
 
-    <!-- Questionnaire Intro Text (at the very beginning) -->
-    {#if currentQuestionIndex === 0 && questionnaire.intro_text}
-      <IntroText content={questionnaire.intro_text} />
-    {/if}
+    <!-- Questionnaire Intro Text is now shown on start screen, not here -->
 
     <!-- Section Intro Text -->
-    {#if isFirstQuestionOfSection && currentQuestionIndex !== 0 && currentSection?.intro_text}
+    {#if isFirstQuestionOfSection && currentSection?.intro_text}
       <IntroText content={currentSection.intro_text} />
     {/if}
 
