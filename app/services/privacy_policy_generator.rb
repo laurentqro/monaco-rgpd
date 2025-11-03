@@ -63,7 +63,17 @@ class PrivacyPolicyGenerator
   end
 
   def convert_to_pdf(html)
-    Grover.new(html, **pdf_options).to_pdf
+    start_time = Time.current
+    pdf = Grover.new(html, **pdf_options).to_pdf
+
+    duration = (Time.current - start_time).round(2)
+    Rails.logger.info("PDF generated successfully in #{duration}s")
+
+    pdf
+  rescue Grover::Error, Grover::JavaScript::Error => e
+    duration = (Time.current - start_time).round(2)
+    Rails.logger.error("PDF generation failed after #{duration}s: #{e.class} - #{e.message}")
+    raise
   end
 
   def pdf_options
@@ -82,8 +92,9 @@ class PrivacyPolicyGenerator
   end
 
   def footer_html
-    '<div style="font-size:9px; text-align:center; width:100%; color:#666;">
-      <span class="pageNumber"></span> / <span class="totalPages"></span>
-    </div>'
+    # Single-line format for reliable Puppeteer rendering
+    '<div style="font-size:9px;text-align:center;width:100%;color:#666;">' \
+      '<span class="pageNumber"></span> / <span class="totalPages"></span>' \
+      '</div>'
   end
 end
