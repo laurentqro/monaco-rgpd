@@ -67,7 +67,7 @@
     {#if question.help_text}
       <Accordion class="mb-6">
         <AccordionItem value="help">
-          <AccordionTrigger class="text-amber-700 hover:text-amber-800 py-2 text-sm font-normal">
+          <AccordionTrigger class="text-amber-700 hover:text-amber-800 py-2 text-sm font-normal flex-row-reverse justify-end gap-2">
             Afficher l'aide
           </AccordionTrigger>
           <AccordionContent class="bg-amber-50 border border-amber-200 rounded-md p-4 text-amber-900 help-content">
