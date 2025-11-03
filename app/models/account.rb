@@ -84,6 +84,7 @@ class Account < ApplicationRecord
 
   def missing_profile_fields
     fields = []
+    fields << :name if name.blank?
     fields << :address if address.blank?
     fields << :phone if phone.blank?
     fields << :rci_number if rci_number.blank?
