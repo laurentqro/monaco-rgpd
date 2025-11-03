@@ -7,10 +7,25 @@
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
   import IntroText from './IntroText.svelte';
+  import { marked } from 'marked';
+  import DOMPurify from 'dompurify';
 
   let { question, answer = null, onanswer } = $props();
 
   let selectedValue = $state(answer || {});
+
+  // Configure marked for safe rendering
+  marked.setOptions({
+    breaks: true,      // Convert \n to <br>
+    gfm: true,         // GitHub flavored markdown
+    headerIds: false,  // Don't generate header IDs
+    mangle: false      // Don't mangle email addresses
+  });
+
+  // Render help_text as markdown
+  const helpTextHtml = $derived(
+    question.help_text ? DOMPurify.sanitize(marked.parse(question.help_text)) : ''
+  );
 
   function handleYesNo(choiceText) {
     const choice = question.answer_choices.find(c => c.choice_text === choiceText);
@@ -49,7 +64,11 @@
   <CardContent>
     {#if question.help_text}
       <Alert variant="warning" class="mb-6" id="help-{question.id}">
-        <AlertDescription>{question.help_text}</AlertDescription>
+        <AlertDescription>
+          <div class="prose prose-sm max-w-none">
+            {@html helpTextHtml}
+          </div>
+        </AlertDescription>
       </Alert>
     {/if}
 
@@ -128,3 +147,33 @@
     </div>
   </CardContent>
 </Card>
+
+<style>
+  /* Ensure prose styles work for help text markdown */
+  :global(.prose p) {
+    margin-bottom: 0.5rem;
+  }
+
+  :global(.prose p:last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.prose ul),
+  :global(.prose ol) {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  :global(.prose li) {
+    margin-bottom: 0.25rem;
+  }
+
+  :global(.prose strong) {
+    font-weight: 600;
+  }
+
+  :global(.prose a) {
+    color: #d97706;
+    text-decoration: underline;
+  }
+</style>
