@@ -251,7 +251,7 @@
 
       {#if questionnaire.intro_text}
         <div class="mb-8">
-          <IntroText content={questionnaire.intro_text} />
+          <IntroText content={questionnaire.intro_text} variant="plain" />
         </div>
       {/if}
 
