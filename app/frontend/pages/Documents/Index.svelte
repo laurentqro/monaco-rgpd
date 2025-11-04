@@ -1,6 +1,5 @@
 <script>
   import AppLayout from '$lib/layouts/AppLayout.svelte'
-  import { router } from '@inertiajs/svelte'
   import { toast } from 'svelte-sonner'
   import { Button } from '$lib/components/ui/button'
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card'
@@ -22,22 +21,50 @@
     generateDocument(docType)
   }
 
-  function generateDocument(docType) {
-    router.post(`/documents/${docType}`, {}, {
-      onError: (errors) => {
-        if (errors.error === 'incomplete_profile') {
+  async function generateDocument(docType) {
+    try {
+      const response = await fetch(`/documents/${docType}`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content || '',
+          'Accept': 'application/pdf'
+        }
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+
+        if (error.error === 'incomplete_profile') {
           showProfileModal = true
-        } else if (errors.error === 'no_completed_questionnaire') {
+        } else if (error.error === 'no_completed_questionnaire') {
           toast.error('Veuillez compléter le questionnaire avant de générer des documents.')
         } else {
           toast.error('Une erreur est survenue lors de la génération du document.')
         }
-      },
-      onSuccess: () => {
-        // Document download handled by browser
-        toast.success('Document généré avec succès')
+        return
       }
-    })
+
+      // Handle successful PDF download
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+
+      // Extract filename from Content-Disposition header or use default
+      const contentDisposition = response.headers.get('Content-Disposition')
+      const filename = contentDisposition?.match(/filename="(.+)"/)?.[1] || 'document.pdf'
+      a.download = filename
+
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+
+      toast.success('Document généré avec succès')
+    } catch (error) {
+      console.error('Download error:', error)
+      toast.error('Une erreur est survenue lors du téléchargement.')
+    }
   }
 
   function onProfileCompleted() {
