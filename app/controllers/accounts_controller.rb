@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
       redirect_to settings_account_path, notice: "Account updated successfully"
     else
       render inertia: "settings/Account", props: {
-        account: Current.account.as_json(only: [ :id, :name, :subdomain, :plan_type ]),
+        account: Current.account.as_json(only: [ :id, :name, :subdomain, :plan_type, :address, :phone, :rci_number, :legal_form ]),
         is_admin: current_user.admin?,
         errors: Current.account.errors.messages
       }, status: :unprocessable_entity
@@ -34,7 +34,7 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    params.require(:account).permit(:name, :subdomain)
+    params.require(:account).permit(:name, :subdomain, :address, :phone, :rci_number, :legal_form)
   end
 
   # Whitelist profile completion fields (address, phone, RCI, legal form)

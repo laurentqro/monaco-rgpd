@@ -9,8 +9,7 @@ class PrivacyPolicyGenerator
   def generate
     validate_account_completeness!
 
-    html = render_template
-    convert_to_pdf(html)
+    convert_to_pdf(render_html)
   end
 
   def sections_to_include
@@ -63,7 +62,7 @@ class PrivacyPolicyGenerator
     end
   end
 
-  def render_template
+  def render_html
     ApplicationController.render(
       template: "documents/privacy_policy/show",
       layout: false,

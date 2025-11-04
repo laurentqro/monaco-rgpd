@@ -7,7 +7,7 @@ class SettingsController < ApplicationController
 
   def account
     render inertia: "settings/Account", props: {
-      account: current_account.as_json(only: [ :id, :name, :subdomain, :plan_type ]),
+      account: current_account.as_json(only: [ :id, :name, :subdomain, :plan_type, :address, :phone, :rci_number, :legal_form ]),
       is_admin: current_user.admin?
     }
   end
