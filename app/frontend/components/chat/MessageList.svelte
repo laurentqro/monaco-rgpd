@@ -1,9 +1,25 @@
 <script>
   import { onMount, tick } from 'svelte';
+  import { marked } from 'marked';
 
   let { messages, isSending = false } = $props();
 
   let scrollContainer = $state(null);
+
+  // Configure marked for clean output
+  marked.setOptions({
+    breaks: true,  // Convert \n to <br>
+    gfm: true      // GitHub Flavored Markdown
+  });
+
+  function renderMessage(content, role) {
+    // Only parse markdown for assistant messages
+    if (role === 'assistant') {
+      return marked.parse(content);
+    }
+    // User messages are plain text
+    return content;
+  }
 
   async function scrollToBottom() {
     await tick();
@@ -31,7 +47,11 @@
           : 'bg-white border border-gray-200 text-gray-900'}"
       >
         <div class="prose prose-sm max-w-none {message.role === 'user' ? 'prose-invert' : ''}">
-          {message.content}
+          {#if message.role === 'assistant'}
+            {@html renderMessage(message.content, message.role)}
+          {:else}
+            {message.content}
+          {/if}
         </div>
       </div>
     </div>
