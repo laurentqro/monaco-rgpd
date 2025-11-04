@@ -1,4 +1,5 @@
 require "test_helper"
+require "ostruct"
 
 class ConversationOrchestratorTest < ActiveSupport::TestCase
   test "starts new conversation with welcome message" do
@@ -20,7 +21,7 @@ class ConversationOrchestratorTest < ActiveSupport::TestCase
     orchestrator = ConversationOrchestrator.new(conversation)
     initial_count = conversation.messages.count
 
-    # Define a method to stub get_ai_response
+    # Mock the get_ai_response method directly
     def orchestrator.get_ai_response(_message)
       {
         message: "Merci pour cette information.",

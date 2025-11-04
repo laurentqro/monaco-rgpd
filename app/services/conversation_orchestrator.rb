@@ -84,13 +84,11 @@ class ConversationOrchestrator
     system_prompt = build_system_prompt
     conversation_history = build_conversation_history
 
-    response = @client.messages(
-      parameters: {
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 2048,
-        system: system_prompt,
-        messages: conversation_history + [{ role: "user", content: user_message }]
-      }
+    response = @client.messages.create(
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 2048,
+      system: system_prompt,
+      messages: conversation_history + [{ role: "user", content: user_message }]
     )
 
     parse_ai_response(response)
@@ -156,7 +154,8 @@ class ConversationOrchestrator
   end
 
   def parse_ai_response(response)
-    content = response.dig("content", 0, "text")
+    # Official SDK returns response object with content array
+    content = response.content.first.text
 
     # Try to parse as JSON
     begin
