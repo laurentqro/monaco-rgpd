@@ -14,12 +14,19 @@
   }
 </script>
 
-<div class="flex flex-col gap-2 mt-3">
+<div
+  class="flex flex-col gap-2 mt-3"
+  role="radiogroup"
+  aria-label="Réponses suggérées"
+>
   {#each suggestedButtons.buttons as button (button.choice_id)}
     <Button
       onclick={() => handleClick(button)}
       variant={selectedChoiceId === button.choice_id ? "default" : "outline"}
       disabled={disabled || (selectedChoiceId && selectedChoiceId !== button.choice_id)}
+      role="radio"
+      aria-checked={selectedChoiceId === button.choice_id}
+      aria-label="Sélectionner la réponse: {button.label}"
       class="w-full justify-start text-left h-auto py-3 px-4 transition-all {
         selectedChoiceId === button.choice_id && button.label === 'Oui'
           ? 'bg-green-600 hover:bg-green-700'
