@@ -7,6 +7,7 @@
   let { messages, isSending = false, onButtonSelect } = $props();
 
   let scrollContainer = $state(null);
+  let clickedMessageIds = $state(new Set());
 
   // Configure marked for clean output
   marked.setOptions({
@@ -23,6 +24,11 @@
     }
     // User messages are plain text
     return content;
+  }
+
+  function handleButtonSelect(messageId, button) {
+    clickedMessageIds.add(messageId);
+    onButtonSelect(button);
   }
 
   async function scrollToBottom() {
@@ -62,8 +68,8 @@
         {#if message.role === 'assistant' && message.extracted_data?.suggested_buttons}
           <AnswerButtons
             suggestedButtons={message.extracted_data.suggested_buttons}
-            onSelect={onButtonSelect}
-            disabled={isSending}
+            onSelect={(button) => handleButtonSelect(message.id, button)}
+            disabled={isSending || clickedMessageIds.has(message.id)}
           />
         {/if}
       </div>
