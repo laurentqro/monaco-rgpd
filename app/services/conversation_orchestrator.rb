@@ -109,7 +109,10 @@ class ConversationOrchestrator
       4. Guide users through all required sections
 
       RESPONSE FORMAT:
-      Always respond with JSON containing:
+      You MUST respond with ONLY raw JSON. Do NOT use markdown code fences. Do NOT wrap the JSON in ```.
+      Your entire response should be parseable JSON starting with { and ending with }.
+
+      JSON structure:
       {
         "message": "Your conversational response in French",
         "extracted_data": {
@@ -119,6 +122,8 @@ class ConversationOrchestrator
         },
         "next_action": "ask_next_question" | "clarify" | "complete"
       }
+
+      CRITICAL: Return ONLY the JSON object. No markdown, no code fences, no additional text.
 
       Be professional, helpful, and clear. Use the intro_text and help_text from questions to provide context.
     PROMPT
