@@ -9,7 +9,11 @@ class Answer < ApplicationRecord
   after_save :calculate_score
 
   def answer_choice_text
-    answer_choice.choice_text
+    # Look up choice from JSONB answer_value
+    choice_id = answer_value["choice_id"] || answer_value[:choice_id]
+    return nil unless choice_id
+
+    AnswerChoice.find_by(id: choice_id)&.choice_text
   end
 
   private

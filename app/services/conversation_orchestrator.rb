@@ -186,30 +186,39 @@ class ConversationOrchestrator
       next unless answer_data[:confidence].to_f >= 0.7
 
       question = Question.find_by(id: answer_data[:question_id])
-      next unless question
 
-      create_answer_for_question(question, answer_data)
+      unless question
+        Rails.logger.warn("Question not found: #{answer_data[:question_id]}")
+        next
+      end
+
+      begin
+        create_answer_for_question(question, answer_data)
+      rescue ActiveRecord::RecordInvalid => e
+        Rails.logger.error("Failed to create answer for question #{question.id}: #{e.message}")
+        # Continue processing other answers
+      end
     end
   end
 
   def create_answer_for_question(question, answer_data)
+    # Find existing answer or create new one (can only have one answer per question)
+    answer = conversation.response.answers.find_or_initialize_by(question: question)
+
     # Match existing answer_value format used in the codebase
     case question.question_type
     when "yes_no", "single_choice"
       choice = question.answer_choices.find_by(choice_text: answer_data[:value])
       return unless choice
 
-      conversation.response.answers.create!(
-        question: question,
-        answer_value: { choice_id: choice.id }, # Existing format uses choice_id
-        calculated_score: choice.score
-      )
+      answer.answer_value = { choice_id: choice.id }
+      answer.calculated_score = choice.score
+
     when "text_short", "text_long"
-      conversation.response.answers.create!(
-        question: question,
-        answer_value: { text: answer_data[:value] }, # Existing format uses text key
-        calculated_score: 50.0
-      )
+      answer.answer_value = { text: answer_data[:value] }
+      answer.calculated_score = 50.0
     end
+
+    answer.save!
   end
 end
