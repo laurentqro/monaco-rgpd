@@ -1,0 +1,10 @@
+user_response:
+  conversation: active
+  role: 0
+  content: "We process customer data for our e-commerce platform"
+
+with_extraction:
+  conversation: active
+  role: 1
+  content: "I understand you process customer data. Let me record that."
+  extracted_data: { "answers": [{"question_id": 1, "value": "yes"}] }

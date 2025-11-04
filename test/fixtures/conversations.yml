@@ -1,0 +1,5 @@
+active:
+  questionnaire: compliance
+  account: basic
+  status: 0
+  started_at: <%= 1.hour.ago %>
