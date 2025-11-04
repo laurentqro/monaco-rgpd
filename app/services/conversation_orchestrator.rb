@@ -33,10 +33,13 @@ class ConversationOrchestrator
     # Get AI response
     ai_response = get_ai_response(content)
 
-    # Create assistant message with extraction
+    # Create assistant message with extraction and suggested buttons
+    assistant_data = ai_response[:extracted_data] || {}
+    assistant_data[:suggested_buttons] = ai_response[:suggested_buttons] if ai_response[:suggested_buttons].present?
+
     create_assistant_message(
       ai_response[:message],
-      extracted_data: ai_response[:extracted_data]
+      extracted_data: assistant_data
     )
 
     # Create Answer records if data was extracted
@@ -115,6 +118,13 @@ class ConversationOrchestrator
       JSON structure:
       {
         "message": "Your conversational response in French",
+        "suggested_buttons": {
+          "question_id": 123,
+          "buttons": [
+            {"choice_id": 1, "label": "Oui"},
+            {"choice_id": 2, "label": "Non"}
+          ]
+        },
         "extracted_data": {
           "answers": [
             {"question_id": 123, "answer_type": "yes_no", "value": "Oui", "confidence": 0.95}
@@ -122,6 +132,13 @@ class ConversationOrchestrator
         },
         "next_action": "ask_next_question" | "clarify" | "complete"
       }
+
+      WHEN TO INCLUDE suggested_buttons:
+      - Include when asking a yes_no question (show both Oui/Non buttons)
+      - Include when asking a single_choice question (show all available choices as buttons)
+      - Do NOT include for text_short or text_long questions (user should type freely)
+      - Do NOT include during clarification or follow-up questions
+      - Only suggest buttons from the actual answer_choices in the questionnaire structure
 
       CRITICAL: Return ONLY the JSON object. No markdown, no code fences, no additional text.
 
@@ -168,7 +185,14 @@ class ConversationOrchestrator
 
     # Try to parse as JSON
     begin
-      JSON.parse(content).deep_symbolize_keys
+      parsed = JSON.parse(content).deep_symbolize_keys
+
+      # Validate suggested_buttons if present
+      if parsed[:suggested_buttons].present?
+        validate_suggested_buttons(parsed[:suggested_buttons])
+      end
+
+      parsed
     rescue JSON::ParserError
       # Fallback if AI didn't return proper JSON
       {
@@ -177,6 +201,32 @@ class ConversationOrchestrator
         next_action: "ask_next_question"
       }
     end
+  end
+
+  def validate_suggested_buttons(suggested_buttons)
+    # Ensure structure is valid
+    unless suggested_buttons[:question_id].present? && suggested_buttons[:buttons].is_a?(Array)
+      Rails.logger.warn("Invalid suggested_buttons format: #{suggested_buttons}")
+      return false
+    end
+
+    # Ensure question exists
+    question = Question.find_by(id: suggested_buttons[:question_id])
+    unless question
+      Rails.logger.warn("Suggested buttons for non-existent question: #{suggested_buttons[:question_id]}")
+      return false
+    end
+
+    # Ensure all choice_ids are valid
+    choice_ids = suggested_buttons[:buttons].map { |b| b[:choice_id] }.compact
+    valid_choice_ids = question.answer_choices.pluck(:id)
+
+    unless (choice_ids - valid_choice_ids).empty?
+      Rails.logger.warn("Suggested buttons contain invalid choice_ids for question #{question.id}")
+      return false
+    end
+
+    true
   end
 
   def create_answers_from_extraction(extracted_data)
