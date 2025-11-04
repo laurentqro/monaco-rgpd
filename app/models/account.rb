@@ -50,6 +50,10 @@ class Account < ApplicationRecord
   # Set compliance_mode based on account_type
   before_validation :set_compliance_mode, on: :create
 
+  def display_name
+    "#{name} #{legal_form.upcase}"
+  end
+
   def subscribed?
     active_subscription.present?
   end

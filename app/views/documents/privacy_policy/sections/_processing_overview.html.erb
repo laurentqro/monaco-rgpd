@@ -2,7 +2,24 @@
   <h2>Article II - Traitements concernés</h2>
 
   <p>
-    <%= account.name %> met en œuvre les traitements des données personnelles
-    vous concernant pour les finalités suivantes :
+    <%= account.display_name %> met en œuvre les traitements des données personnelles vous concernant pour les finalités suivantes :
+
+    <ul>
+      <% if @sections.include?(:hr_administration) %>
+        <li>La gestion administrative des ressources humaines (A)</li>
+      <% end %>
+
+      <% if @sections.include?(:email_management) %>
+        <li>La gestion de la messagerie électronique professionnelle (B)</li>
+      <% end %>
+
+      <% if @sections.include?(:telephony) %>
+        <li>La gestion de la téléphonie fixe et mobile (C)</li>
+      <% end %>
+    </ul>
+  </p>
+
+  <p>
+    Pour chacun de ces traitements, nous vous informons de : la ou les finalités, le fondement juridique, les catégories de données et données traitées, des destinataires ou catégories de destinataires, et des durées de conservation.
   </p>
 </div>
