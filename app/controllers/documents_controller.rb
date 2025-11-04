@@ -21,7 +21,8 @@ class DocumentsController < ApplicationController
         overall_score: latest_response.compliance_assessment.overall_score.round(1)
       } : nil,
       available_documents: available_documents,
-      account_complete: Current.account.complete_for_document_generation?
+      account_complete: Current.account.complete_for_document_generation?,
+      account: Current.account.as_json(only: [ :address, :phone, :rci_number, :legal_form ])
     }
   end
 

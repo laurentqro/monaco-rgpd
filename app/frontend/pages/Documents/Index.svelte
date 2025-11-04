@@ -6,7 +6,7 @@
   import { FileText } from '@lucide/svelte'
   import ProfileCompletionModal from './ProfileCompletionModal.svelte'
 
-  let { available_documents = [], account_complete = false } = $props()
+  let { available_documents = [], account_complete = false, account = {} } = $props()
 
   let showProfileModal = $state(false)
   let pendingDocumentType = $state(null)
@@ -127,6 +127,7 @@
 
   <ProfileCompletionModal
     bind:open={showProfileModal}
+    {account}
     oncompleted={onProfileCompleted}
     oncancel={() => showProfileModal = false}
   />

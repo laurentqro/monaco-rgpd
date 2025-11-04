@@ -7,13 +7,13 @@
   import { Textarea } from '$lib/components/ui/textarea'
   import * as NativeSelect from '$lib/components/ui/native-select/index.js'
 
-  let { open = $bindable(false), oncompleted, oncancel } = $props()
+  let { open = $bindable(false), account = {}, oncompleted, oncancel } = $props()
 
   const form = useForm({
-    address: '',
-    phone: '',
-    rci_number: '',
-    legal_form: ''
+    address: account.address || '',
+    phone: account.phone || '',
+    rci_number: account.rci_number || '',
+    legal_form: account.legal_form || ''
   })
 
   const legalForms = [
