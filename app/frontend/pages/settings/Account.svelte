@@ -6,9 +6,9 @@
   import { Input } from '$lib/components/ui/input'
   import { Label } from '$lib/components/ui/label'
   import { Textarea } from '$lib/components/ui/textarea'
-  import { Select, SelectContent, SelectItem, SelectTrigger } from '$lib/components/ui/select'
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card'
   import { Alert, AlertDescription } from '$lib/components/ui/alert'
+  import * as NativeSelect from '$lib/components/ui/native-select/index.js'
 
   let { account, is_admin } = $props()
 
@@ -32,18 +32,6 @@
     { value: 'ei', label: 'Entreprise Individuelle (EI)' },
     { value: 'sci', label: 'Société Civile Immobilière (SCI)' }
   ]
-
-  let selectedLegalForm = $state(
-    legalForms.find(f => f.value === account.legal_form) ||
-    { value: '', label: 'Sélectionnez une forme juridique' }
-  )
-
-  function handleLegalFormChange(selected) {
-    if (selected) {
-      selectedLegalForm = selected
-      $form.legal_form = selected.value
-    }
-  }
 
   function submit(event) {
     event.preventDefault()
@@ -158,21 +146,12 @@
             <!-- Legal Form -->
             <div class="space-y-2">
               <Label for="legal_form">Forme juridique</Label>
-              <Select
-                selected={selectedLegalForm}
-                onSelectedChange={handleLegalFormChange}
-                disabled={!is_admin}
-                multiple={false}
-              >
-                <SelectTrigger>
-                  {selectedLegalForm.label}
-                </SelectTrigger>
-                <SelectContent>
-                  {#each legalForms as legalForm}
-                    <SelectItem value={legalForm.value} label={legalForm.label} />
-                  {/each}
-                </SelectContent>
-              </Select>
+              <NativeSelect.Root id="legal_form" bind:value={$form.legal_form} disabled={!is_admin}>
+                <NativeSelect.Option value="">Sélectionnez une forme juridique</NativeSelect.Option>
+                {#each legalForms as legalForm (legalForm.value)}
+                  <NativeSelect.Option value={legalForm.value}>{legalForm.label}</NativeSelect.Option>
+                {/each}
+              </NativeSelect.Root>
               {#if $form.errors.legal_form}
                 <p class="text-sm text-destructive">{$form.errors.legal_form}</p>
               {/if}
