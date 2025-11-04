@@ -18,9 +18,10 @@ class AiChatFlowTest < ActionDispatch::IntegrationTest
   test "complete chat conversation flow" do
     # Start conversation
     post conversations_path, params: { questionnaire_id: @questionnaire.id }
-    assert_response :success
+    assert_response :redirect
 
     conversation = Conversation.last
+    assert_redirected_to conversation_path(conversation)
     assert_equal @questionnaire, conversation.questionnaire
     assert_equal @account, conversation.account
     assert_equal 1, conversation.messages.count
