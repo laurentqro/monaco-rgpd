@@ -110,7 +110,7 @@
 
       <div class="space-y-2">
         <Label for="legal_form">Forme juridique</Label>
-        <Select selected={selectedLegalForm} onSelectedChange={handleLegalFormChange}>
+        <Select selected={selectedLegalForm} onSelectedChange={handleLegalFormChange} multiple={false}>
           <SelectTrigger>
             {selectedLegalForm.label}
           </SelectTrigger>

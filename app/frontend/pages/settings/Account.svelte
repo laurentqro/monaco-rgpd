@@ -162,6 +162,7 @@
                 selected={selectedLegalForm}
                 onSelectedChange={handleLegalFormChange}
                 disabled={!is_admin}
+                multiple={false}
               >
                 <SelectTrigger>
                   {selectedLegalForm.label}
