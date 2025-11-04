@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     collection do
       # RESTful document generation: POST /documents/:document_type
       post ":document_type", action: :create, as: :generate
+      get ":document_type", action: :show
     end
   end
 

@@ -4,11 +4,8 @@
   <p>
     Le responsable du traitement est <%= account.name %>,
     <%= account.legal_form_full_name %>, immatriculée au Répertoire du
-    Commerce et de l'Industrie de Monaco sous le numéro <%= account.rci_number %>.
-  </p>
-
-  <p>
-    <strong>Adresse :</strong> <%= simple_format(account.address) %>
+    Commerce et de l'Industrie de Monaco sous le numéro <%= account.rci_number %>,
+    sise <%= simple_format(account.address) %>
   </p>
 
   <p>

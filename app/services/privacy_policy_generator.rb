@@ -53,10 +53,11 @@ class PrivacyPolicyGenerator
   def is_yes_answer?(answer_value)
     return false unless answer_value
 
-    # Handle both hash format (production: {choice_id: 678}) and string format (tests: "Oui")
+    # Handle both hash format (production: {choice_id: X}) and string format (tests: "Oui")
     if answer_value.is_a?(Hash)
       choice_id = answer_value["choice_id"] || answer_value[:choice_id]
-      choice_id == 678  # 678 is "Oui", 679 is "Non"
+      choice = AnswerChoice.find_by(id: choice_id)
+      choice&.choice_text == "Oui"
     else
       answer_value == "Oui"
     end

@@ -62,7 +62,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_response :success
+    assert_redirected_to documents_path
     @account.reload
     assert_equal "12 Avenue des Spélugues, 98000 Monaco", @account.address
     assert_equal "+377 93 15 26 00", @account.phone
@@ -86,7 +86,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_response :success
+    assert_redirected_to documents_path
     @account.reload
     assert_equal "12 Avenue des Spélugues", @account.address
     assert_equal "+377 93 15 26 00", @account.phone

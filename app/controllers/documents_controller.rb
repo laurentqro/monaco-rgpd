@@ -26,6 +26,12 @@ class DocumentsController < ApplicationController
     }
   end
 
+  def show
+    @account = Account.first
+    @sections = [:hr_administration, :email_management, :telephony]
+    render "documents/privacy_policy/show"
+  end
+
   def create
     document_type = params[:document_type]
 
@@ -95,12 +101,11 @@ class DocumentsController < ApplicationController
 
       return false unless answer
 
-      # Handle both hash format (production: {choice_id: 678}) and string format (tests: "Oui")
+      # Handle both hash format (production: {choice_id: X}) and string format (tests: "Oui")
       if answer.answer_value.is_a?(Hash)
-        # For yes_no questions, choice_id 678 appears to be "Oui" based on the data
-        # We check if choice_id exists and is not 679 (which would be "Non")
         choice_id = answer.answer_value["choice_id"] || answer.answer_value[:choice_id]
-        choice_id == 678
+        choice = AnswerChoice.find_by(id: choice_id)
+        choice&.choice_text == "Oui"
       else
         answer.answer_value == "Oui"
       end
