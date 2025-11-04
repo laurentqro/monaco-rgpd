@@ -56,6 +56,11 @@
       isSending = false;
     }
   }
+
+  async function handleButtonSelect(button) {
+    // When user clicks a button, send the button label as their message
+    await handleSendMessage(button.label);
+  }
 </script>
 
 <div class="flex h-screen">
@@ -67,7 +72,7 @@
       <p class="text-sm text-gray-600">{questionnaire.description}</p>
     </header>
 
-    <MessageList {messages} {isSending} />
+    <MessageList {messages} {isSending} onButtonSelect={handleButtonSelect} />
 
     <ChatInput
       onSend={handleSendMessage}

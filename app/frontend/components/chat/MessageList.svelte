@@ -2,8 +2,9 @@
   import { onMount, tick } from 'svelte';
   import { marked } from 'marked';
   import DOMPurify from 'dompurify';
+  import AnswerButtons from './AnswerButtons.svelte';
 
-  let { messages, isSending = false } = $props();
+  let { messages, isSending = false, onButtonSelect } = $props();
 
   let scrollContainer = $state(null);
 
@@ -56,6 +57,15 @@
             {message.content}
           {/if}
         </div>
+
+        <!-- Render suggested buttons for assistant messages -->
+        {#if message.role === 'assistant' && message.extracted_data?.suggested_buttons}
+          <AnswerButtons
+            suggestedButtons={message.extracted_data.suggested_buttons}
+            onSelect={onButtonSelect}
+            disabled={isSending}
+          />
+        {/if}
       </div>
     </div>
   {/each}
