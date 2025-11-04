@@ -31,6 +31,8 @@
   function handleSubmit(event) {
     event.preventDefault()
     $form.patch('/account/complete_profile', {
+      preserveState: true,
+      preserveScroll: true,
       onSuccess: () => {
         oncompleted?.()
       },

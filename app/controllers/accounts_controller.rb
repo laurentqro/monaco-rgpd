@@ -17,11 +17,13 @@ class AccountsController < ApplicationController
   # Users can only update their own account profile
   def complete_profile
     if Current.account.update(profile_params)
-      render json: { success: true }
+      # Redirect back to documents page
+      # Frontend uses preserveState: true to maintain modal and pendingDocumentType state
+      redirect_to documents_path
     else
-      render json: {
-        errors: Current.account.errors.full_messages
-      }, status: :unprocessable_entity
+      # Inertia will preserve state and display errors in form
+      redirect_back fallback_location: documents_path,
+        inertia: { errors: Current.account.errors.messages }
     end
   end
 
