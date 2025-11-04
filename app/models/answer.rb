@@ -8,6 +8,10 @@ class Answer < ApplicationRecord
   # Calculate score based on question type and answer
   after_save :calculate_score
 
+  def answer_choice_text
+    answer_choice.choice_text
+  end
+
   private
 
   def calculate_score

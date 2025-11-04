@@ -23,7 +23,7 @@
   }
 
   function generateDocument(docType) {
-    router.post(`/documents/generate_${docType}`, {}, {
+    router.post(`/documents/${docType}`, {}, {
       onError: (errors) => {
         if (errors.error === 'incomplete_profile') {
           showProfileModal = true

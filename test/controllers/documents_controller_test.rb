@@ -28,28 +28,28 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "generate_privacy_policy returns error when account incomplete" do
+  test "create returns error when account incomplete" do
     @account.update(address: nil)
 
-    post generate_privacy_policy_documents_path, as: :json
+    post generate_documents_path("privacy_policy_employees"), as: :json
 
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
     assert_equal "incomplete_profile", json["error"]
   end
 
-  test "generate_privacy_policy returns error when no completed questionnaire" do
+  test "create returns error when no completed questionnaire" do
     # Ensure no completed responses exist
     @account.responses.destroy_all
 
-    post generate_privacy_policy_documents_path, as: :json
+    post generate_documents_path("privacy_policy_employees"), as: :json
 
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
     assert_equal "no_completed_questionnaire", json["error"]
   end
 
-  test "generate_privacy_policy downloads PDF when account complete" do
+  test "create downloads PDF when account complete" do
     # Create completed response
     response = @account.responses.create!(
       questionnaire: questionnaires(:compliance),
@@ -57,7 +57,7 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
       status: :completed
     )
 
-    post generate_privacy_policy_documents_path
+    post generate_documents_path("privacy_policy_employees")
 
     assert_response :success
     assert_equal "application/pdf", @response.media_type

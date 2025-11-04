@@ -2,8 +2,10 @@ class Response < ApplicationRecord
   belongs_to :questionnaire
   belongs_to :account
   belongs_to :respondent, class_name: "User"
-  has_many :answers, dependent: :destroy
+
   has_one :compliance_assessment, dependent: :destroy
+
+  has_many :answers, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :processing_activities, dependent: :nullify
 

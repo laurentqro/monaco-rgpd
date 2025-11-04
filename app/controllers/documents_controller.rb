@@ -25,7 +25,15 @@ class DocumentsController < ApplicationController
     }
   end
 
-  def generate_privacy_policy
+  def create
+    document_type = params[:document_type]
+
+    # Currently only support privacy_policy_employees
+    unless document_type == "privacy_policy_employees"
+      return render json: { error: "unsupported_document_type" },
+        status: :bad_request
+    end
+
     unless Current.account.complete_for_document_generation?
       return render json: {
         error: "incomplete_profile",

@@ -39,9 +39,10 @@ Rails.application.routes.draw do
   resources :processing_activities, path: "registre-traitements", only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
 
   # Documents
-  resources :documents, only: [ :index, :show, :create ] do
+  resources :documents, only: [ :index, :show ] do
     collection do
-      post :generate_privacy_policy
+      # RESTful document generation: POST /documents/:document_type
+      post ":document_type", action: :create, as: :generate
     end
   end
 
