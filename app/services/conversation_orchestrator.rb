@@ -157,6 +157,10 @@ class ConversationOrchestrator
     # Official SDK returns response object with content array
     content = response.content.first.text
 
+    # Strip markdown code fences if present (```json ... ``` or ``` ... ```)
+    content = content.strip
+    content = content.gsub(/\A```(?:json)?\s*\n?/, "").gsub(/\n?```\z/, "")
+
     # Try to parse as JSON
     begin
       JSON.parse(content).deep_symbolize_keys
