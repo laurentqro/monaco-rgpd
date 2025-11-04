@@ -5,6 +5,7 @@ class Account < ApplicationRecord
   has_one :active_subscription, -> { where(status: "active") }, class_name: "Subscription"
   has_many :compliance_assessments, dependent: :destroy
   has_many :responses, dependent: :destroy
+  has_many :conversations, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :processing_activities, dependent: :destroy
 

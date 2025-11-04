@@ -32,6 +32,11 @@ Rails.application.routes.draw do
     end
   end
 
+  # AI Chat Conversations
+  resources :conversations, only: [ :create, :show ] do
+    resources :messages, only: [ :create ], controller: "conversation_messages"
+  end
+
   # Dashboard
   get "dashboard", to: "dashboard#show"
 
