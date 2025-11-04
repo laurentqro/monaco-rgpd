@@ -11,6 +11,12 @@
   function startQuestionnaire(questionnaireId) {
     router.post(`/questionnaires/${questionnaireId}/responses`)
   }
+
+  function startChat(questionnaireId) {
+    router.post('/conversations', {
+      questionnaire_id: questionnaireId
+    })
+  }
 </script>
 
 <AppLayout>
@@ -53,12 +59,19 @@
               <CardTitle class="mt-4">{questionnaire.title}</CardTitle>
               <CardDescription>{questionnaire.description}</CardDescription>
             </CardHeader>
-            <CardFooter class="mt-auto">
+            <CardFooter class="mt-auto flex-col gap-2">
               <Button
+                class="w-full"
+                onclick={() => startChat(questionnaire.id)}
+              >
+                💬 Mode conversation
+              </Button>
+              <Button
+                variant="outline"
                 class="w-full"
                 onclick={() => startQuestionnaire(questionnaire.id)}
               >
-                Commencer
+                📋 Mode formulaire
                 <ChevronRight class="ml-2 size-4" />
               </Button>
             </CardFooter>
