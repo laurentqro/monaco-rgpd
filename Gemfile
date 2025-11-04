@@ -28,6 +28,9 @@ gem "prawn", "~> 2.4"
 gem "prawn-table", "~> 0.2"
 gem "grover"
 
+# AI integration
+gem "anthropic", "~> 0.3"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
