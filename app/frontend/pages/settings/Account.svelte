@@ -6,7 +6,7 @@
   import { Input } from '$lib/components/ui/input'
   import { Label } from '$lib/components/ui/label'
   import { Textarea } from '$lib/components/ui/textarea'
-  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '$lib/components/ui/select'
+  import { Select, SelectContent, SelectItem, SelectTrigger } from '$lib/components/ui/select'
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card'
   import { Alert, AlertDescription } from '$lib/components/ui/alert'
 
