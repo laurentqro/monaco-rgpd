@@ -32,7 +32,12 @@
         body: JSON.stringify({ message: { content } })
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
       const data = await response.json();
+      console.log('Received AI response:', data);
 
       // Add assistant response
       messages = [...messages, data.message];
@@ -44,6 +49,7 @@
       }
     } catch (error) {
       console.error('Error sending message:', error);
+      alert(`Erreur: ${error.message}`);
       // Remove optimistic message
       messages = messages.slice(0, -1);
     } finally {
