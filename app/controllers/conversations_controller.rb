@@ -16,7 +16,7 @@ class ConversationsController < ApplicationController
     # Link conversation to response
     orchestrator.conversation.update!(response: response)
 
-    render_conversation(orchestrator.conversation)
+    redirect_to conversation_path(orchestrator.conversation)
   end
 
   def show

@@ -13,7 +13,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
       post conversations_path, params: { questionnaire_id: @questionnaire.id }
     end
 
-    assert_response :success
+    conversation = Conversation.last
+    assert_redirected_to conversation_path(conversation)
   end
 
   test "shows existing conversation" do
