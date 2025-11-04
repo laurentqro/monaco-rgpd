@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_03_150158) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_04_204517) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -155,6 +155,22 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_03_150158) do
     t.index ["status"], name: "index_compliance_assessments_on_status"
   end
 
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.bigint "questionnaire_id", null: false
+    t.bigint "response_id"
+    t.datetime "started_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "created_at"], name: "index_conversations_on_account_id_and_created_at"
+    t.index ["account_id"], name: "index_conversations_on_account_id"
+    t.index ["questionnaire_id"], name: "index_conversations_on_questionnaire_id"
+    t.index ["response_id"], name: "index_conversations_on_response_id"
+  end
+
   create_table "data_category_details", force: :cascade do |t|
     t.integer "category_type", null: false
     t.datetime "created_at", null: false
@@ -231,6 +247,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_03_150158) do
     t.bigint "user_id", null: false
     t.index ["token"], name: "index_magic_links_on_token", unique: true
     t.index ["user_id"], name: "index_magic_links_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content", null: false
+    t.bigint "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.jsonb "extracted_data", default: {}, null: false
+    t.bigint "question_id"
+    t.integer "role", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id", "created_at"], name: "index_messages_on_conversation_id_and_created_at"
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["question_id"], name: "index_messages_on_question_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -548,6 +577,9 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_03_150158) do
   add_foreign_key "compliance_area_scores", "compliance_assessments"
   add_foreign_key "compliance_assessments", "accounts"
   add_foreign_key "compliance_assessments", "responses", on_delete: :cascade
+  add_foreign_key "conversations", "accounts"
+  add_foreign_key "conversations", "questionnaires"
+  add_foreign_key "conversations", "responses"
   add_foreign_key "data_category_details", "processing_activities"
   add_foreign_key "document_template_versions", "document_templates"
   add_foreign_key "documents", "accounts"
@@ -556,6 +588,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_03_150158) do
   add_foreign_key "logic_rules", "questions", column: "target_question_id"
   add_foreign_key "logic_rules", "sections", column: "target_section_id"
   add_foreign_key "magic_links", "users"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "questions"
   add_foreign_key "notifications", "users"
   add_foreign_key "processing_activities", "accounts"
   add_foreign_key "processing_activities", "responses"
