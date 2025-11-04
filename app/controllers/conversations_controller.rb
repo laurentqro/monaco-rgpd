@@ -30,7 +30,13 @@ class ConversationsController < ApplicationController
     render inertia: "Chat/Show",
       props: {
         conversation: conversation.as_json(include: :messages),
-        questionnaire: conversation.questionnaire
+        questionnaire: conversation.questionnaire.as_json(
+          include: {
+            sections: {
+              include: :questions
+            }
+          }
+        )
       }
   end
 end

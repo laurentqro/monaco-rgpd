@@ -10,9 +10,9 @@
   );
 
   let totalQuestions = $derived(
-    questionnaire.sections.reduce((sum, section) =>
-      sum + section.questions.length, 0
-    )
+    questionnaire.sections?.reduce((sum, section) =>
+      sum + (section.questions?.length || 0), 0
+    ) || 0
   );
 
   let progress = $derived(
@@ -37,11 +37,11 @@
   </div>
 
   <div class="space-y-4">
-    {#each questionnaire.sections as section}
+    {#each questionnaire.sections || [] as section}
       <div>
         <h3 class="font-medium text-sm mb-2">{section.title}</h3>
         <div class="space-y-1">
-          {#each section.questions as question}
+          {#each section.questions || [] as question}
             <div class="flex items-center gap-2">
               {#if answeredQuestions.has(question.id)}
                 <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
