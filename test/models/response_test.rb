@@ -30,4 +30,16 @@ class ResponseTest < ActiveSupport::TestCase
     assert_equal response, answer.response
     assert_equal "Oui", answer.answer_value["value"]
   end
+
+  test "can have a conversation" do
+    response = responses(:one)
+    conversation = Conversation.create!(
+      response: response,
+      questionnaire: response.questionnaire,
+      account: response.account,
+      status: :completed,
+      started_at: 1.hour.ago
+    )
+    assert_equal conversation, response.conversation
+  end
 end

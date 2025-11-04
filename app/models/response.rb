@@ -4,6 +4,7 @@ class Response < ApplicationRecord
   belongs_to :respondent, class_name: "User"
 
   has_one :compliance_assessment, dependent: :destroy
+  has_one :conversation, dependent: :nullify
 
   has_many :answers, dependent: :destroy
   has_many :documents, dependent: :destroy
