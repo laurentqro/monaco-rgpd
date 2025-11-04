@@ -1,6 +1,7 @@
 <script>
   import { onMount, tick } from 'svelte';
   import { marked } from 'marked';
+  import DOMPurify from 'dompurify';
 
   let { messages, isSending = false } = $props();
 
@@ -8,14 +9,16 @@
 
   // Configure marked for clean output
   marked.setOptions({
-    breaks: true,  // Convert \n to <br>
-    gfm: true      // GitHub Flavored Markdown
+    breaks: true,       // Convert \n to <br>
+    gfm: true,          // GitHub Flavored Markdown
+    headerIds: false,   // Don't generate header IDs
+    mangle: false       // Don't mangle email addresses
   });
 
   function renderMessage(content, role) {
     // Only parse markdown for assistant messages
     if (role === 'assistant') {
-      return marked.parse(content);
+      return DOMPurify.sanitize(marked.parse(content));
     }
     // User messages are plain text
     return content;
@@ -69,3 +72,52 @@
     </div>
   {/if}
 </div>
+
+<style>
+  /* Style markdown content in assistant messages */
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose :global(ul) {
+    list-style-type: disc;
+  }
+
+  .prose :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.25rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(strong) {
+    font-weight: 600;
+  }
+
+  .prose :global(em) {
+    font-style: italic;
+  }
+
+  .prose :global(code) {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+
+  /* Invert colors for user messages */
+  .prose-invert :global(code) {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+</style>
