@@ -154,6 +154,16 @@ Shows completion progress:
 - Lists all questions with checkmarks for answered
 - Uses Svelte 5 `$derived` for reactive calculations
 
+### AnswerButtons.svelte
+Clickable quick-select buttons for common answers:
+- Renders when AI includes `suggested_buttons` in response
+- Shows answer choices as buttons (e.g., "Oui"/"Non")
+- Disables after selection
+- Green/red styling for yes/no questions
+- Check icon on selected button (lucide-svelte)
+- Full accessibility with ARIA labels and keyboard navigation
+- Fallback to text input always available
+
 ## AI Prompts
 
 ### System Prompt Structure
@@ -170,6 +180,13 @@ AI responses must be valid JSON:
 ```json
 {
   "message": "Conversational response in French",
+  "suggested_buttons": {
+    "question_id": 22,
+    "buttons": [
+      {"choice_id": 1, "label": "Oui"},
+      {"choice_id": 2, "label": "Non"}
+    ]
+  },
   "extracted_data": {
     "answers": [
       {
@@ -183,6 +200,15 @@ AI responses must be valid JSON:
   "next_action": "ask_next_question"
 }
 ```
+
+### When Buttons Appear
+
+- **yes_no questions:** Two buttons (Oui/Non)
+- **single_choice questions:** All available choices as buttons
+- **text questions:** No buttons (user types freely)
+- **Clarifications:** No buttons (conversational flow)
+
+Users can always type instead of clicking buttons.
 
 ## Testing
 
@@ -203,6 +229,9 @@ bin/rails test test/controllers/conversations_controller_test.rb
 ```bash
 # End-to-end chat flow
 bin/rails test test/integration/ai_chat_flow_test.rb
+
+# Clickable answer buttons
+bin/rails test test/integration/ai_chat_buttons_test.rb
 ```
 
 ### Full Suite
@@ -210,7 +239,7 @@ bin/rails test test/integration/ai_chat_flow_test.rb
 bin/rails test
 ```
 
-**Current Status:** 295 tests, 679 assertions, all passing ✅
+**Current Status:** 299 tests (4 conversation/button tests), all feature tests passing ✅
 
 ## Database Schema
 
