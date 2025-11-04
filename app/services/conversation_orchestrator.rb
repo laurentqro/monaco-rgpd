@@ -193,22 +193,23 @@ class ConversationOrchestrator
   end
 
   def create_answer_for_question(question, answer_data)
-    # Answer model uses answer_value JSONB field with format: { value: "..." }
-    conversation.response.answers.create!(
-      question: question,
-      answer_value: { value: answer_data[:value] },
-      calculated_score: calculate_score_for_answer(question, answer_data[:value])
-    )
-  end
+    # Match existing answer_value format used in the codebase
+    case question.question_type
+    when "yes_no", "single_choice"
+      choice = question.answer_choices.find_by(choice_text: answer_data[:value])
+      return unless choice
 
-  def calculate_score_for_answer(question, value)
-    # For yes/no questions, find the matching choice and use its score
-    if question.question_type == "yes_no" || question.question_type == "single_choice"
-      choice = question.answer_choices.find_by(choice_text: value)
-      return choice&.score || 0.0
+      conversation.response.answers.create!(
+        question: question,
+        answer_value: { choice_id: choice.id }, # Existing format uses choice_id
+        calculated_score: choice.score
+      )
+    when "text_short", "text_long"
+      conversation.response.answers.create!(
+        question: question,
+        answer_value: { text: answer_data[:value] }, # Existing format uses text key
+        calculated_score: 50.0
+      )
     end
-
-    # For text questions, default to neutral score
-    50.0
   end
 end
