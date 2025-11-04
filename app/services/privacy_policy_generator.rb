@@ -33,15 +33,15 @@ class PrivacyPolicyGenerator
   end
 
   def has_employees?
-    answer_for("Avez-vous du personnel ?") == "Oui"
+    is_yes_answer?(answer_for("Avez-vous du personnel ?"))
   end
 
   def has_professional_email?
-    has_employees? && answer_for("Vos employés disposent-ils d'une adresse email professionnelle ?") == "Oui"
+    has_employees? && is_yes_answer?(answer_for("Vos employés disposent-ils d'une adresse email professionnelle ?"))
   end
 
   def has_telephony?
-    has_employees? && answer_for("Vos employés disposent-ils d'une ligne directe (fixe ou mobile) ?") == "Oui"
+    has_employees? && is_yes_answer?(answer_for("Vos employés disposent-ils d'une ligne directe (fixe ou mobile) ?"))
   end
 
   def answer_for(question_text)
@@ -49,6 +49,18 @@ class PrivacyPolicyGenerator
       .joins(:question)
       .find_by(questions: { question_text: question_text })
     answer&.answer_value
+  end
+
+  def is_yes_answer?(answer_value)
+    return false unless answer_value
+
+    # Handle both hash format (production: {choice_id: 678}) and string format (tests: "Oui")
+    if answer_value.is_a?(Hash)
+      choice_id = answer_value["choice_id"] || answer_value[:choice_id]
+      choice_id == 678  # 678 is "Oui", 679 is "Non"
+    else
+      answer_value == "Oui"
+    end
   end
 
   def render_template

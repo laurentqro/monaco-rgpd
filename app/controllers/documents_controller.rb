@@ -83,7 +83,18 @@ class DocumentsController < ApplicationController
       answer = response.answers
         .joins(:question)
         .find_by(questions: { question_text: "Avez-vous du personnel ?" })
-      answer&.answer_value == "Oui"
+
+      return false unless answer
+
+      # Handle both hash format (production: {choice_id: 678}) and string format (tests: "Oui")
+      if answer.answer_value.is_a?(Hash)
+        # For yes_no questions, choice_id 678 appears to be "Oui" based on the data
+        # We check if choice_id exists and is not 679 (which would be "Non")
+        choice_id = answer.answer_value["choice_id"] || answer.answer_value[:choice_id]
+        choice_id == 678
+      else
+        answer.answer_value == "Oui"
+      end
     end
   end
 
