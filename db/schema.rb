@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_05_165125) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_05_165159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -126,6 +126,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_05_165125) do
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["response_id", "question_id"], name: "index_answers_on_response_id_and_question_id", unique: true
     t.index ["response_id"], name: "index_answers_on_response_id"
+    t.check_constraint "(\nCASE\n    WHEN answer_choice_id IS NOT NULL THEN 1\n    ELSE 0\nEND +\nCASE\n    WHEN answer_text IS NOT NULL AND answer_text <> ''::text THEN 1\n    ELSE 0\nEND +\nCASE\n    WHEN answer_rating IS NOT NULL THEN 1\n    ELSE 0\nEND +\nCASE\n    WHEN answer_number IS NOT NULL THEN 1\n    ELSE 0\nEND +\nCASE\n    WHEN answer_date IS NOT NULL THEN 1\n    ELSE 0\nEND +\nCASE\n    WHEN answer_boolean IS NOT NULL THEN 1\n    ELSE 0\nEND) = 1", name: "exactly_one_answer_field"
   end
 
   create_table "compliance_area_scores", force: :cascade do |t|
