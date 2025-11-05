@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_04_204517) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_05_165044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -109,12 +109,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_04_204517) do
   end
 
   create_table "answers", force: :cascade do |t|
+    t.boolean "answer_boolean"
+    t.bigint "answer_choice_id"
+    t.date "answer_date"
+    t.decimal "answer_number", precision: 10, scale: 2
+    t.integer "answer_rating"
+    t.text "answer_text"
     t.jsonb "answer_value", default: {}
     t.decimal "calculated_score", precision: 5, scale: 2
     t.datetime "created_at", null: false
     t.bigint "question_id", null: false
     t.bigint "response_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["answer_choice_id"], name: "index_answers_on_answer_choice_id"
+    t.index ["answer_rating"], name: "index_answers_on_answer_rating"
+    t.index ["question_id", "answer_choice_id"], name: "index_answers_on_question_and_choice", where: "(answer_choice_id IS NOT NULL)"
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["response_id", "question_id"], name: "index_answers_on_response_id_and_question_id", unique: true
     t.index ["response_id"], name: "index_answers_on_response_id"
@@ -571,6 +580,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_04_204517) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_sessions", "admins"
   add_foreign_key "answer_choices", "questions"
+  add_foreign_key "answers", "answer_choices"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "responses"
   add_foreign_key "compliance_area_scores", "compliance_areas"

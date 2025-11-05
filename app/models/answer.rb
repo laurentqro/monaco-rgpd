@@ -1,27 +1,49 @@
 class Answer < ApplicationRecord
   belongs_to :response
   belongs_to :question
+  belongs_to :answer_choice, optional: true
 
-  validates :answer_value, presence: true
   validates :question_id, uniqueness: { scope: :response_id }
+  validate :exactly_one_answer_field_present
 
-  # Calculate score based on question type and answer
   after_save :calculate_score
 
   def answer_choice_text
-    # Look up choice from JSONB answer_value
-    choice_id = answer_value["choice_id"] || answer_value[:choice_id]
-    return nil unless choice_id
+    answer_choice&.choice_text
+  end
 
-    AnswerChoice.find_by(id: choice_id)&.choice_text
+  def answer_text_value
+    answer_text
+  end
+
+  def answer_numeric_value
+    answer_number || answer_rating
   end
 
   private
 
   def calculate_score
-    nil unless question.weight.present?
-
+    return nil unless question.weight.present?
     # Score calculation logic will be implemented based on question type
-    # For now, store as-is
+  end
+
+  def exactly_one_answer_field_present
+    fields = [
+      answer_choice_id,
+      answer_text,
+      answer_rating,
+      answer_number,
+      answer_date
+    ].compact
+
+    has_boolean = !answer_boolean.nil?
+
+    total_fields = fields.count + (has_boolean ? 1 : 0)
+
+    if total_fields == 0
+      errors.add(:base, "At least one answer field must be present")
+    elsif total_fields > 1
+      errors.add(:base, "Only one answer field can be set")
+    end
   end
 end
