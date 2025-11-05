@@ -255,17 +255,17 @@ class ConversationOrchestrator
     # Find existing answer or create new one (can only have one answer per question)
     answer = conversation.response.answers.find_or_initialize_by(question: question)
 
-    # Match existing answer_value format used in the codebase
+    # Use separate typed fields
     case question.question_type
     when "yes_no", "single_choice"
       choice = question.answer_choices.find_by(choice_text: answer_data[:value])
       return unless choice
 
-      answer.answer_value = { choice_id: choice.id }
+      answer.answer_choice = choice
       answer.calculated_score = choice.score
 
     when "text_short", "text_long"
-      answer.answer_value = { text: answer_data[:value] }
+      answer.answer_text = answer_data[:value]
       answer.calculated_score = 50.0
     end
 
