@@ -102,12 +102,12 @@ class DocumentsController < ApplicationController
       return false unless answer
 
       # Handle both hash format (production: {choice_id: X}) and string format (tests: "Oui")
-      if answer.answer_value.is_a?(Hash)
-        choice_id = answer.answer_value["choice_id"] || answer.answer_value[:choice_id]
-        choice = AnswerChoice.find_by(id: choice_id)
-        choice&.choice_text == "Oui"
+      if answer.answer_choice.present?
+        answer.answer_choice.choice_text == "Oui"
+      elsif answer.answer_text.present?
+        answer.answer_text == "Oui"
       else
-        answer.answer_value == "Oui"
+        false
       end
     end
   end

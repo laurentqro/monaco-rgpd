@@ -65,7 +65,8 @@ class ResponsesController < ApplicationController
         question_text: answer.question.question_text,
         question_type: answer.question.question_type,
         section_title: answer.question.section.title,
-        answer_value: answer.answer_value,
+        answer_choice_id: answer.answer_choice_id,
+        answer_text: answer.answer_text,
         answer_choices: answer.question.answer_choices.map { |ac| { id: ac.id, choice_text: ac.choice_text } }
       }
     end

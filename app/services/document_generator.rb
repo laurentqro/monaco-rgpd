@@ -71,7 +71,8 @@ class DocumentGenerator
     @response.answers.includes(:question).each_with_object({}) do |answer, hash|
       question = answer.question
       # Use question ID or a custom code if available
-      hash["question_#{question.id}"] = answer.answer_value
+      # Get the actual answer value from whichever field is populated
+      hash["question_#{question.id}"] = answer.answer_choice&.choice_text || answer.answer_text || answer.answer_rating || answer.answer_number || answer.answer_date || answer.answer_boolean
     end
   end
 
