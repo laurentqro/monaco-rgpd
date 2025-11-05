@@ -14,7 +14,7 @@ class AnswersControllerTest < ActionDispatch::IntegrationTest
       post response_answers_url(@response), params: {
         answer: {
           question_id: question.id,
-          answer_value: { text: "Test answer" }
+          answer_text: "Test answer"
         }
       }
     end
@@ -29,16 +29,16 @@ class AnswersControllerTest < ActionDispatch::IntegrationTest
     answer = Answer.create!(
       response: @response,
       question: questions(:one),
-      answer_value: { text: "Original answer" }
+      answer_text: "Original answer"
     )
 
     patch response_answer_url(@response, answer), params: {
       answer: {
-        answer_value: { text: "Updated answer" }
+        answer_text: "Updated answer"
       }
     }
     assert_response :no_content
     answer.reload
-    assert_equal "Updated answer", answer.answer_value["text"]
+    assert_equal "Updated answer", answer.answer_text
   end
 end
