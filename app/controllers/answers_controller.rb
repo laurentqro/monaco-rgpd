@@ -28,6 +28,14 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:question_id, answer_value: {})
+    params.require(:answer).permit(
+      :question_id,
+      :answer_choice_id,
+      :answer_text,
+      :answer_rating,
+      :answer_number,
+      :answer_date,
+      :answer_boolean
+    )
   end
 end
