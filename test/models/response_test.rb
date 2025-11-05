@@ -23,12 +23,12 @@ class ResponseTest < ActiveSupport::TestCase
 
     answer = response.answers.create!(
       question: question,
-      answer_value: { value: "Oui" },
+      answer_text: "Oui",
       calculated_score: 100.0
     )
 
     assert_equal response, answer.response
-    assert_equal "Oui", answer.answer_value["value"]
+    assert_equal "Oui", answer.answer_text
   end
 
   test "can have a conversation" do
