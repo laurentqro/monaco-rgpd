@@ -44,22 +44,21 @@ class PrivacyPolicyGenerator
   end
 
   def answer_for(question_text)
-    answer = @response.answers
+    @response.answers
       .joins(:question)
       .find_by(questions: { question_text: question_text })
-    answer&.answer_value
   end
 
-  def is_yes_answer?(answer_value)
-    return false unless answer_value
+  def is_yes_answer?(answer)
+    return false unless answer.present?
 
-    # Handle both hash format (production: {choice_id: X}) and string format (tests: "Oui")
-    if answer_value.is_a?(Hash)
-      choice_id = answer_value["choice_id"] || answer_value[:choice_id]
-      choice = AnswerChoice.find_by(id: choice_id)
-      choice&.choice_text == "Oui"
+    # Use separate field - check if answer_choice is "Oui" or answer_text is "Oui"
+    if answer.answer_choice.present?
+      answer.answer_choice.choice_text == "Oui"
+    elsif answer.answer_text.present?
+      answer.answer_text == "Oui"
     else
-      answer_value == "Oui"
+      false
     end
   end
 
