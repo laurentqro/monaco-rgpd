@@ -23,7 +23,7 @@ class ComplianceAssessmentFlowTest < ActionDispatch::IntegrationTest
     post response_answers_path(response), params: {
       answer: {
         question_id: question.id,
-        answer_value: { choice_id: answer_choices(:yes_choice).id }
+        answer_choice_id: answer_choices(:yes_choice).id
       }
     }
     assert_response :created

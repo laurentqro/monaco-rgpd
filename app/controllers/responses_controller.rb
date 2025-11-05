@@ -111,7 +111,12 @@ class ResponsesController < ApplicationController
     {
       id: answer.id,
       question_id: answer.question_id,
-      answer_value: answer.answer_value
+      answer_choice_id: answer.answer_choice_id,
+      answer_text: answer.answer_text,
+      answer_rating: answer.answer_rating,
+      answer_number: answer.answer_number,
+      answer_date: answer.answer_date,
+      answer_boolean: answer.answer_boolean
     }
   end
 
