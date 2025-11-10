@@ -33,7 +33,18 @@ class MagicLinksController < ApplicationController
       end
     else
       magic_link.mark_as_used!
-      start_new_session_for(magic_link.user)
+      user = magic_link.user
+
+      # Send welcome email only on first login
+      if user.welcomed_at.nil?
+        user.update!(welcomed_at: Time.current)
+        ActiveSupport::Notifications.instrument(
+          "lifecycle.welcome",
+          user: user
+        )
+      end
+
+      start_new_session_for(user)
       redirect_to app_root_path, notice: "Successfully signed in"
     end
   end
@@ -56,12 +67,6 @@ class MagicLinksController < ApplicationController
       role: :owner
     ).tap do |new_user|
       account.update!(owner: new_user)
-
-      # Publish welcome event for new user
-      ActiveSupport::Notifications.instrument(
-        "lifecycle.welcome",
-        user: new_user
-      )
     end
   end
 

@@ -15,8 +15,8 @@ class MagicLinksControllerTest < ActionDispatch::IntegrationTest
   test "create with new email creates user and account, sends link" do
     assert_difference "User.count", 1 do
       assert_difference "Account.count", 1 do
-        # Now sends 2 emails: magic link + welcome email
-        assert_enqueued_jobs 2, only: ActionMailer::MailDeliveryJob do
+        # Only sends magic link email on creation (welcome email sent on first login)
+        assert_enqueued_jobs 1, only: ActionMailer::MailDeliveryJob do
           post magic_links_path, params: {
             email: "newuser@example.com",
             name: "New User",
@@ -65,5 +65,44 @@ class MagicLinksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
     assert_equal "Invalid magic link", flash[:alert]
     assert_nil cookies[:session_id]
+  end
+
+  test "verify sends welcome email on first login only" do
+    # Subscribe the subscriber to handle the event
+    LifecycleMailerSubscriber.subscribe!
+
+    # Create new user who hasn't been welcomed yet
+    user = User.create!(
+      email: "firsttime@example.com",
+      name: "First Timer",
+      account: accounts(:basic),
+      welcomed_at: nil
+    )
+
+    link = MagicLink.create!(
+      user: user,
+      token: "first_login_token",
+      expires_at: 1.hour.from_now
+    )
+
+    # First login should trigger welcome email
+    assert_enqueued_jobs 1, only: ActionMailer::MailDeliveryJob do
+      get verify_magic_link_path(token: link.token)
+    end
+
+    assert_redirected_to app_root_path
+    assert_not_nil user.reload.welcomed_at
+
+    # Create second magic link for same user
+    link2 = MagicLink.create!(
+      user: user,
+      token: "second_login_token",
+      expires_at: 1.hour.from_now
+    )
+
+    # Second login should NOT trigger welcome email
+    assert_enqueued_jobs 0, only: ActionMailer::MailDeliveryJob do
+      get verify_magic_link_path(token: link2.token)
+    end
   end
 end
