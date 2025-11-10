@@ -2,6 +2,8 @@ class DocumentsController < ApplicationController
   rescue_from PrivacyPolicyGenerator::AccountIncompleteError, with: :handle_incomplete_account
   rescue_from Grover::Error, with: :handle_pdf_generation_error
 
+  before_action :set_account, only: [ :index, :show, :create ]
+
   def index
     # Get the latest completed response
     latest_response = Current.account.responses
@@ -27,7 +29,6 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @account = Account.first
     @sections = [:hr_administration, :email_management, :telephony]
     render "documents/privacy_policy/show"
   end
@@ -41,25 +42,25 @@ class DocumentsController < ApplicationController
         status: :bad_request
     end
 
-    unless Current.account.complete_for_document_generation?
+    unless @account.complete_for_document_generation?
       return render json: {
         error: "incomplete_profile",
-        missing_fields: Current.account.missing_profile_fields
+        missing_fields: @account.missing_profile_fields
       }, status: :unprocessable_entity
     end
 
-    response = Current.account.responses.completed.last
+    response = @account.responses.completed.last
 
     unless response
       return render json: { error: "no_completed_questionnaire" },
         status: :unprocessable_entity
     end
 
-    generator = PrivacyPolicyGenerator.new(Current.account, response)
+    generator = PrivacyPolicyGenerator.new(@account, response)
     pdf_data = generator.generate
 
     send_data pdf_data,
-      filename: "politique_confidentialite_#{Current.account.subdomain}_#{Date.current.iso8601}.pdf",
+      filename: "politique_confidentialite_#{@account.subdomain}_#{Date.current.iso8601}.pdf",
       type: "application/pdf",
       disposition: "attachment"
   end
@@ -94,7 +95,7 @@ class DocumentsController < ApplicationController
   end
 
   def has_employees_response?
-    Current.account.responses.completed.any? do |response|
+    @account.responses.completed.any? do |response|
       answer = response.answers
         .joins(:question)
         .find_by(questions: { question_text: "Avez-vous du personnel ?" })
@@ -116,7 +117,7 @@ class DocumentsController < ApplicationController
     render json: {
       error: "incomplete_profile",
       message: error.message,
-      missing_fields: Current.account.missing_profile_fields
+      missing_fields: @account.missing_profile_fields
     }, status: :unprocessable_entity
   end
 
@@ -126,5 +127,9 @@ class DocumentsController < ApplicationController
       error: "generation_failed",
       message: "Une erreur est survenue lors de la génération du document"
     }, status: :internal_server_error
+  end
+
+  def set_account
+    @account = Current.account
   end
 end
