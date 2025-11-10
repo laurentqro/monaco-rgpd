@@ -1,7 +1,6 @@
 <script>
   import AppLayout from '$lib/layouts/AppLayout.svelte'
   import { router } from '@inertiajs/svelte'
-  import * as Card from '$lib/components/ui/card'
   import * as Table from '$lib/components/ui/table'
   import { Button } from '$lib/components/ui/button'
   import { Badge } from '$lib/components/ui/badge'
@@ -41,176 +40,162 @@
       </div>
 
       <!-- Finalités -->
-      <Card.Root class="mb-6">
-        <Card.Header>
-          <Card.Title>Finalité(s)</Card.Title>
-        </Card.Header>
-        <Card.Content class="p-0">
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Finalité(s)</h2>
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row>
-                <Table.Head>Finalité(s)</Table.Head>
-                <Table.Head>Détail</Table.Head>
-                <Table.Head>Base(s) juridique(s)</Table.Head>
+              <Table.Row class="bg-gray-100 hover:bg-gray-100">
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Finalité(s)</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Base(s) juridique(s)</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body>
-              {#each activity.processing_purposes as purpose}
+            <Table.Body class="bg-white">
+              {#each activity.processing_purposes as purpose (purpose.purpose_number)}
                 <Table.Row>
-                  <Table.Cell class="font-medium">Finalité {purpose.purpose_number}</Table.Cell>
-                  <Table.Cell>{purpose.purpose_detail}</Table.Cell>
-                  <Table.Cell>{purpose.legal_basis_text}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">Finalité {purpose.purpose_number}</Table.Cell>
+                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{purpose.purpose_detail}</Table.Cell>
+                  <Table.Cell class="whitespace-normal">{purpose.legal_basis_text}</Table.Cell>
                 </Table.Row>
               {/each}
             </Table.Body>
           </Table.Root>
-        </Card.Content>
-      </Card.Root>
+        </div>
+      </div>
 
       <!-- Metadata sections -->
-      <Card.Root class="mb-6">
-        <Card.Content class="p-6">
-          <div class="space-y-4">
-            <div class="flex border-b pb-4">
-              <div class="flex-1 font-semibold">Le traitement est-il mis en œuvre à des fins de surveillance ?</div>
-              <div class="flex-1">
-                <Badge variant={activity.surveillance_purpose ? "destructive" : "secondary"}>
-                  {activity.surveillance_purpose ? "OUI" : "NON"}
-                </Badge>
-              </div>
-            </div>
-
-            <div class="flex border-b pb-4">
-              <div class="flex-1 font-semibold">Catégorie(s) de personnes concernées</div>
-              <div class="flex-1">{activity.data_subjects.join(', ')}</div>
-            </div>
-
-            <div class="flex pb-4">
-              <div class="flex-1 font-semibold">Collectez-vous des données sensibles ?</div>
-              <div class="flex-1">
-                <Badge variant={activity.sensitive_data ? "destructive" : "secondary"}>
-                  {activity.sensitive_data ? "OUI" : "NON"}
-                </Badge>
-              </div>
+      <div class="mb-8 bg-white border border-gray-200 rounded-lg p-6">
+        <div class="space-y-4">
+          <div class="flex border-b pb-4">
+            <div class="flex-1 font-semibold">Le traitement est-il mis en œuvre à des fins de surveillance ?</div>
+            <div class="flex-1">
+              <Badge variant={activity.surveillance_purpose ? "destructive" : "secondary"}>
+                {activity.surveillance_purpose ? "OUI" : "NON"}
+              </Badge>
             </div>
           </div>
-        </Card.Content>
-      </Card.Root>
+
+          <div class="flex border-b pb-4">
+            <div class="flex-1 font-semibold">Catégorie(s) de personnes concernées</div>
+            <div class="flex-1">{activity.data_subjects.join(', ')}</div>
+          </div>
+
+          <div class="flex pb-4">
+            <div class="flex-1 font-semibold">Collectez-vous des données sensibles ?</div>
+            <div class="flex-1">
+              <Badge variant={activity.sensitive_data ? "destructive" : "secondary"}>
+                {activity.sensitive_data ? "OUI" : "NON"}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Data Categories -->
-      <Card.Root class="mb-6">
-        <Card.Header>
-          <Card.Title>Autre(s)) catégorie(s) de données</Card.Title>
-        </Card.Header>
-        <Card.Content class="p-0">
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Autres catégories de données</h2>
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row>
-                <Table.Head>(Autre(s)) catégorie(s) de données</Table.Head>
-                <Table.Head>Détail</Table.Head>
-                <Table.Head>Durée(s) de conservation</Table.Head>
-                <Table.Head>Source(s)</Table.Head>
+              <Table.Row class="bg-gray-100 hover:bg-gray-100">
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Catégories de données</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Durée(s) de conservation</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Source(s)</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body>
-              {#each activity.data_category_details as category}
+            <Table.Body class="bg-white">
+              {#each activity.data_category_details as category, i (i)}
                 <Table.Row>
-                  <Table.Cell class="font-medium">{category.category_type_text}</Table.Cell>
-                  <Table.Cell>{category.detail}</Table.Cell>
-                  <Table.Cell>{category.retention_period}</Table.Cell>
-                  <Table.Cell>{category.data_source}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">{category.category_type_text}</Table.Cell>
+                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{category.detail}</Table.Cell>
+                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{category.retention_period}</Table.Cell>
+                  <Table.Cell class="whitespace-normal">{category.data_source}</Table.Cell>
                 </Table.Row>
               {/each}
             </Table.Body>
           </Table.Root>
-        </Card.Content>
-      </Card.Root>
+        </div>
+      </div>
 
       <!-- Access Categories -->
-      <Card.Root class="mb-6">
-        <Card.Header>
-          <Card.Title>Catégorie(s) de personnes ayant accès aux données</Card.Title>
-        </Card.Header>
-        <Card.Content class="p-0">
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Catégories de personnes ayant accès aux données</h2>
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row>
-                <Table.Head>Catégorie(s) de personnes ayant accès aux données</Table.Head>
-                <Table.Head>Détail</Table.Head>
-                <Table.Head>Localisation des personnes</Table.Head>
+              <Table.Row class="bg-gray-100 hover:bg-gray-100">
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Catégories de personnes ayant accès aux données</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Localisation des personnes</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body>
-              {#each activity.access_categories as category}
+            <Table.Body class="bg-white">
+              {#each activity.access_categories as category (category.category_number)}
                 <Table.Row>
-                  <Table.Cell class="font-medium">Catégorie {category.category_number}</Table.Cell>
-                  <Table.Cell>{category.detail}</Table.Cell>
-                  <Table.Cell>{category.location}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">Catégorie {category.category_number}</Table.Cell>
+                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{category.detail}</Table.Cell>
+                  <Table.Cell class="whitespace-normal">{category.location}</Table.Cell>
                 </Table.Row>
               {/each}
             </Table.Body>
           </Table.Root>
-        </Card.Content>
-      </Card.Root>
+        </div>
+      </div>
 
       <!-- Recipient Categories -->
-      <Card.Root class="mb-6">
-        <Card.Header>
-          <Card.Title>Catégorie(s) de personnes habilitées à recevoir communication des données</Card.Title>
-        </Card.Header>
-        <Card.Content class="p-0">
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Catégorie(s) de personnes habilitées à recevoir communication des données</h2>
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row>
-                <Table.Head>Catégorie(s) de personnes habilitées à recevoir communication des données</Table.Head>
-                <Table.Head>Détail</Table.Head>
-                <Table.Head>Localisation des personnes</Table.Head>
+              <Table.Row class="bg-gray-100 hover:bg-gray-100">
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Catégorie(s) de personnes habilitées à recevoir communication des données</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Localisation des personnes</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body>
-              {#each activity.recipient_categories as recipient}
+            <Table.Body class="bg-white">
+              {#each activity.recipient_categories as recipient (recipient.recipient_number)}
                 <Table.Row>
-                  <Table.Cell class="font-medium">Destinataire {recipient.recipient_number}</Table.Cell>
-                  <Table.Cell>{recipient.detail}</Table.Cell>
-                  <Table.Cell>{recipient.location}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">Destinataire {recipient.recipient_number}</Table.Cell>
+                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{recipient.detail}</Table.Cell>
+                  <Table.Cell class="whitespace-normal">{recipient.location}</Table.Cell>
                 </Table.Row>
               {/each}
             </Table.Body>
           </Table.Root>
-        </Card.Content>
-      </Card.Root>
+        </div>
+      </div>
 
       <!-- Security -->
-      <Card.Root class="mb-6">
-        <Card.Header>
-          <Card.Title>Sécurité</Card.Title>
-        </Card.Header>
-        <Card.Content class="p-0">
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Sécurité</h2>
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row>
-                <Table.Head>Sécurité</Table.Head>
-                <Table.Head>Référence(s) documents</Table.Head>
+              <Table.Row class="bg-gray-100 hover:bg-gray-100">
+                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Sécurité</Table.Head>
+                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Référence(s) documents</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body>
-              {#each activity.security_measures as measure}
+            <Table.Body class="bg-white">
+              {#each activity.security_measures as measure, i (i)}
                 <Table.Row>
-                  <Table.Cell>{measure}</Table.Cell>
-                  <Table.Cell>Politique de sécurité</Table.Cell>
+                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{measure}</Table.Cell>
+                  <Table.Cell class="whitespace-normal">Politique de sécurité</Table.Cell>
                 </Table.Row>
               {/each}
             </Table.Body>
           </Table.Root>
-        </Card.Content>
-      </Card.Root>
+        </div>
+      </div>
 
       <!-- Final Information -->
-      <Card.Root class="mb-6">
-        <Card.Header>
-          <Card.Title>Informations complémentaires</Card.Title>
-        </Card.Header>
-        <Card.Content>
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-4">Informations complémentaires</h2>
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
           <div class="space-y-4">
             <div class="flex border-b pb-4">
               <div class="flex-1 font-semibold">Transfert de données vers un pays ne disposant pas d'un niveau de protection adéquat</div>
@@ -230,7 +215,7 @@
               <div class="flex-1 font-semibold">Droits des personnes concernées</div>
               <div class="flex-1">
                 <ul class="list-disc list-inside">
-                  {#each activity.individual_rights as right}
+                  {#each activity.individual_rights as right, i (i)}
                     <li>{right}</li>
                   {/each}
                 </ul>
@@ -255,8 +240,8 @@
               </div>
             </div>
           </div>
-        </Card.Content>
-      </Card.Root>
+        </div>
+      </div>
     </div>
   </div>
 </AppLayout>
