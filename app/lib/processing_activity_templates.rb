@@ -4,13 +4,14 @@
 # APDP-approved templates for common processing activities
 module ProcessingActivityTemplates
 
-  # Legal basis enums for ProcessingPurpose
+  # Legal basis enums for ProcessingPurpose (must match ProcessingPurpose model enum)
   LEGAL_BASIS = {
-    explicit_consent: 0,
+    consent: 0,
     legal_obligation: 1,
-    legitimate_interest: 2,
-    consent: 3,
-    public_interest: 4
+    contract: 2,
+    vital_interest: 3,
+    public_interest: 4,
+    legitimate_interest: 5
   }.freeze
 
   # Data category enums for DataCategoryDetail (from model)
@@ -58,7 +59,7 @@ module ProcessingActivityTemplates
           order_index: 1,
           purpose_name: "Gestion de la procédure d'embauche",
           purpose_detail: "Gestion de la procédure d'embauche, des renouvellements et des fins de contrat",
-          legal_basis: LEGAL_BASIS[:contract_execution]
+          legal_basis: LEGAL_BASIS[:contract]
         },
         {
           purpose_number: 2,
@@ -79,21 +80,21 @@ module ProcessingActivityTemplates
           order_index: 4,
           purpose_name: "Établissement de la fiche administrative",
           purpose_detail: "Établissement et mise à jour de la fiche administrative du salarié et de sa fiche de poste",
-          legal_basis: LEGAL_BASIS[:contract_execution]
+          legal_basis: LEGAL_BASIS[:contract]
         },
         {
           purpose_number: 5,
           order_index: 5,
           purpose_name: "Gestion des compétences",
           purpose_detail: "Gestion des compétences et des évaluations professionnelles du salarié",
-          legal_basis: LEGAL_BASIS[:contract_execution]
+          legal_basis: LEGAL_BASIS[:contract]
         },
         {
           purpose_number: 6,
           order_index: 6,
           purpose_name: "Suivi des formations",
           purpose_detail: "Suivi des formations",
-          legal_basis: LEGAL_BASIS[:contract_execution]
+          legal_basis: LEGAL_BASIS[:contract]
         },
         {
           purpose_number: 7,
@@ -121,7 +122,7 @@ module ProcessingActivityTemplates
           order_index: 10,
           purpose_name: "Gestion des dotations individuelles",
           purpose_detail: "Gestion des dotations individuelles en fournitures, équipements, véhicules et cartes de paiement",
-          legal_basis: LEGAL_BASIS[:contract_execution]
+          legal_basis: LEGAL_BASIS[:contract]
         },
         {
           purpose_number: 11,

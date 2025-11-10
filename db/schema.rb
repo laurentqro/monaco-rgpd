@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_05_165159) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_10_150155) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -304,14 +304,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_05_165159) do
     t.bigint "response_id"
     t.jsonb "security_measures", default: []
     t.boolean "sensitive_data", default: false
-    t.integer "sensitive_data_justification"
     t.jsonb "sensitive_data_types", default: []
     t.boolean "special_case_article", default: false
     t.string "special_case_reference"
     t.boolean "surveillance_purpose", default: false
-    t.integer "transfer_derogation"
     t.jsonb "transfer_destinations", default: []
-    t.integer "transfer_safeguard"
     t.datetime "updated_at", null: false
     t.index ["account_id", "created_at"], name: "index_processing_activities_on_account_id_and_created_at"
     t.index ["account_id"], name: "index_processing_activities_on_account_id"

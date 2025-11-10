@@ -3,16 +3,18 @@
 module ProcessingActivitiesHelper
   def legal_basis_text(legal_basis)
     case legal_basis
-    when "contract_execution"
-      "Exécution d'un contrat ou mesures pré-contractuelles"
-    when "legal_obligation"
-      "Respect d'une obligation légale à laquelle est soumis le responsable du traitement"
-    when "legitimate_interest"
-      "Réalisation d'un intérêt légitime poursuivi par le responsable du traitement"
     when "consent"
       "Consentement de la personne concernée"
+    when "legal_obligation"
+      "Respect d'une obligation légale à laquelle est soumis le responsable du traitement"
+    when "contract"
+      "Exécution d'un contrat ou mesures pré-contractuelles"
+    when "vital_interest"
+      "Sauvegarde des intérêts vitaux de la personne concernée"
     when "public_interest"
       "Mission d'intérêt public"
+    when "legitimate_interest"
+      "Réalisation d'un intérêt légitime poursuivi par le responsable du traitement"
     else
       legal_basis.to_s.humanize
     end
