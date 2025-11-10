@@ -4,10 +4,22 @@ class ProcessingActivitiesController < ApplicationController
   before_action :set_processing_activity, only: [:show]
 
   def index
-    @processing_activities = Current.account
-      .processing_activities
-      .where.not(response_id: nil) # Only show template-generated activities
-      .order(created_at: :desc)
+    # Find the latest completed response for this account
+    latest_response = Current.account
+      .responses
+      .completed
+      .order(completed_at: :desc)
+      .first
+
+    # Only show activities from the latest completed response
+    @processing_activities = if latest_response
+      Current.account
+        .processing_activities
+        .where(response_id: latest_response.id)
+        .order(created_at: :desc)
+    else
+      ProcessingActivity.none
+    end
 
     render inertia: "ProcessingActivities/Index", props: {
       activities: @processing_activities.map do |activity|
