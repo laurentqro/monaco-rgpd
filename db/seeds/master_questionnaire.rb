@@ -417,6 +417,210 @@ s4q2_systematic.answer_choices.create!([
 ])
 
 # ============================================================================
+# Section 5: Relations avec les sous-traitants
+# ============================================================================
+section5_subcontractors = questionnaire.sections.create!(
+  order_index: 5,
+  title: "Relations avec les sous-traitants",
+  description: "Comment gérez-vous les relations avec vos sous-traitants?"
+)
+
+# Q1: Sous-traitants
+s5q1_help_text = <<~MARKDOWN
+  Un sous-traitant est la personne physique ou morale, l'autorité publique, le service ou tout autre organisme qui traite des données à caractère personnel pour le compte du responsable du traitement.
+
+  **Exemples:**
+  * Un hébergeur internet qui stocke les données personnelles d'une entreprise cliente est un sous-traitant. Le responsable de traitement est l'entreprise cliente qui décide de l'usage des données, tandis que l'hébergeur exécute le traitement pour son compte.
+  * Une agence de marketing qui accède aux données clients d'une entreprise pour réaliser une campagne publicitaire sur instruction de cette entreprise est un sous-traitant.
+
+  **Note:**
+  Le sous-traitant doit présenter les garanties suffisantes quant à la mise en œuvre de mesures techniques et organisationnelles appropriées de manière à assurer la protection des données personnelles et le respect des droits des personnes concernées.
+MARKDOWN
+
+s5q1_subcontractors = section5_subcontractors.questions.create!(
+  order_index: 1,
+  question_text: "Faites-vous appel à des sous-traitants qui traitent des données personnelles ?",
+  question_type: :yes_no,
+  help_text: s5q1_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s5q1_subcontractors.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# ============================================================================
+# Section 6: Analyse d'impact
+# ============================================================================
+section6_dpia = questionnaire.sections.create!(
+  order_index: 6,
+  title: "Analyse d'impact",
+  description: "Analyse d'impact"
+)
+
+# Q1: Profilage
+s6q1_help_text = <<~MARKDOWN
+  **Exemple 1:** Une banque utilise un algorithme qui analyse automatiquement les habitudes d'achat, revenus et comportements financiers pour établir un score de crédit personnalisé.
+  **Exemple 2:** Une plateforme de streaming analyse systématiquement les préférences de visionnage, temps d'écoute et interactions pour créer des profils de recommandation personnalisés.
+MARKDOWN
+
+s6q1_profiling = section6_dpia.questions.create!(
+  order_index: 1,
+  question_text: "Procédez-vous à une évaluation systématique et approfondie d'aspects personnels (*profilage*)?",
+  question_type: :yes_no,
+  help_text: s6q1_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q1_profiling.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q2: Décisions automatisées
+s6q2_help_text = <<~MARKDOWN
+  **Exemple 1:** Un système de recrutement qui rejette automatiquement des candidatures sur la base d'une analyse algorithmique sans intervention humaine.
+  **Exemple 2:** Une assurance qui refuse automatiquement une couverture santé en analysant les données médicales via intelligence artificielle.
+MARKDOWN
+
+s6q2_automated = section6_dpia.questions.create!(
+  order_index: 2,
+  question_text: "Prenez-vous des décisions automatisées ayant des effets juridiques ou significatifs pour les personnes concernées ?",
+  question_type: :yes_no,
+  help_text: s6q2_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q2_automated.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q3: Surveillance systématique
+s6q3_help_text = <<~MARKDOWN
+  **Exemple 1:** Installation de caméras de vidéosurveillance avec reconnaissance faciale dans les espaces publics pour suivre les déplacements des citoyens.
+  **Exemple 2:** Mise en place d'un système de géolocalisation permanente des véhicules de fonction pour surveiller les trajets et comportements des employés.
+MARKDOWN
+
+s6q3_surveillance = section6_dpia.questions.create!(
+  order_index: 3,
+  question_text: "Procédez-vous à une surveillance systématique des personnes concernées ?",
+  question_type: :yes_no,
+  help_text: s6q3_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q3_surveillance.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q4: Données sensibles
+s6q4_help_text = <<~MARKDOWN
+  **Exemple 1:** Collecte et traitement de dossiers médicaux complets dans une application de téléconsultation incluant antécédents, traitements et pathologies.
+  **Exemple 2:** Base de données RH contenant les informations sur l'appartenance syndicale et les opinions politiques des salariés.
+MARKDOWN
+
+s6q4_sensitive = section6_dpia.questions.create!(
+  order_index: 4,
+  question_text: "Traitez-vous des données sensibles ?",
+  question_type: :yes_no,
+  help_text: s6q4_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q4_sensitive.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q5: Croisement de données
+s6q5_help_text = <<~MARKDOWN
+  **Exemple 1:** Combinaison des données clients (achats, localisation GPS, réseaux sociaux) avec des données externes (revenus, situation familiale) pour du marketing ciblé.
+  **Exemple 2:** Croisement des données de vidéosurveillance avec les bases de données de police criminelle et les fichiers d'identité pour identification automatique.
+MARKDOWN
+
+s6q5_crossdata = section6_dpia.questions.create!(
+  order_index: 5,
+  question_text: "Faites-vous un croisement ou combinaison d'ensembles de données ?",
+  question_type: :yes_no,
+  help_text: s6q5_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q5_crossdata.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q6: Personnes vulnérables
+s6q6_help_text = <<~MARKDOWN
+  **Exemple 1:** Application mobile destinée aux mineurs collectant leurs données de géolocalisation, contacts et habitudes de navigation.
+  **Exemple 2:** Système de gestion des données personnelles de patients atteints de troubles mentaux ou de personnes âgées dépendantes.
+MARKDOWN
+
+s6q6_vulnerable = section6_dpia.questions.create!(
+  order_index: 6,
+  question_text: "Traitez-vous des données concernant des personnes vulnérables ?",
+  question_type: :yes_no,
+  help_text: s6q6_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q6_vulnerable.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q7: Technologies innovantes
+s6q7_help_text = <<~MARKDOWN
+  **Exemple 1:** Déploiement d'un système de reconnaissance faciale par intelligence artificielle pour contrôler l'accès à un immeuble.
+  **Exemple 2:** Mise en place d'objets connectés (IoT) pour surveiller en temps réel la santé des employés sur leur lieu de travail.
+MARKDOWN
+
+s6q7_innovative = section6_dpia.questions.create!(
+  order_index: 7,
+  question_text: "Utilisez-vous des technologies innovantes ou nouvelles ?",
+  question_type: :yes_no,
+  help_text: s6q7_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q7_innovative.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# Q8: Empêchement d'exercice de droits
+s6q8_help_text = <<~MARKDOWN
+  **Exemple 1:** Système automatisé bloquant définitivement l'accès à un service bancaire en ligne suite à un comportement détecté comme suspect, sans possibilité de recours.
+  **Exemple 2:** Plateforme qui suspend automatiquement un compte utilisateur sur la base d'une analyse comportementale, privant la personne de ses droits contractuels.
+MARKDOWN
+
+s6q8_rights = section6_dpia.questions.create!(
+  order_index: 8,
+  question_text: "Effectuez-vous un traitement empêchant l'exercice d'un droit ou l'accès à un service ?",
+  question_type: :yes_no,
+  help_text: s6q8_help_text,
+  is_required: true,
+  weight: 0
+)
+
+s6q8_rights.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 100 }
+])
+
+# ============================================================================
 # Logic Rules Configuration
 # ============================================================================
 # All logic rules are defined here after all questions exist
@@ -510,5 +714,7 @@ puts "  - Section 1: #{section1.title} (#{section1.questions.count} questions)"
 puts "  - Section 2: #{section2.title} (#{section2.questions.count} questions)"
 puts "  - Section 3: #{section3_hr.title} (#{section3_hr.questions.count} questions)"
 puts "  - Section 4: #{section4_dpo.title} (#{section4_dpo.questions.count} questions)"
+puts "  - Section 5: #{section5_subcontractors.title} (#{section5_subcontractors.questions.count} questions)"
+puts "  - Section 6: #{section6_dpia.title} (#{section6_dpia.questions.count} questions)"
 puts "  - Total questions: #{questionnaire.questions.count}"
 puts "  - Total logic rules: #{LogicRule.where(source_question_id: questionnaire.questions.pluck(:id)).count}"
