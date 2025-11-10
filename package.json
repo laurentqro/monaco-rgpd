@@ -14,7 +14,7 @@
     "dompurify": "^3.3.0",
     "lucide-svelte": "^0.552.0",
     "marked": "^16.4.1",
-    "puppeteer": "^24.15.0",
+    "puppeteer": "^24.29.1",
     "svelte": "^5.0.0"
   },
   "devDependencies": {

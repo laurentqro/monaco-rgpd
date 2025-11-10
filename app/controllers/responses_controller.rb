@@ -65,8 +65,7 @@ class ResponsesController < ApplicationController
         question_text: answer.question.question_text,
         question_type: answer.question.question_type,
         section_title: answer.question.section.title,
-        answer_choice_id: answer.answer_choice_id,
-        answer_text: answer.answer_text,
+        answer_value: build_answer_value(answer),
         answer_choices: answer.question.answer_choices.map { |ac| { id: ac.id, choice_text: ac.choice_text } }
       }
     end
@@ -111,13 +110,27 @@ class ResponsesController < ApplicationController
     {
       id: answer.id,
       question_id: answer.question_id,
-      answer_choice_id: answer.answer_choice_id,
-      answer_text: answer.answer_text,
-      answer_rating: answer.answer_rating,
-      answer_number: answer.answer_number,
-      answer_date: answer.answer_date,
-      answer_boolean: answer.answer_boolean
+      answer_value: build_answer_value(answer)
     }
+  end
+
+  def build_answer_value(answer)
+    # Convert backend's separate fields to frontend's expected format
+    if answer.answer_choice_id.present?
+      { choice_id: answer.answer_choice_id }
+    elsif answer.answer_text.present?
+      { text: answer.answer_text }
+    elsif answer.answer_rating.present?
+      { rating: answer.answer_rating }
+    elsif answer.answer_number.present?
+      { number: answer.answer_number }
+    elsif answer.answer_date.present?
+      { date: answer.answer_date }
+    elsif !answer.answer_boolean.nil?
+      { boolean: answer.answer_boolean }
+    else
+      {}
+    end
   end
 
   def questionnaire_props(questionnaire)

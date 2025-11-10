@@ -100,9 +100,8 @@ class DocumentsController < ApplicationController
         .joins(:question)
         .find_by(questions: { question_text: "Avez-vous du personnel ?" })
 
-      return false unless answer
+      next false unless answer
 
-      # Handle both hash format (production: {choice_id: X}) and string format (tests: "Oui")
       if answer.answer_choice.present?
         answer.answer_choice.choice_text == "Oui"
       elsif answer.answer_text.present?

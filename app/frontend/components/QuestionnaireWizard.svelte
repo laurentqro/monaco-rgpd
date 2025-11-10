@@ -22,6 +22,7 @@
   let hasStarted = $state(false);
 
   // Load existing answers from response
+  // Backend now sends answers with answer_value in the format we expect
   if (response.answers) {
     response.answers.forEach(answer => {
       answers[answer.question_id] = answer.answer_value;
@@ -146,6 +147,26 @@
     return completed;
   });
 
+  // Transform answerValue object to match backend's separate field schema
+  function transformAnswerForBackend(answerValue) {
+    // answerValue can be:
+    // { choice_id: 123 } → { answer_choice_id: 123 }
+    // { text: "..." } → { answer_text: "..." }
+    // { choice_ids: [...] } → not yet supported in backend
+
+    if (answerValue.choice_id !== undefined) {
+      return { answer_choice_id: answerValue.choice_id };
+    } else if (answerValue.text !== undefined) {
+      return { answer_text: answerValue.text };
+    } else if (answerValue.choice_ids !== undefined) {
+      // Multiple choice not yet supported in separate fields schema
+      // For now, just return empty - this needs backend support
+      console.warn('Multiple choice not yet supported with separate fields');
+      return {};
+    }
+    return {};
+  }
+
   async function handleAnswer(questionId, answerValue) {
     // Update local state
     answers[questionId] = answerValue;
@@ -168,6 +189,9 @@
         method = 'POST';
       }
 
+      // Transform answer value to backend format
+      const backendAnswerData = transformAnswerForBackend(answerValue);
+
       const responseData = await fetch(url, {
         method: method,
         headers: {
@@ -177,7 +201,7 @@
         body: JSON.stringify({
           answer: {
             question_id: questionId,
-            answer_value: answerValue
+            ...backendAnswerData
           }
         })
       });

@@ -15,21 +15,24 @@
     switch (question_type) {
       case 'yes_no':
       case 'single_choice':
-        const choiceId = answer_value.choice_id;
-        const choice = answer_choices.find(ac => ac.id === choiceId);
-        return choice ? choice.choice_text : '-';
+        const choiceId = answer_value?.choice_id;
+        if (choiceId) {
+          const choice = answer_choices.find(ac => ac.id === choiceId);
+          return choice ? choice.choice_text : '-';
+        }
+        return '-';
 
       case 'multiple_choice':
-        const choiceIds = answer_value.choice_ids || [];
+        const choiceIds = answer_value?.choice_ids || [];
         const selectedChoices = answer_choices.filter(ac => choiceIds.includes(ac.id));
         return selectedChoices.map(c => c.choice_text).join(', ') || '-';
 
-      case 'text':
-      case 'long_text':
-        return answer_value.text || '-';
+      case 'text_short':
+      case 'text_long':
+        return answer_value?.text || '-';
 
       case 'rating_scale':
-        return `${answer_value.rating || 0} / ${answer_value.max_rating || 5}`;
+        return answer_value?.rating ? `${answer_value.rating} / 5` : '-';
 
       default:
         return '-';
