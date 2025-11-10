@@ -1,6 +1,6 @@
 class RemoveAnswerValueFromAnswers < ActiveRecord::Migration[8.1]
   def up
-    remove_column :answers, :answer_value
+    remove_column :answers, :answer_value if column_exists?(:answers, :answer_value)
   end
 
   def down
