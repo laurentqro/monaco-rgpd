@@ -18,6 +18,7 @@ class Response < ApplicationRecord
   validates :status, presence: true
 
   before_create :set_started_at
+  after_update :generate_processing_activities, if: :saved_change_to_status_to_completed?
 
   scope :for_account, ->(account) { where(account: account) }
   scope :completed, -> { where(status: :completed) }
@@ -26,5 +27,13 @@ class Response < ApplicationRecord
 
   def set_started_at
     self.started_at ||= Time.current
+  end
+
+  def generate_processing_activities
+    ProcessingActivityGenerator.new(self).generate_from_questionnaire
+  end
+
+  def saved_change_to_status_to_completed?
+    saved_change_to_status? && status_completed?
   end
 end

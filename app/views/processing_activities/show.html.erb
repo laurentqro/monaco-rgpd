@@ -1,0 +1,176 @@
+<div class="registre-container">
+  <header class="registre-header">
+    <h1><%= @processing_activity.name.upcase %></h1>
+  </header>
+
+  <!-- Section 1: Finalités -->
+  <section class="finalites">
+    <h2>Finalité(s)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Finalité(s)</th>
+          <th>Détail</th>
+          <th>Base(s) juridique(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @processing_activity.processing_purposes.order(:order_index).each do |purpose| %>
+          <tr>
+            <td>Finalité <%= purpose.purpose_number %></td>
+            <td><%= purpose.purpose_detail %></td>
+            <td><%= legal_basis_text(purpose.legal_basis) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 2: Metadata -->
+  <section class="metadata">
+    <div class="field-row">
+      <div class="field-label">Le traitement est-il mis en œuvre à des fins de surveillance ?</div>
+      <div class="field-value"><%= @processing_activity.surveillance_purpose ? "OUI" : "NON" %></div>
+    </div>
+  </section>
+
+  <section class="metadata">
+    <div class="field-row">
+      <div class="field-label">Catégorie(s) de personnes concernées</div>
+      <div class="field-value"><%= @processing_activity.data_subjects.join(", ") %></div>
+    </div>
+  </section>
+
+  <section class="metadata">
+    <div class="field-row">
+      <div class="field-label">Collectez-vous des données sensibles ?</div>
+      <div class="field-value"><%= @processing_activity.sensitive_data ? "OUI" : "NON" %></div>
+    </div>
+  </section>
+
+  <!-- Section 3: Data Categories -->
+  <section class="data-categories">
+    <h2>(Autre(s)) catégorie(s) de données</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>(Autre(s)) catégorie(s) de données</th>
+          <th>Détail</th>
+          <th>Durée(s) de conservation</th>
+          <th>Source(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @processing_activity.data_category_details.each do |category| %>
+          <tr>
+            <td><%= category_type_text(category.category_type) %></td>
+            <td><%= category.detail %></td>
+            <td><%= category.retention_period %></td>
+            <td><%= category.data_source %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 4: Access Categories -->
+  <section class="access-categories">
+    <h2>Catégorie(s) de personnes ayant accès aux données</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Catégorie(s) de personnes ayant accès aux données</th>
+          <th>Détail</th>
+          <th>Localisation des personnes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @processing_activity.access_categories.order(:order_index).each do |category| %>
+          <tr>
+            <td>Catégorie <%= category.category_number %></td>
+            <td><%= category.detail %></td>
+            <td><%= category.location %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 5: Recipients -->
+  <section class="recipient-categories">
+    <h2>Catégorie(s) de personnes habilitées à recevoir communication des données</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Catégorie(s) de personnes habilitées à recevoir communication des données</th>
+          <th>Détail</th>
+          <th>Localisation des personnes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @processing_activity.recipient_categories.order(:order_index).each do |recipient| %>
+          <tr>
+            <td>Destinataire <%= recipient.recipient_number %></td>
+            <td><%= recipient.detail %></td>
+            <td><%= recipient.location %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 6: Security -->
+  <section class="security">
+    <h2>Sécurité</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Sécurité</th>
+          <th>Référence(s) documents</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @processing_activity.security_measures.each do |measure| %>
+          <tr>
+            <td><%= measure %></td>
+            <td>Politique de sécurité</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 7: Final Information -->
+  <section class="final-info">
+    <div class="field-row">
+      <div class="field-label">Transfert de données vers un pays ne disposant pas d'un niveau de protection adéquat</div>
+      <div class="field-value"><%= @processing_activity.inadequate_protection_transfer ? "OUI" : "NON" %></div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Modalité(s) d'information préalable des personnes concernées</div>
+      <div class="field-value"><%= @processing_activity.information_modalities %></div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Droits des personnes concernées</div>
+      <div class="field-value">
+        <ul>
+          <% @processing_activity.individual_rights.each do |right| %>
+            <li><%= right %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Profilage (uniquement traitements de l'article 64)</div>
+      <div class="field-value"><%= @processing_activity.profiling ? "OUI" : "NON" %></div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-label">Avez-vous effectué une analyse d'impact ?</div>
+      <div class="field-value"><%= @processing_activity.impact_assessment_required ? "OUI" : "NON" %></div>
+    </div>
+  </section>
+</div>

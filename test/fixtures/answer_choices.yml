@@ -9,3 +9,15 @@ no_choice:
   choice_text: "Non"
   score: 0
   order_index: 2
+
+has_personnel_yes:
+  question: has_personnel
+  choice_text: "Oui"
+  score: 0
+  order_index: 1
+
+has_personnel_no:
+  question: has_personnel
+  choice_text: "Non"
+  score: 0
+  order_index: 2

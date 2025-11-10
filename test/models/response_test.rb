@@ -42,4 +42,74 @@ class ResponseTest < ActiveSupport::TestCase
     )
     assert_equal conversation, response.conversation
   end
+
+  test "automatically generates processing activities when marked as completed" do
+    account = accounts(:basic)
+    questionnaire = questionnaires(:master)
+    user = users(:owner)
+
+    # Create response in progress
+    response = Response.create!(
+      account: account,
+      questionnaire: questionnaire,
+      respondent: user,
+      status: :in_progress,
+      started_at: 1.hour.ago
+    )
+
+    # Add answer: Yes to personnel question
+    personnel_question = questions(:has_personnel)
+    yes_choice = answer_choices(:has_personnel_yes)
+    response.answers.create!(
+      question: personnel_question,
+      answer_choice: yes_choice
+    )
+
+    # Mark as completed - should trigger processing activity generation
+    assert_difference -> { account.processing_activities.count }, 1 do
+      response.update!(status: :completed, completed_at: Time.current)
+    end
+
+    # Verify the processing activity was created correctly
+    activity = account.processing_activities.last
+    assert_equal "Gestion administrative des salariés", activity.name
+    assert_equal response.id, activity.response_id
+  end
+
+  test "does not generate processing activities when updating other fields" do
+    response = responses(:completed_response)
+
+    assert_no_difference -> { response.account.processing_activities.count } do
+      response.update!(started_at: 2.hours.ago)
+    end
+  end
+
+  test "does not generate processing activities when already completed" do
+    account = accounts(:basic)
+    questionnaire = questionnaires(:master)
+    user = users(:owner)
+
+    # Create already completed response
+    response = Response.create!(
+      account: account,
+      questionnaire: questionnaire,
+      respondent: user,
+      status: :completed,
+      started_at: 1.hour.ago,
+      completed_at: Time.current
+    )
+
+    # Add answer after completion
+    personnel_question = questions(:has_personnel)
+    yes_choice = answer_choices(:has_personnel_yes)
+    response.answers.create!(
+      question: personnel_question,
+      answer_choice: yes_choice
+    )
+
+    # Updating completed response should not trigger generation again
+    assert_no_difference -> { account.processing_activities.count } do
+      response.touch # Trigger update without changing status
+    end
+  end
 end

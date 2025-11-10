@@ -6,3 +6,10 @@ data_protection:
     Cette section évalue votre conformité en matière de protection des données.
 
     Nous allons examiner vos **pratiques actuelles** et identifier les améliorations nécessaires.
+
+master_cartographie:
+  questionnaire: master
+  title: "Cartographie des traitements"
+  order_index: 2
+  intro_text: |
+    Identification des principaux traitements de données
