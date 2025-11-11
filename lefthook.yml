@@ -1,12 +1,12 @@
 # Lefthook configuration for git hooks
 # See https://github.com/evilmartians/lefthook for more information
 
-# 1. Pre-commit: Run rubocop on staged Ruby files
+# 1. Pre-commit: Run rubocop on staged Ruby files and Gemfile
 pre-commit:
   parallel: true
   commands:
     rubocop:
-      glob: "*.rb"
+      glob: "{*.rb,Gemfile}"
       run: bundle exec rubocop --autocorrect-all {staged_files}
       stage_fixed: true
 
