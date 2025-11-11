@@ -21,9 +21,18 @@ module ProcessingActivityTemplates
         "Droit à la limitation"
       ],
       security_measures: [
-        "Serveur situé dans une baie informatique sécurisée",
-        "Traçabilité des accès",
-        "Identifiant et mot de passe propres à chaque personne habilitée"
+        {
+          measure: "Serveur situé dans une baie informatique sécurisée",
+          reference_documents: "Politique de sécurité + schéma d'architecture sécurisée"
+        },
+        {
+          measure: "Traçabilité des accès",
+          reference_documents: "Politique de sécurité"
+        },
+        {
+          measure: "Identifiant et mot de passe propres à chaque personne habilitée à avoir accès au traitement",
+          reference_documents: "Politique de sécurité + liste des personnes habilitées à avoir accès"
+        }
       ],
       information_modalities: "Charte informatique, Règlement intérieur",
 
@@ -269,9 +278,18 @@ module ProcessingActivityTemplates
         "Droit d'opposition"
       ],
       security_measures: [
-        "Serveur situé dans une baie informatique sécurisée",
-        "Traçabilité des accès",
-        "Identifiant et mot de passe propres à chaque personne habilitée à avoir accès au traitement"
+        {
+          measure: "Serveur situé dans une baie informatique sécurisée",
+          reference_documents: "Politique de sécurité + schéma d'architecture sécurisée"
+        },
+        {
+          measure: "Traçabilité des accès",
+          reference_documents: "Politique de sécurité"
+        },
+        {
+          measure: "Identifiant et mot de passe propres à chaque personne habilitée à avoir accès au traitement",
+          reference_documents: "Politique de sécurité + liste des personnes habilitées à avoir accès"
+        }
       ],
       information_modalities: "Charte informatique, Règlement intérieur, Message en bas de tous les e-mails sortants",
 
@@ -421,9 +439,18 @@ module ProcessingActivityTemplates
         "Droit à la limitation"
       ],
       security_measures: [
-        "Serveur situé dans une baie informatique sécurisée",
-        "Traçabilité des accès",
-        "Identifiant et mot de passe propres à chaque personne habilitée à avoir accès au traitement"
+        {
+          measure: "Serveur situé dans une baie informatique sécurisée",
+          reference_documents: "Politique de sécurité + schéma d'architecture sécurisée"
+        },
+        {
+          measure: "Traçabilité des accès",
+          reference_documents: "Politique de sécurité"
+        },
+        {
+          measure: "Identifiant et mot de passe propres à chaque personne habilitée à avoir accès au traitement",
+          reference_documents: "Politique de sécurité + liste des personnes habilitées à avoir accès"
+        }
       ],
       information_modalities: "Charte informatique, Règlement intérieur",
 
@@ -560,9 +587,18 @@ module ProcessingActivityTemplates
         "Droit à la limitation"
       ],
       security_measures: [
-        "Serveur situé dans une baie informatique sécurisée",
-        "Traçabilité des accès",
-        "Identifiant et mot de passe propres à chaque personne habilitée à avoir accès au traitement"
+        {
+          measure: "Serveur situé dans une baie informatique sécurisée",
+          reference_documents: "Schéma des flux de données, Schéma de l'architecture technique sécurisée, Liste des personnes habilitées à avoir accès"
+        },
+        {
+          measure: "Traçabilité des accès",
+          reference_documents: "Schéma des flux de données, Schéma de l'architecture technique sécurisée, Liste des personnes habilitées à avoir accès"
+        },
+        {
+          measure: "Identifiant et mot de passe propres à chaque personne habilitée à avoir accès au traitement",
+          reference_documents: "Schéma des flux de données, Schéma de l'architecture technique sécurisée, Liste des personnes habilitées à avoir accès"
+        }
       ],
       information_modalities: "Politique de confidentialité accessible sur le site, Mention sur la lettre d'information, Note interne",
 

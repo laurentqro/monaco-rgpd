@@ -181,10 +181,14 @@
               </Table.Row>
             </Table.Header>
             <Table.Body class="bg-white">
-              {#each activity.security_measures as measure, i (i)}
+              {#each activity.security_measures as securityMeasure, i (i)}
                 <Table.Row>
-                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{measure}</Table.Cell>
-                  <Table.Cell class="whitespace-normal">Politique de sécurité</Table.Cell>
+                  <Table.Cell class="border-r border-gray-200 whitespace-normal">
+                    {typeof securityMeasure === 'string' ? securityMeasure : securityMeasure.measure}
+                  </Table.Cell>
+                  <Table.Cell class="whitespace-normal">
+                    {typeof securityMeasure === 'string' ? 'Politique de sécurité' : securityMeasure.reference_documents}
+                  </Table.Cell>
                 </Table.Row>
               {/each}
             </Table.Body>

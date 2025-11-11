@@ -132,8 +132,8 @@
       <tbody>
         <% @processing_activity.security_measures.each do |measure| %>
           <tr>
-            <td><%= measure %></td>
-            <td>Politique de sécurité</td>
+            <td><%= measure.is_a?(Hash) ? measure["measure"] : measure %></td>
+            <td><%= measure.is_a?(Hash) ? measure["reference_documents"] : "Politique de sécurité" %></td>
           </tr>
         <% end %>
       </tbody>

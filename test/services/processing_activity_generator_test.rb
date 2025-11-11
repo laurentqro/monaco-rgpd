@@ -190,6 +190,28 @@ class ProcessingActivityGeneratorTest < ActiveSupport::TestCase
     assert_includes activity_names, "Gestion d'un site Internet vitrine de la société"
   end
 
+  test "security measures are stored as hashes with reference documents" do
+    email_question = questions(:has_email)
+    yes_choice = answer_choices(:has_email_yes)
+
+    @response.answers.create!(
+      question: email_question,
+      answer_choice: yes_choice
+    )
+
+    generator = ProcessingActivityGenerator.new(@response)
+    generator.generate_from_questionnaire
+
+    activity = @account.processing_activities.last
+    assert activity.security_measures.is_a?(Array)
+    assert activity.security_measures.all? { |m| m.is_a?(Hash) }
+    assert activity.security_measures.all? { |m| m.key?("measure") && m.key?("reference_documents") }
+
+    first_measure = activity.security_measures.first
+    assert_equal "Serveur situé dans une baie informatique sécurisée", first_measure["measure"]
+    assert_equal "Politique de sécurité + schéma d'architecture sécurisée", first_measure["reference_documents"]
+  end
+
   test "does not duplicate activities if called multiple times" do
     personnel_question = questions(:has_personnel)
     yes_choice = answer_choices(:has_personnel_yes)
