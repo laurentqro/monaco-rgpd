@@ -203,7 +203,22 @@
     answers[questionId] = answerValue;
 
     // Re-evaluate logic rules to update visible questions
+    const previousVisibleCount = visibleQuestions.length;
     evaluateLogicRules();
+
+    // Check if current position is still valid after logic change
+    if (currentQuestionIndex >= visibleQuestions.length) {
+      // Position is now invalid, snap to last visible question
+      currentQuestionIndex = Math.max(0, visibleQuestions.length - 1);
+    } else if (!visibleQuestions[currentQuestionIndex]) {
+      // Current question is no longer visible, find nearest valid question
+      const firstUnansweredIndex = visibleQuestions.findIndex(q => !answers[q.id]);
+      if (firstUnansweredIndex !== -1) {
+        currentQuestionIndex = firstUnansweredIndex;
+      } else {
+        currentQuestionIndex = Math.max(0, visibleQuestions.length - 1);
+      }
+    }
 
     // Save answer to backend
     try {
@@ -245,7 +260,9 @@
         }
       }
 
-      // Auto-advance to next question
+      // Auto-advance to next question only if not at last question
+      // and only if visible questions didn't change dramatically
+      const isLastQuestion = currentQuestionIndex === visibleQuestions.length - 1;
       if (!isLastQuestion) {
         currentQuestionIndex++;
       }
