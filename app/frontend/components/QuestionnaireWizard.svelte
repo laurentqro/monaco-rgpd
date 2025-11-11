@@ -390,6 +390,13 @@
         </div>
       </div>
 
+      <!-- Current Section Title (Mobile Only) -->
+      {#if currentSection}
+        <h2 class="md:hidden text-center font-semibold text-gray-900 mb-4 text-base">
+          {currentSection.title}
+        </h2>
+      {/if}
+
       <!-- Section Circles (Subway Line Style) -->
       <div class="relative">
         <div class="flex justify-between items-start">
@@ -437,8 +444,8 @@
                 </div>
               </button>
 
-              <!-- Section Title -->
-              <div class="mt-2 text-center min-h-[3rem] flex items-start justify-center">
+              <!-- Section Title (Desktop Only) -->
+              <div class="mt-2 text-center min-h-[3rem] items-start justify-center hidden md:flex">
                 <span class="text-xs {isCurrent ? 'font-semibold text-blue-600' : 'text-gray-600'} block max-w-[100px] leading-tight">
                   {section.title}
                 </span>
