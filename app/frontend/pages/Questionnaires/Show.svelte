@@ -33,14 +33,14 @@
       <div class="mb-8 flex gap-4 justify-center">
         <button
           onclick={startChat}
-          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 cursor-pointer"
         >
           💬 Démarrer en mode conversation
         </button>
 
         <button
           onclick={startTraditional}
-          class="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+          class="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center gap-2 cursor-pointer"
         >
           📋 Mode formulaire traditionnel
         </button>

@@ -32,7 +32,7 @@
     <button
       onclick={handleSubmit}
       disabled={disabled || !inputValue.trim()}
-      class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
     >
       Envoyer
     </button>

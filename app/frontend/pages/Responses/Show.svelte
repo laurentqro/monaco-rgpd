@@ -7,7 +7,7 @@
 </script>
 
 <AppLayout>
-  <div class="min-h-screen bg-gray-50 py-12">
+  <div class="min-h-screen bg-gray-50">
     <QuestionnaireWizard {questionnaire} {response} />
   </div>
 </AppLayout>

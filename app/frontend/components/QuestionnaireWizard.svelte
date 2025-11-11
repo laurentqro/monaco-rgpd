@@ -351,7 +351,7 @@
     </Alert>
   {:else if !hasStarted}
     <!-- Start Screen -->
-    <div class="py-12 text-center">
+    <div class="py-6 text-center">
       <h1 class="text-3xl font-bold text-gray-900 mb-8">
         {questionnaire.title}
       </h1>
@@ -378,33 +378,33 @@
       <!-- Donut Chart for Progress - Centered -->
       <div class="flex flex-col items-center mb-6">
         <div class="relative inline-flex items-center justify-center">
-          <svg class="w-20 h-20 transform -rotate-90">
+          <svg class="w-16 h-16 transform -rotate-90">
             <!-- Background circle -->
             <circle
-              cx="40"
-              cy="40"
-              r="36"
+              cx="32"
+              cy="32"
+              r="28"
               stroke="currentColor"
-              stroke-width="6"
+              stroke-width="5"
               fill="none"
               class="text-gray-200"
             />
             <!-- Progress circle -->
             <circle
-              cx="40"
-              cy="40"
-              r="36"
+              cx="32"
+              cy="32"
+              r="28"
               stroke="currentColor"
-              stroke-width="6"
+              stroke-width="5"
               fill="none"
               stroke-linecap="round"
               class="text-blue-600 transition-all duration-300"
-              style="stroke-dasharray: {36 * 2 * Math.PI}; stroke-dashoffset: {36 * 2 * Math.PI * (1 - progress / 100)};"
+              style="stroke-dasharray: {28 * 2 * Math.PI}; stroke-dashoffset: {28 * 2 * Math.PI * (1 - progress / 100)};"
             />
           </svg>
           <!-- Percentage Text in Center - Perfectly Centered -->
           <div class="absolute inset-0 flex items-center justify-center">
-            <span class="text-base font-bold text-gray-700" data-testid="progress-percentage">{progress}%</span>
+            <span class="text-sm font-bold text-gray-700" data-testid="progress-percentage">{progress}%</span>
           </div>
         </div>
       </div>

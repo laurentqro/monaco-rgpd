@@ -24,7 +24,7 @@
     <button
       onclick={() => router.visit(item.path)}
       class={cn(
-        "flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
+        "flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors cursor-pointer",
         isActive(item.path)
           ? "bg-primary text-primary-foreground"
           : "text-muted-foreground hover:bg-muted hover:text-foreground"
