@@ -21,3 +21,39 @@ has_personnel_no:
   choice_text: "Non"
   score: 0
   order_index: 2
+
+has_email_yes:
+  question: has_email
+  choice_text: "Oui"
+  score: 0
+  order_index: 1
+
+has_email_no:
+  question: has_email
+  choice_text: "Non"
+  score: 0
+  order_index: 2
+
+has_telephony_yes:
+  question: has_telephony
+  choice_text: "Oui"
+  score: 0
+  order_index: 1
+
+has_telephony_no:
+  question: has_telephony
+  choice_text: "Non"
+  score: 0
+  order_index: 2
+
+has_website_yes:
+  question: has_website
+  choice_text: "Oui"
+  score: 0
+  order_index: 1
+
+has_website_no:
+  question: has_website
+  choice_text: "Non"
+  score: 0
+  order_index: 2

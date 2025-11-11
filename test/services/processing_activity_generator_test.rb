@@ -74,9 +74,120 @@ class ProcessingActivityGeneratorTest < ActiveSupport::TestCase
     end
   end
 
+  test "generates professional email processing activity when user answers yes to has email" do
+    email_question = questions(:has_email)
+    yes_choice = answer_choices(:has_email_yes)
+
+    @response.answers.create!(
+      question: email_question,
+      answer_choice: yes_choice
+    )
+
+    generator = ProcessingActivityGenerator.new(@response)
+
+    assert_difference -> { @account.processing_activities.count }, 1 do
+      generator.generate_from_questionnaire
+    end
+
+    activity = @account.processing_activities.last
+    assert_equal "Gestion de la messagerie professionnelle", activity.name
+    assert_equal @response.id, activity.response_id
+    assert_equal 8, activity.processing_purposes.count
+    assert_equal 5, activity.data_category_details.count
+    assert_equal 3, activity.access_categories.count
+    assert_equal 1, activity.recipient_categories.count
+    assert_equal false, activity.surveillance_purpose
+    assert_equal false, activity.sensitive_data
+    assert_equal false, activity.inadequate_protection_transfer
+  end
+
+  test "generates telephony processing activity when user answers yes to has telephony" do
+    telephony_question = questions(:has_telephony)
+    yes_choice = answer_choices(:has_telephony_yes)
+
+    @response.answers.create!(
+      question: telephony_question,
+      answer_choice: yes_choice
+    )
+
+    generator = ProcessingActivityGenerator.new(@response)
+
+    assert_difference -> { @account.processing_activities.count }, 1 do
+      generator.generate_from_questionnaire
+    end
+
+    activity = @account.processing_activities.last
+    assert_equal "Gestion de la téléphonie fixe et mobile", activity.name
+    assert_equal @response.id, activity.response_id
+    assert_equal 7, activity.processing_purposes.count
+    assert_equal 4, activity.data_category_details.count
+    assert_equal 3, activity.access_categories.count
+    assert_equal 1, activity.recipient_categories.count
+    assert_equal false, activity.surveillance_purpose
+    assert_equal false, activity.sensitive_data
+  end
+
+  test "generates website showcase processing activity when user answers yes to has website" do
+    website_question = questions(:has_website)
+    yes_choice = answer_choices(:has_website_yes)
+
+    @response.answers.create!(
+      question: website_question,
+      answer_choice: yes_choice
+    )
+
+    generator = ProcessingActivityGenerator.new(@response)
+
+    assert_difference -> { @account.processing_activities.count }, 1 do
+      generator.generate_from_questionnaire
+    end
+
+    activity = @account.processing_activities.last
+    assert_equal "Gestion d'un site Internet vitrine de la société", activity.name
+    assert_equal @response.id, activity.response_id
+    assert_equal 5, activity.processing_purposes.count
+    assert_equal 6, activity.data_category_details.count
+    assert_equal 3, activity.access_categories.count
+    assert_equal 1, activity.recipient_categories.count
+    assert_equal false, activity.surveillance_purpose
+    assert_equal false, activity.sensitive_data
+    assert_equal true, activity.inadequate_protection_transfer
+  end
+
   test "generates multiple activities for multiple yes answers" do
-    # This will be relevant when we add more templates
-    skip "Not yet implemented - need more templates"
+    personnel_question = questions(:has_personnel)
+    email_question = questions(:has_email)
+    telephony_question = questions(:has_telephony)
+    website_question = questions(:has_website)
+
+    @response.answers.create!(
+      question: personnel_question,
+      answer_choice: answer_choices(:has_personnel_yes)
+    )
+    @response.answers.create!(
+      question: email_question,
+      answer_choice: answer_choices(:has_email_yes)
+    )
+    @response.answers.create!(
+      question: telephony_question,
+      answer_choice: answer_choices(:has_telephony_yes)
+    )
+    @response.answers.create!(
+      question: website_question,
+      answer_choice: answer_choices(:has_website_yes)
+    )
+
+    generator = ProcessingActivityGenerator.new(@response)
+
+    assert_difference -> { @account.processing_activities.count }, 4 do
+      generator.generate_from_questionnaire
+    end
+
+    activity_names = @account.processing_activities.pluck(:name)
+    assert_includes activity_names, "Gestion administrative des salariés"
+    assert_includes activity_names, "Gestion de la messagerie professionnelle"
+    assert_includes activity_names, "Gestion de la téléphonie fixe et mobile"
+    assert_includes activity_names, "Gestion d'un site Internet vitrine de la société"
   end
 
   test "does not duplicate activities if called multiple times" do

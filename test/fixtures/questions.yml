@@ -30,3 +30,10 @@ has_telephony:
   question_type: yes_no
   order_index: 3
   is_required: true
+
+has_website:
+  section: master_cartographie
+  question_text: "Avez-vous un site internet ?"
+  question_type: yes_no
+  order_index: 4
+  is_required: true
