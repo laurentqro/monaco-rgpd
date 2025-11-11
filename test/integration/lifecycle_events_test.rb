@@ -22,6 +22,13 @@ class LifecycleEventsTest < ActionDispatch::IntegrationTest
       account_name: "New Account"
     }
 
+    # Get the magic link token that was created
+    magic_link = MagicLink.find_by(user: User.find_by(email: "newuser@example.com"))
+    assert_not_nil magic_link, "Magic link should be created"
+
+    # Verify the magic link (this triggers the welcome event on first login)
+    get verify_magic_link_path(token: magic_link.token)
+
     assert event_published, "Expected lifecycle.welcome event to be published"
     assert_not_nil user_from_event
     assert_equal "newuser@example.com", user_from_event.email
