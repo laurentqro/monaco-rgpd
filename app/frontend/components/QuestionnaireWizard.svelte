@@ -149,11 +149,19 @@
     return completed;
   });
 
-  // Calculate resume position when component mounts with existing answers
+  // Resume position calculation runs once after component mount
+  // - shouldCalculateResumePosition flag prevents re-runs from reactive updates
+  // - evaluateLogicRules() must run first to get accurate visibleQuestions
+  // - Length check happens after evaluation to handle edge cases
   $effect(() => {
-    if (shouldCalculateResumePosition && visibleQuestions.length > 0) {
-      // Evaluate logic rules first to get accurate visible questions
+    if (shouldCalculateResumePosition) {
       evaluateLogicRules();
+
+      if (visibleQuestions.length === 0) {
+        console.warn('No visible questions after evaluating logic rules');
+        shouldCalculateResumePosition = false;
+        return;
+      }
 
       // Find first unanswered question
       const firstUnansweredIndex = visibleQuestions.findIndex(q => !answers[q.id]);
