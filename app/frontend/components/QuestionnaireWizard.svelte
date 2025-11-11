@@ -20,6 +20,7 @@
   // Track if the questionnaire has been started
   // If there are existing answers, they've already started
   let hasStarted = $state(false);
+  let shouldCalculateResumePosition = $state(false);
 
   // Load existing answers from response
   // Backend now sends answers with answer_value in the format we expect
@@ -32,6 +33,7 @@
     // If there are answers, they've already started
     if (response.answers.length > 0) {
       hasStarted = true;
+      shouldCalculateResumePosition = true;
     }
   }
 
@@ -145,6 +147,27 @@
       }
     }
     return completed;
+  });
+
+  // Calculate resume position when component mounts with existing answers
+  $effect(() => {
+    if (shouldCalculateResumePosition && visibleQuestions.length > 0) {
+      // Evaluate logic rules first to get accurate visible questions
+      evaluateLogicRules();
+
+      // Find first unanswered question
+      const firstUnansweredIndex = visibleQuestions.findIndex(q => !answers[q.id]);
+
+      if (firstUnansweredIndex !== -1) {
+        currentQuestionIndex = firstUnansweredIndex;
+      } else {
+        // All answered - resume at last question
+        currentQuestionIndex = visibleQuestions.length - 1;
+      }
+
+      // Only do this once
+      shouldCalculateResumePosition = false;
+    }
   });
 
   // Transform answerValue object to match backend's separate field schema
@@ -345,7 +368,7 @@
           </svg>
           <!-- Percentage Text in Center - Perfectly Centered -->
           <div class="absolute inset-0 flex items-center justify-center">
-            <span class="text-base font-bold text-gray-700">{progress}%</span>
+            <span class="text-base font-bold text-gray-700" data-testid="progress-percentage">{progress}%</span>
           </div>
         </div>
       </div>
