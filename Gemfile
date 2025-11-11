@@ -23,7 +23,7 @@ gem "inertia_rails"
 gem "bcrypt", "~> 3.1.7"
 
 # Document generation and templating
-gem "liquid", "~> 5.9"
+gem "liquid", "~> 5.10"
 gem "prawn", "~> 2.4"
 gem "prawn-table", "~> 0.2"
 gem "grover"
