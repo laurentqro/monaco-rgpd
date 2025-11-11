@@ -75,8 +75,7 @@ s1q2_org_type.answer_choices.create!([
   { order_index: 1, choice_text: "Entreprise (nom personnel, SARL, SASU, SNC, SAM, etc.)", score: 0 },
   { order_index: 2, choice_text: "Association", score: 0 },
   { order_index: 3, choice_text: "Organisme public", score: 0 },
-  { order_index: 4, choice_text: "Profession libérale", score: 0 },
-  { order_index: 5, choice_text: "Personne physique agissant dans un cadre domestique", score: 0 }
+  { order_index: 4, choice_text: "Profession libérale", score: 0 }
 ])
 
 # Q3: Taille de l'organisation
