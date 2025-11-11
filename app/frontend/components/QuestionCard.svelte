@@ -59,7 +59,7 @@
 <Card>
   <CardHeader>
     <IntroText content={question.intro_text} />
-    <CardTitle id="question-title-{question.id}" class="text-2xl">
+    <CardTitle id="question-title-{question.id}" class="text-2xl text-center">
       {question.question_text}
     </CardTitle>
   </CardHeader>
@@ -67,10 +67,10 @@
     {#if question.help_text}
       <Accordion class="mb-6">
         <AccordionItem value="help">
-          <AccordionTrigger class="text-amber-700 hover:text-amber-800 py-2 text-sm font-normal flex-row-reverse justify-end gap-2 cursor-pointer [&>svg]:-rotate-90 [&[data-state=open]>svg]:rotate-0">
+          <AccordionTrigger class="text-amber-700 hover:text-amber-800 py-2 text-sm font-normal flex-row-reverse justify-center gap-2 cursor-pointer [&>svg]:-rotate-90 [&[data-state=open]>svg]:rotate-0">
             Afficher l'aide
           </AccordionTrigger>
-          <AccordionContent class="bg-amber-50 border border-amber-200 rounded-md p-4 text-amber-900 help-content">
+          <AccordionContent class="bg-amber-50 border border-amber-200 rounded-md p-4 text-amber-900 help-content text-center">
             {@html helpTextHtml}
           </AccordionContent>
         </AccordionItem>
@@ -124,7 +124,7 @@
         </div>
 
       {:else if question.question_type === 'text_short'}
-        <div class="space-y-2">
+        <div class="space-y-2 text-center">
           <Label for="answer-{question.id}">Votre réponse</Label>
           <Input
             id="answer-{question.id}"
@@ -136,7 +136,7 @@
         </div>
 
       {:else if question.question_type === 'text_long'}
-        <div class="space-y-2">
+        <div class="space-y-2 text-center">
           <Label for="answer-{question.id}">Votre réponse</Label>
           <Textarea
             id="answer-{question.id}"
