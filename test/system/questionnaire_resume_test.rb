@@ -42,4 +42,25 @@ class QuestionnaireResumeTest < ApplicationSystemTestCase
     # Progress should show 3 of N questions completed
     assert_selector "[data-testid='progress-percentage']", text: /\d+%/
   end
+
+  test "resumes at last question when all questions answered but status is in_progress" do
+    # Answer remaining questions (first 3 already answered in setup)
+    all_questions = @questionnaire.questions.order(:order_index)
+    remaining_questions = all_questions.drop(3)
+    remaining_questions.each do |question|
+      Answer.create!(
+        response: @response,
+        question: question,
+        answer_choice_id: question.answer_choices.first.id
+      )
+    end
+
+    visit questionnaire_response_path(@questionnaire, @response)
+
+    # Should see last question
+    assert_text all_questions.last.question_text
+
+    # Progress should show 100%
+    assert_selector "[data-testid='progress-percentage']", text: "100%"
+  end
 end
