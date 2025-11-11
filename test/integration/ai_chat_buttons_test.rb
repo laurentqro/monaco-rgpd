@@ -72,12 +72,12 @@ class AiChatButtonsTest < ActionDispatch::IntegrationTest
           {
             message: "Parfait! Passons à la question suivante.",
             extracted_data: {
-              answers: [{
+              answers: [ {
                 question_id: 22,
                 answer_type: "yes_no",
                 value: "Oui",
                 confidence: 1.0
-              }]
+              } ]
             },
             next_action: "ask_next_question"
           }

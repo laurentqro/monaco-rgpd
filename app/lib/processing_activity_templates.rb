@@ -12,7 +12,7 @@ module ProcessingActivityTemplates
       profiling: false,
       impact_assessment_required: false,
       inadequate_protection_transfer: false,
-      data_subjects: ["Salariés"],
+      data_subjects: [ "Salariés" ],
       individual_rights: [
         "Droit d'accès",
         "Droit de rectification",

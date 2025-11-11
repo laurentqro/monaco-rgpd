@@ -29,7 +29,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @sections = [:hr_administration, :email_management, :telephony]
+    @sections = [ :hr_administration, :email_management, :telephony ]
     render "documents/privacy_policy/show"
   end
 

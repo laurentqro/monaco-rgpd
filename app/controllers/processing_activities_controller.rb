@@ -1,7 +1,7 @@
 class ProcessingActivitiesController < ApplicationController
   include ProcessingActivitiesHelper
 
-  before_action :set_processing_activity, only: [:show]
+  before_action :set_processing_activity, only: [ :show ]
 
   def index
     # Find the latest completed response for this account
@@ -114,7 +114,7 @@ class ProcessingActivitiesController < ApplicationController
       template: "processing_activities/show",
       layout: "pdf",
       assigns: { processing_activity: @processing_activity },
-      helpers: [ProcessingActivitiesHelper]
+      helpers: [ ProcessingActivitiesHelper ]
     )
 
     pdf = Grover.new(html,

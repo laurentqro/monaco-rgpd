@@ -13,7 +13,7 @@ class PrivacyPolicyGenerator
   end
 
   def sections_to_include
-    sections = [:base]
+    sections = [ :base ]
 
     sections << :hr_administration if has_employees?
     sections << :email_management if has_professional_email?
@@ -106,6 +106,6 @@ class PrivacyPolicyGenerator
     # Single-line format for reliable Puppeteer rendering
     '<div style="font-size:9px;text-align:center;width:100%;color:#666;">' \
       '<span class="pageNumber"></span> / <span class="totalPages"></span>' \
-      '</div>'
+      "</div>"
   end
 end

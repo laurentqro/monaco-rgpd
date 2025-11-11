@@ -91,7 +91,7 @@ class ConversationOrchestrator
       model: "claude-sonnet-4-20250514",
       max_tokens: 2048,
       system: system_prompt,
-      messages: conversation_history + [{ role: "user", content: user_message }]
+      messages: conversation_history + [ { role: "user", content: user_message } ]
     )
 
     parse_ai_response(response)
@@ -153,10 +153,10 @@ class ConversationOrchestrator
         sections: {
           include: {
             questions: {
-              only: [:id, :question_text, :question_type, :intro_text, :help_text, :order_index],
+              only: [ :id, :question_text, :question_type, :intro_text, :help_text, :order_index ],
               include: {
                 answer_choices: {
-                  only: [:id, :choice_text]
+                  only: [ :id, :choice_text ]
                 }
               }
             }

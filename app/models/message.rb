@@ -16,6 +16,6 @@ class Message < ApplicationRecord
   scope :by_assistant, -> { where(role: :assistant) }
 
   def extracted_answers?
-    extracted_data.present? && extracted_data['answers'].present?
+    extracted_data.present? && extracted_data["answers"].present?
   end
 end

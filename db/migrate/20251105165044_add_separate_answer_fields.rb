@@ -9,7 +9,7 @@ class AddSeparateAnswerFields < ActiveRecord::Migration[8.1]
 
     add_index :answers, :answer_choice_id
     add_index :answers, :answer_rating
-    add_index :answers, [:question_id, :answer_choice_id],
+    add_index :answers, [ :question_id, :answer_choice_id ],
               name: "index_answers_on_question_and_choice",
               where: "answer_choice_id IS NOT NULL"
 

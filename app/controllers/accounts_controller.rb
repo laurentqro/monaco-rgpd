@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_action :require_admin_for_update, only: [:update]
+  before_action :require_admin_for_update, only: [ :update ]
 
   def update
     if Current.account.update(account_params)
