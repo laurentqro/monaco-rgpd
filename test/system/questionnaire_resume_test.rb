@@ -82,4 +82,46 @@ class QuestionnaireResumeTest < ApplicationSystemTestCase
     first_question_of_section = first_section.questions.order(:order_index).first
     assert_text first_question_of_section.question_text
   end
+
+  test "skipped sections are greyed out and not clickable" do
+    # Set up a response that triggers section skipping logic
+    # Assuming there's a question that skips to a later section
+    question_with_skip = @questionnaire.questions.find do |q|
+      q.logic_rules.any? { |lr| lr.action == "skip_to_section" }
+    end
+
+    skip "No skip_to_section logic rules in test data" if question_with_skip.nil?
+
+    # Answer the question to trigger skip
+    skip_rule = question_with_skip.logic_rules.find { |lr| lr.action == "skip_to_section" }
+    trigger_choice = question_with_skip.answer_choices.find do |ac|
+      ac.id.to_s == skip_rule.condition_value
+    end
+
+    Answer.create!(
+      response: @response,
+      question: question_with_skip,
+      answer_choice_id: trigger_choice.id
+    )
+
+    visit questionnaire_response_path(@questionnaire, @response)
+
+    # Find skipped section
+    current_section = question_with_skip.section
+    target_section = @questionnaire.sections.find(skip_rule.target_section_id)
+    skipped_sections = @questionnaire.sections.where(
+      "order_index > ? AND order_index < ?",
+      current_section.order_index,
+      target_section.order_index
+    )
+
+    skipped_sections.each do |skipped_section|
+      # Should have disabled button
+      button = find("[data-section-id='#{skipped_section.id}']")
+      assert button[:disabled] == "true"
+
+      # Should have greyed out styling
+      assert button.matches_css?(".opacity-50, .cursor-not-allowed")
+    end
+  end
 end
