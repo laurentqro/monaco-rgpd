@@ -1,7 +1,6 @@
 # Monaco RGPD
 
 [![CI](https://github.com/laurentqro/monaco-rgpd/actions/workflows/ci.yml/badge.svg)](https://github.com/laurentqro/monaco-rgpd/actions/workflows/ci.yml)
-[![CD](https://github.com/laurentqro/monaco-rgpd/actions/workflows/cd.yml/badge.svg)](https://github.com/laurentqro/monaco-rgpd/actions/workflows/cd.yml)
 
 Plateforme SaaS de conformité RGPD pour Monaco - Conforme à la Loi n° 1.565
 
