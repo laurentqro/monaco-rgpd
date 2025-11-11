@@ -9,7 +9,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   def sign_in_as(user)
     session = user.sessions.create!(user_agent: "test", ip_address: "127.0.0.1")
     # For system tests, we need to set the cookie through Capybara
-    visit root_path
+    # First visit a public page to establish domain context (required by Selenium)
+    visit new_session_path
+    # Now set the signed session cookie
     page.driver.browser.manage.add_cookie(
       name: "session_id",
       value: sign_cookie(session.id)
