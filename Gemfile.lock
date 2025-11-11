@@ -156,7 +156,7 @@ GEM
     language_server-protocol (3.17.0.5)
     lefthook (2.0.3)
     lint_roller (1.1.0)
-    liquid (5.9.0)
+    liquid (5.10.0)
       bigdecimal
       strscan (>= 3.1.1)
     logger (1.7.0)
@@ -444,7 +444,7 @@ DEPENDENCIES
   inertia_rails
   kamal
   lefthook
-  liquid (~> 5.9)
+  liquid (~> 5.10)
   minitest-reporters
   pg (~> 1.1)
   prawn (~> 2.4)
