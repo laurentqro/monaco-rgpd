@@ -63,4 +63,23 @@ class QuestionnaireResumeTest < ApplicationSystemTestCase
     # Progress should show 100%
     assert_selector "[data-testid='progress-percentage']", text: "100%"
   end
+
+  test "clicking section in tube map navigates to first question of that section" do
+    visit questionnaire_response_path(@questionnaire, @response)
+
+    # Get sections
+    sections = @questionnaire.sections.order(:order_index)
+    first_section = sections.first
+    second_section = sections.second
+
+    # Should start at first unanswered question (question 4)
+    assert_text @fourth_question.question_text
+
+    # Click first section in tube map
+    find("[data-section-id='#{first_section.id}']").click
+
+    # Should navigate to first question of first section
+    first_question_of_section = first_section.questions.order(:order_index).first
+    assert_text first_question_of_section.question_text
+  end
 end

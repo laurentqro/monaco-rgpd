@@ -290,6 +290,15 @@
       console.error('Error completing questionnaire:', error);
     }
   }
+
+  function navigateToSection(sectionId) {
+    // Find first question in this section
+    const targetQuestionIndex = visibleQuestions.findIndex(q => q.sectionId === sectionId);
+
+    if (targetQuestionIndex !== -1) {
+      currentQuestionIndex = targetQuestionIndex;
+    }
+  }
 </script>
 
 <div class="max-w-2xl mx-auto p-6">
@@ -396,7 +405,13 @@
               {/if}
 
               <!-- Section Circle -->
-              <div class="relative z-10">
+              <button
+                type="button"
+                onclick={() => navigateToSection(section.id)}
+                data-section-id={section.id}
+                class="relative z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full"
+                aria-label="{section.title}{isCompleted ? ', Terminé' : isCurrent ? ', En cours' : ''}"
+              >
                 <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 {
                   isCompleted ? 'bg-blue-600 text-white' :
                   isCurrent ? 'bg-blue-600 text-white ring-4 ring-blue-200' :
@@ -410,7 +425,7 @@
                     <span class="text-xs font-semibold">{i + 1}</span>
                   {/if}
                 </div>
-              </div>
+              </button>
 
               <!-- Section Title -->
               <div class="mt-2 text-center min-h-[3rem] flex items-start justify-center">
