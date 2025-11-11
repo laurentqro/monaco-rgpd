@@ -76,7 +76,7 @@ end
 group :test do
   gem "minitest-reporters"
   gem "simplecov", require: false
-  
+
   # System tests
   gem "capybara"
   gem "selenium-webdriver"
