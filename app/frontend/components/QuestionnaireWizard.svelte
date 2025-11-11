@@ -318,7 +318,7 @@
   }
 </script>
 
-<div class="max-w-2xl mx-auto p-6">
+<div class="max-w-4xl mx-auto p-4">
   {#if shouldExit}
     <!-- Exit Message -->
     <Alert class="border-l-4 border-yellow-400 bg-yellow-50">
