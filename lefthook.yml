@@ -1,6 +1,7 @@
 # Lefthook configuration for git hooks
 # See https://github.com/evilmartians/lefthook for more information
 
+# 1. Pre-commit: Run rubocop on staged Ruby files
 pre-commit:
   parallel: true
   commands:
@@ -8,4 +9,34 @@ pre-commit:
       glob: "*.rb"
       run: bundle exec rubocop --autocorrect-all {staged_files}
       stage_fixed: true
+
+# 2. Pre-push: Run tests and security checks before pushing
+pre-push:
+  parallel: false  # Run sequentially for clearer output
+  commands:
+    security:
+      run: bin/bundler-audit
+    
+    tests:
+      run: bin/rails test
+
+# 3. Post-merge: Auto-install dependencies and run migrations
+post-merge:
+  commands:
+    dependencies:
+      run: |
+        if git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep -qE "Gemfile|package.json"; then
+          echo "📦 Dependencies changed after merge. Installing..."
+          bundle install
+          if [ -f "package.json" ]; then
+            npm install
+          fi
+        fi
+    
+    migrations:
+      run: |
+        if git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep -q "db/migrate"; then
+          echo "🗄️  New migrations detected. Running db:migrate..."
+          bin/rails db:migrate
+        fi
 
