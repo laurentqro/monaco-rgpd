@@ -1,0 +1,11 @@
+# Lefthook configuration for git hooks
+# See https://github.com/evilmartians/lefthook for more information
+
+pre-commit:
+  parallel: true
+  commands:
+    rubocop:
+      glob: "*.rb"
+      run: bundle exec rubocop --autocorrect-all {staged_files}
+      stage_fixed: true
+
