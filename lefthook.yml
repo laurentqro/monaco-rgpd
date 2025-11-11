@@ -40,3 +40,16 @@ post-merge:
           bin/rails db:migrate
         fi
 
+# 4. Post-push: Deploy to production after pushing to master
+post-push:
+  commands:
+    deploy:
+      run: |
+        BRANCH=$(git rev-parse --abbrev-ref HEAD)
+        if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "main" ]; then
+          echo "🚀 Deploying to production..."
+          kamal deploy --roles=web
+        else
+          echo "ℹ️  Skipping deployment (not on master/main branch)"
+        fi
+
