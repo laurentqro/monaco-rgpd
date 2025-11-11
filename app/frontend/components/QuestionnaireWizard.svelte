@@ -409,8 +409,9 @@
                 type="button"
                 onclick={() => navigateToSection(section.id)}
                 data-section-id={section.id}
-                class="relative z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full"
+                class="relative z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full cursor-pointer hover:scale-110 transition-transform duration-200"
                 aria-label="{section.title}{isCompleted ? ', Terminé' : isCurrent ? ', En cours' : ''}"
+                title="Aller à {section.title}"
               >
                 <div class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 {
                   isCompleted ? 'bg-blue-600 text-white' :
