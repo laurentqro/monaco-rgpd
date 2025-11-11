@@ -22,14 +22,9 @@ class IntroTextTest < ApplicationSystemTestCase
     # Navigate to the questionnaire wizard
     visit questionnaire_response_path(@questionnaire, response)
 
-    # Check for intro_text presence - should appear on first question
-    assert_selector ".intro-text", text: "Bienvenue"
-    assert_selector ".intro-text", text: "Loi n° 1.565"
-
-    # Verify styling (blue border and background)
-    intro_element = find(".intro-text")
-    assert intro_element[:class].include?("bg-blue-50"), "Should have blue background"
-    assert intro_element[:class].include?("border-blue-400"), "Should have blue border"
+    # Check for intro_text presence - questionnaire intro uses plain variant
+    assert_selector ".intro-text-plain", text: "Bienvenue"
+    assert_selector ".intro-text-plain", text: "Loi n° 1.565"
 
     # Take screenshot for visual verification
     take_screenshot
@@ -46,8 +41,11 @@ class IntroTextTest < ApplicationSystemTestCase
     # Navigate to the questionnaire wizard (should show section intro on first question of section)
     visit questionnaire_response_path(@questionnaire, response)
 
-    # Look for section intro_text content
-    assert_selector ".intro-text", text: "pratiques actuelles"
+    # First need to start the questionnaire
+    click_button "Commencer l'évaluation"
+
+    # Look for section intro_text content (uses plain variant)
+    assert_selector ".intro-text-plain", text: "pratiques actuelles"
 
     take_screenshot
   end
@@ -63,11 +61,14 @@ class IntroTextTest < ApplicationSystemTestCase
     # Navigate to the questionnaire wizard
     visit questionnaire_response_path(@questionnaire, response)
 
-    # The first question has intro_text about DPO
+    # First need to start the questionnaire
+    click_button "Commencer l'évaluation"
+
+    # The first question has intro_text about DPO (uses boxed variant, class is "intro-text")
     assert_selector ".intro-text", text: "Délégué à la Protection des Données"
 
-    # Verify it's within a question card
-    assert_selector "h2", text: "Avez-vous nommé un DPO?"
+    # Verify the question title is visible
+    assert_text "Avez-vous nommé un DPO?"
 
     # Verify the intro_text appears before the question title
     page_content = page.find("body").text
@@ -90,8 +91,8 @@ class IntroTextTest < ApplicationSystemTestCase
     # Navigate to the questionnaire wizard
     visit questionnaire_response_path(@questionnaire, response)
 
-    # Check that markdown bold is rendered (should appear as <strong> in HTML)
-    within ".intro-text" do
+    # Check that markdown bold is rendered on the start screen (uses plain variant)
+    within ".intro-text-plain" do
       assert_selector "strong", text: "Loi n° 1.565"
     end
 
