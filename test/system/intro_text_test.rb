@@ -15,7 +15,7 @@ class IntroTextTest < ApplicationSystemTestCase
     # Create a response
     response = Response.create!(
       questionnaire: @questionnaire,
-      user: @user,
+      respondent: @user,
       account: @account
     )
 
@@ -39,7 +39,7 @@ class IntroTextTest < ApplicationSystemTestCase
     # Create a response
     response = Response.create!(
       questionnaire: @questionnaire,
-      user: @user,
+      respondent: @user,
       account: @account
     )
 
@@ -56,7 +56,7 @@ class IntroTextTest < ApplicationSystemTestCase
     # Create a response
     response = Response.create!(
       questionnaire: @questionnaire,
-      user: @user,
+      respondent: @user,
       account: @account
     )
 
@@ -83,7 +83,7 @@ class IntroTextTest < ApplicationSystemTestCase
     # Create a response
     response = Response.create!(
       questionnaire: @questionnaire,
-      user: @user,
+      respondent: @user,
       account: @account
     )
 
