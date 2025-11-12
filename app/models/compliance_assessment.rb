@@ -3,6 +3,7 @@ class ComplianceAssessment < ApplicationRecord
   belongs_to :account
   has_many :compliance_area_scores, dependent: :destroy
   has_many :compliance_areas, through: :compliance_area_scores
+  has_many :action_items, as: :actionable, dependent: :destroy
 
   enum :status, {
     draft: 0,
