@@ -6,6 +6,7 @@
   import ComplianceScoreCard from '../../components/ComplianceScoreCard.svelte';
   import ActionItemsInbox from '../../components/dashboard/ActionItemsInbox.svelte';
   import QuickActionsPanel from '../../components/dashboard/QuickActionsPanel.svelte';
+  import ComplianceHealthSnapshot from '../../components/dashboard/ComplianceHealthSnapshot.svelte';
   import { router, page } from '@inertiajs/svelte';
   import { toast } from 'svelte-sonner';
 
@@ -81,6 +82,9 @@
 
       <!-- Score Card -->
       <ComplianceScoreCard assessment={latest_assessment} responseId={latest_response_id} />
+
+      <!-- Compliance Health Snapshot -->
+      <ComplianceHealthSnapshot assessment={latest_assessment} />
 
     {:else}
       <Card class="text-center p-12">

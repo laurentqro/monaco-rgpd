@@ -27,16 +27,30 @@ class DashboardController < ApplicationController
       max_possible_score: assessment.max_possible_score,
       risk_level: assessment.risk_level,
       created_at: assessment.created_at,
-      compliance_area_scores: assessment.compliance_area_scores.includes(:compliance_area).map do |cas|
-        {
-          area_name: cas.compliance_area.name,
-          area_code: cas.compliance_area.code,
-          score: cas.score.round(1),
-          max_score: cas.max_score,
-          percentage: cas.percentage
-        }
-      end
+      compliance_area_scores: compliance_area_scores_props(assessment)
     }
+  end
+
+  def compliance_area_scores_props(assessment)
+    assessment.compliance_area_scores.includes(:compliance_area).map do |cas|
+      {
+        id: cas.id,
+        area_name: cas.compliance_area.name,
+        area_code: cas.compliance_area.code,
+        score: cas.score.round(1),
+        max_score: cas.max_score,
+        percentage: cas.percentage,
+        risk_level: determine_area_risk_level(cas.percentage)
+      }
+    end
+  end
+
+  def determine_area_risk_level(percentage)
+    case percentage
+    when 80..100 then "compliant"
+    when 60...80 then "attention_required"
+    else "non_compliant"
+    end
   end
 
   def response_summary_props(response)
