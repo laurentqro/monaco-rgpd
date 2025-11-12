@@ -34,6 +34,9 @@ class ComplianceScorer
     # Calculate area scores
     calculate_area_scores(assessment)
 
+    # Generate action items from the assessment
+    ActionItemGenerator.new(assessment).generate
+
     assessment
   end
 

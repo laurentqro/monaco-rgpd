@@ -351,7 +351,7 @@
     </Alert>
   {:else if !hasStarted}
     <!-- Start Screen -->
-    <div class="py-6 text-center">
+    <div class="py-6">
       <h1 class="text-3xl font-bold text-gray-900 mb-8">
         {questionnaire.title}
       </h1>
@@ -362,15 +362,13 @@
         </div>
       {/if}
 
-      <div class="flex justify-center">
-        <Button
-          onclick={startQuestionnaire}
-          class="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 h-auto"
-          size="lg"
-        >
-          Commencer l'évaluation
-        </Button>
-      </div>
+      <Button
+        onclick={startQuestionnaire}
+        class="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 h-auto"
+        size="lg"
+      >
+        Commencer l'évaluation
+      </Button>
     </div>
   {:else}
     <!-- Subway-Line Progress -->
@@ -479,9 +477,7 @@
 
     <!-- Section Intro Text -->
     {#if isFirstQuestionOfSection && currentSection?.intro_text}
-      <div class="text-center">
-        <IntroText content={currentSection.intro_text} variant="plain" />
-      </div>
+      <IntroText content={currentSection.intro_text} variant="plain" />
     {/if}
 
     <!-- Question Card -->
