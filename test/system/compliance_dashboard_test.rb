@@ -2,12 +2,12 @@ require "application_system_test_case"
 
 class ComplianceDashboardTest < ApplicationSystemTestCase
   setup do
-    @user = users(:user_one)
+    @user = users(:owner)
     @account = @user.account
 
     # Create a completed response with assessment
     @response = Response.create!(
-      questionnaire: questionnaires(:published),
+      questionnaire: questionnaires(:compliance),
       account: @account,
       respondent: @user,
       status: :completed
@@ -24,14 +24,14 @@ class ComplianceDashboardTest < ApplicationSystemTestCase
     # Create area scores
     ComplianceAreaScore.create!(
       compliance_assessment: @assessment,
-      compliance_area: compliance_areas(:data_security),
+      compliance_area: compliance_areas(:security),
       score: 45,
       max_score: 100
     )
 
     ComplianceAreaScore.create!(
       compliance_assessment: @assessment,
-      compliance_area: compliance_areas(:legal_basis),
+      compliance_area: compliance_areas(:lawfulness),
       score: 85,
       max_score: 100
     )
@@ -77,9 +77,9 @@ class ComplianceDashboardTest < ApplicationSystemTestCase
     visit dashboard_path
 
     assert_selector "h2", text: "État de conformité par domaine"
-    assert_text "Data Security"  # Area name
+    assert_text "Security"  # Area name
     assert_text "45%"  # Low score
-    assert_text "Legal Basis"
+    assert_text "Lawfulness"
     assert_text "85%"  # High score
   end
 
@@ -87,8 +87,8 @@ class ComplianceDashboardTest < ApplicationSystemTestCase
     skip "Requires Selenium setup"
     visit dashboard_path
 
-    # Click on Data Security card
-    within("div", text: "Data Security") do
+    # Click on Security card
+    within("div", text: "Security") do
       click_on  # Click anywhere on card
     end
 
@@ -101,13 +101,13 @@ class ComplianceDashboardTest < ApplicationSystemTestCase
     skip "Requires Selenium setup"
     visit dashboard_path
 
-    # Data Security (45%) should be non-compliant (red)
-    within("div", text: "Data Security") do
+    # Security (45%) should be non-compliant (red)
+    within("div", text: "Security") do
       assert_selector ".bg-red-100"
     end
 
-    # Legal Basis (85%) should be compliant (green)
-    within("div", text: "Legal Basis") do
+    # Lawfulness (85%) should be compliant (green)
+    within("div", text: "Lawfulness") do
       assert_selector ".bg-green-100"
     end
   end
