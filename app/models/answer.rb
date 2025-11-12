@@ -7,6 +7,7 @@ class Answer < ApplicationRecord
   validate :exactly_one_answer_field_present
 
   after_save :calculate_score
+  after_commit :create_employee_policy_action_item, on: [ :create, :update ]
 
   def answer_choice_text
     answer_choice&.choice_text
@@ -25,6 +26,13 @@ class Answer < ApplicationRecord
   def calculate_score
     nil unless question.weight.present?
     # Score calculation logic will be implemented based on question type
+  end
+
+  def create_employee_policy_action_item
+    EmployeePolicyActionCreator.new(self).call
+  rescue => e
+    Rails.logger.error("Failed to create employee policy action item: #{e.message}")
+    # Don't re-raise - allow answer save to succeed
   end
 
   def exactly_one_answer_field_present
