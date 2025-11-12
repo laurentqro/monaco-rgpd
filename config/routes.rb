@@ -40,6 +40,9 @@ Rails.application.routes.draw do
   # Dashboard
   get "dashboard", to: "dashboard#show"
 
+  # Action Items
+  resources :action_items, only: [ :update ]
+
   # Processing Activities
   resources :processing_activities, path: "registre-traitements", only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
 
