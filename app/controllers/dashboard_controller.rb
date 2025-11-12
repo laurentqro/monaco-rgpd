@@ -13,7 +13,8 @@ class DashboardController < ApplicationController
       latest_assessment: latest_response&.compliance_assessment ? assessment_props(latest_response.compliance_assessment) : nil,
       latest_response_id: latest_response&.id,
       responses: Current.account.responses.order(created_at: :desc).limit(5).map { |r| response_summary_props(r) },
-      questionnaire_id: published_questionnaire&.id
+      questionnaire_id: published_questionnaire&.id,
+      action_items: action_items_props
     }
   end
 
@@ -44,5 +45,25 @@ class DashboardController < ApplicationController
       completed_at: response.completed_at,
       status: response.status
     }
+  end
+
+  def action_items_props
+    Current.account.action_items
+      .active
+      .by_priority
+      .includes(:actionable)
+      .map do |item|
+        {
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          priority: item.priority,
+          status: item.status,
+          action_type: item.action_type,
+          due_at: item.due_at,
+          impact_score: item.impact_score,
+          created_at: item.created_at
+        }
+      end
   end
 end
