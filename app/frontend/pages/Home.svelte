@@ -45,7 +45,6 @@
   <meta name="twitter:image" content="https://monacogdpr.mc/og-image.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 </svelte:head>
 
@@ -95,7 +94,6 @@
 }
 
 :global(body) {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
     line-height: 1.6;
     color: var(--dark);
     background: var(--white);
@@ -103,7 +101,6 @@
 }
 
 :global(h1), :global(h2), :global(h3), :global(h4), :global(h5), :global(h6) {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     font-weight: 700;
 }
 

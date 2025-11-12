@@ -47,8 +47,8 @@ class DashboardController < ApplicationController
 
   def determine_area_risk_level(percentage)
     case percentage
-    when 80..100 then "compliant"
-    when 60...80 then "attention_required"
+    when 85..100 then "compliant"
+    when 60..84 then "attention_required"
     else "non_compliant"
     end
   end
