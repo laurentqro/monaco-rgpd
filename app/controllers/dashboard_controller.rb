@@ -14,7 +14,8 @@ class DashboardController < ApplicationController
       latest_response_id: latest_response&.id,
       responses: Current.account.responses.order(created_at: :desc).limit(5).map { |r| response_summary_props(r) },
       questionnaire_id: published_questionnaire&.id,
-      action_items: action_items_props
+      action_items: action_items_props,
+      processing_activities_count: Current.account.processing_activities.count
     }
   end
 
