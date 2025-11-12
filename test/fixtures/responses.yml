@@ -5,6 +5,13 @@ one:
   status: 0
   started_at: <%= Time.current %>
 
+master_response:
+  questionnaire: master
+  account: basic
+  respondent: owner
+  status: 0
+  started_at: <%= Time.current %>
+
 completed_response:
   questionnaire: compliance
   account: basic

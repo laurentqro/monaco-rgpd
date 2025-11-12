@@ -50,4 +50,32 @@ class AnswerTest < ActiveSupport::TestCase
     assert_not answer.valid?
     assert_includes answer.errors[:base], "Only one answer field can be set"
   end
+
+  # T007: Test creates employee policy action item after commit when answer is Oui
+  test "creates employee policy action item after commit when answer is Oui" do
+    question = questions(:has_personnel)
+    response = responses(:master_response)
+
+    assert_difference "ActionItem.count", 1 do
+      Answer.create!(
+        response: response,
+        question: question,
+        answer_choice: answer_choices(:has_personnel_yes)
+      )
+    end
+  end
+
+  # T008: Test does not create action item when answer is Non
+  test "does not create action item when answer is Non" do
+    question = questions(:has_personnel)
+    response = responses(:master_response)
+
+    assert_no_difference "ActionItem.count" do
+      Answer.create!(
+        response: response,
+        question: question,
+        answer_choice: answer_choices(:has_personnel_no)
+      )
+    end
+  end
 end
