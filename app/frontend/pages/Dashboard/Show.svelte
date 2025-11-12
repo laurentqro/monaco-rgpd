@@ -4,10 +4,11 @@
   import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui/card';
   import { Badge } from '$lib/components/ui/badge';
   import ComplianceScoreCard from '../../components/ComplianceScoreCard.svelte';
+  import ActionItemsInbox from '../../components/dashboard/ActionItemsInbox.svelte';
   import { router, page } from '@inertiajs/svelte';
   import { toast } from 'svelte-sonner';
 
-  let { latest_assessment, latest_response_id, responses, questionnaire_id } = $props();
+  let { latest_assessment, latest_response_id, responses, questionnaire_id, action_items } = $props();
 
   // Show toast notifications for flash messages
   $effect(() => {
@@ -67,6 +68,9 @@
     </div>
 
     {#if latest_assessment}
+      <!-- Action Items Inbox -->
+      <ActionItemsInbox actionItems={action_items || []} />
+
       <!-- Score Card -->
       <ComplianceScoreCard assessment={latest_assessment} responseId={latest_response_id} />
 
