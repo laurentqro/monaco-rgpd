@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="text-right">
-        <div class="text-3xl font-bold mb-1">{areaScore.percentage.toFixed(0)}%</div>
+        <div class="text-3xl font-bold mb-1">{Math.round(areaScore.percentage)}%</div>
         <Badge variant={riskLevelBadges[areaScore.risk_level]}>
           {riskLevelLabels[areaScore.risk_level]}
         </Badge>
@@ -59,7 +59,7 @@
     <CardContent>
       <div class="border-t pt-4">
         <p class="text-sm text-gray-600 mb-3">
-          Score: {areaScore.score.toFixed(1)} / {areaScore.max_score}
+          Score: {Number(areaScore.score).toFixed(1)} / {areaScore.max_score}
         </p>
 
         {#if areaScore.percentage < 80}
