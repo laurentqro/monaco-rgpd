@@ -7,7 +7,7 @@ class ActionItemGenerator
   def generate
     return if already_generated?
 
-    @assessment.compliance_area_scores.each do |area_score|
+    @assessment.compliance_area_scores.includes(:compliance_area).each do |area_score|
       next if area_score.percentage >= 80
 
       create_action_item_for_area(area_score)
