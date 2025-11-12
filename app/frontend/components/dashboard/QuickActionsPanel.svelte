@@ -6,6 +6,13 @@
 
   let { questionnaireId, latestAssessment, processingActivitiesCount = 0 } = $props();
 
+  // Calculate percentage from raw score (same as ComplianceScoreCard)
+  const scorePercentage = $derived(
+    latestAssessment
+      ? (latestAssessment.overall_score / latestAssessment.max_possible_score * 100).toFixed(0)
+      : null
+  );
+
   function startNewAssessment() {
     router.post(`/questionnaires/${questionnaireId}/responses`);
   }
@@ -38,7 +45,7 @@
             Dernière évaluation: {new Date(latestAssessment.created_at).toLocaleDateString('fr-FR')}
           </p>
           <Badge variant="secondary" class="mb-3">
-            Score actuel: {latestAssessment.overall_score.toFixed(0)}%
+            Score actuel: {scorePercentage}%
           </Badge>
         {/if}
         <Button onclick={startNewAssessment} class="w-full" disabled={!questionnaireId}>
