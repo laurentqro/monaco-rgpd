@@ -4,7 +4,12 @@
 
   let { assessment } = $props();
 
-  let expandedAreas = $state({});
+  // Initialize expanded state for all areas to false
+  let expandedAreas = $state(
+    Object.fromEntries(
+      assessment.compliance_area_scores.map(score => [score.id, false])
+    )
+  );
 </script>
 
 <Card class="mb-8">
