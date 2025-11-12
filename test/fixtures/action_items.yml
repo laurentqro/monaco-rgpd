@@ -1,0 +1,12 @@
+recommendation_one:
+  account: basic
+  actionable: one (ComplianceAssessment)
+  source: assessment
+  priority: high
+  status: pending
+  action_type: update_treatment
+  title: "Add encryption to Customer Data treatment"
+  description: "Implement encryption for customer personal data"
+  action_params: { "treatment_id": 1 }
+  due_at: <%= 7.days.from_now %>
+  impact_score: 15
