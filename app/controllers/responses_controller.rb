@@ -59,23 +59,11 @@ class ResponsesController < ApplicationController
   end
 
   def results
-    # Get all answers with their questions and answer choices for display
-    answers_with_details = @response.answers.includes(question: [ :answer_choices, :section ]).map do |answer|
-      {
-        question_text: answer.question.question_text,
-        question_type: answer.question.question_type,
-        section_title: answer.question.section.title,
-        answer_value: build_answer_value(answer),
-        answer_choices: answer.question.answer_choices.map { |ac| { id: ac.id, choice_text: ac.choice_text } }
-      }
+    if @response.requires_waitlist?
+      render_waitlist_results
+    else
+      render_normal_results
     end
-
-    render inertia: "Responses/Results", props: {
-      response: response_props(@response),
-      assessment: @response.compliance_assessment ? assessment_props(@response.compliance_assessment) : nil,
-      documents: @response.documents.ready.map { |d| document_props(d) },
-      answers: answers_with_details
-    }
   end
 
   private
@@ -164,6 +152,50 @@ class ResponsesController < ApplicationController
       status: document.status,
       generated_at: document.generated_at,
       download_url: document.pdf_file.attached? ? rails_blob_path(document.pdf_file, disposition: "attachment") : nil
+    }
+  end
+
+  def render_waitlist_results
+    render inertia: "Responses/ResultsWithWaitlist", props: {
+      response: response_props(@response),
+      features_needed: @response.waitlist_features_needed,
+      partial_results: generate_partial_results(@response)
+    }
+  end
+
+  def render_normal_results
+    # Get all answers with their questions and answer choices for display
+    answers_with_details = @response.answers.includes(question: [ :answer_choices, :section ]).map do |answer|
+      {
+        question_text: answer.question.question_text,
+        question_type: answer.question.question_type,
+        section_title: answer.question.section.title,
+        answer_value: build_answer_value(answer),
+        answer_choices: answer.question.answer_choices.map { |ac| { id: ac.id, choice_text: ac.choice_text } }
+      }
+    end
+
+    render inertia: "Responses/Results", props: {
+      response: response_props(@response),
+      assessment: @response.compliance_assessment ? assessment_props(@response.compliance_assessment) : nil,
+      documents: @response.documents.ready.map { |d| document_props(d) },
+      answers: answers_with_details
+    }
+  end
+
+  def generate_partial_results(response)
+    # Return generic compliance insights for partial results
+    {
+      basic_obligations: [
+        "Tenue d'un registre des traitements",
+        "Information des personnes concernées",
+        "Respect des droits des personnes (accès, rectification, suppression)"
+      ],
+      recommendations: [
+        "Documenter vos traitements de données",
+        "Mettre en place une politique de confidentialité",
+        "Former vos équipes aux bonnes pratiques RGPD"
+      ]
     }
   end
 end
