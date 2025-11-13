@@ -1,44 +1,35 @@
 <script>
-  import { onMount } from 'svelte';
   import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
-
-  console.log('Home component loaded');
-
-  onMount(() => {
-    console.log('Home component mounted');
-
-    // Initialize Lucide icons with retry logic
-    const initIcons = () => {
-      if (typeof window.lucide !== 'undefined' && window.lucide.createIcons) {
-        try {
-          window.lucide.createIcons();
-          console.log('Lucide icons initialized successfully');
-          return true;
-        } catch (error) {
-          console.error('Error initializing Lucide icons:', error);
-          return false;
-        }
-      } else {
-        console.warn('Lucide not loaded yet, retrying...');
-        return false;
-      }
-    };
-
-    // Retry initialization with increasing delays
-    const maxRetries = 5;
-    let retryCount = 0;
-
-    const tryInit = () => {
-      if (initIcons() || retryCount >= maxRetries) {
-        return;
-      }
-      retryCount++;
-      setTimeout(tryInit, retryCount * 200);
-    };
-
-    tryInit();
-  });
+  import {
+    ShieldCheck,
+    CheckCircle,
+    Clock,
+    Banknote,
+    BookOpen,
+    AlertTriangle,
+    Zap,
+    Gem,
+    Target,
+    ClipboardList,
+    CheckSquare,
+    Database,
+    AlertOctagon,
+    Handshake,
+    Camera,
+    Search,
+    BarChart3,
+    Check,
+    MapPin,
+    Server,
+    Shield,
+    Scale,
+    GraduationCap,
+    Building2,
+    Lock,
+    Globe,
+    Phone
+  } from 'lucide-svelte';
 </script>
 
 <svelte:head>
@@ -62,7 +53,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
 </svelte:head>
 
 <style>
@@ -1244,7 +1234,7 @@ section {
     <header class="header">
         <nav class="nav container">
             <a href="/mcrgpd" class="logo">
-                <i data-lucide="shield-check" class="logo-icon"></i>
+                <ShieldCheck class="logo-icon" />
                 <span class="logo-text"><span class="text-red-600 dark:text-red-400">Monaco</span>RGPD</span>
             </a>
             <ul class="nav-links">
@@ -1274,15 +1264,15 @@ section {
                     </div>
                     <div class="trust-indicators">
                         <div class="trust-item">
-                            <i data-lucide="check-circle" class="trust-icon"></i>
+                            <CheckCircle class="trust-icon" />
                             <span>Conforme APDP</span>
                         </div>
                         <div class="trust-item">
-                            <i data-lucide="check-circle" class="trust-icon"></i>
+                            <CheckCircle class="trust-icon" />
                             <span>DPO Expert Monaco</span>
                         </div>
                         <div class="trust-item">
-                            <i data-lucide="check-circle" class="trust-icon"></i>
+                            <CheckCircle class="trust-icon" />
                             <span>Convention 108+</span>
                         </div>
                     </div>
@@ -1334,22 +1324,22 @@ section {
             </div>
             <div class="problem-grid">
                 <div class="problem-card">
-                    <i data-lucide="clock" class="problem-icon"></i>
+                    <Clock class="problem-icon" />
                     <h3>Chronophage</h3>
                     <p>6+ mois pour une mise en conformité manuelle avec des cabinets traditionnels</p>
                 </div>
                 <div class="problem-card">
-                    <i data-lucide="banknote" class="problem-icon"></i>
+                    <Banknote class="problem-icon" />
                     <h3>Trop Cher</h3>
                     <p>€15K-50K+ en honoraires de consulting DPO externe pour les PME</p>
                 </div>
                 <div class="problem-card">
-                    <i data-lucide="book-open" class="problem-icon"></i>
+                    <BookOpen class="problem-icon" />
                     <h3>Complexe</h3>
                     <p>Loi n° 1.565 avec 8 droits individuels, registres obligatoires, notification APDP...</p>
                 </div>
                 <div class="problem-card">
-                    <i data-lucide="alert-triangle" class="problem-icon"></i>
+                    <AlertTriangle class="problem-icon" />
                     <h3>Risqué</h3>
                     <p>Non-conformité = amendes importantes + atteinte à la réputation</p>
                 </div>
@@ -1367,7 +1357,7 @@ section {
             </div>
             <div class="solution-grid">
                 <div class="solution-card">
-                    <i data-lucide="zap" class="solution-icon"></i>
+                    <Zap class="solution-icon" />
                     <h3>30 Jours pour la Conformité</h3>
                     <p>Notre processus structuré en 3 phases vous rend conforme en 1 mois au lieu de 6+</p>
                     <ul class="feature-list">
@@ -1377,7 +1367,7 @@ section {
                     </ul>
                 </div>
                 <div class="solution-card">
-                    <i data-lucide="gem" class="solution-icon"></i>
+                    <Gem class="solution-icon" />
                     <h3>70% Moins Cher</h3>
                     <p>À partir de €199/mois vs €15K+ en consulting traditionnel</p>
                     <ul class="feature-list">
@@ -1387,7 +1377,7 @@ section {
                     </ul>
                 </div>
                 <div class="solution-card">
-                    <i data-lucide="target" class="solution-icon"></i>
+                    <Target class="solution-icon" />
                     <h3>100% Monaco</h3>
                     <p>Conçu exclusivement pour la loi monégasque n° 1.565</p>
                     <ul class="feature-list">
@@ -1410,7 +1400,7 @@ section {
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="clipboard-list" class="feature-icon"></i>
+                        <ClipboardList class="feature-icon" />
                         <h3>Portail Droits Individuels</h3>
                     </div>
                     <p>Gestion complète des 8 droits (accès, rectification, effacement, limitation, opposition, portabilité, décisions automatisées, personnes décédées)</p>
@@ -1419,7 +1409,7 @@ section {
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="check-square" class="feature-icon"></i>
+                        <CheckSquare class="feature-icon" />
                         <h3>Gestion du Consentement</h3>
                     </div>
                     <p>Validation 4 piliers (libre, spécifique, éclairé, univoque) avec preuve documentée et retrait facile</p>
@@ -1428,7 +1418,7 @@ section {
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="database" class="feature-icon"></i>
+                        <Database class="feature-icon" />
                         <h3>Registre des Traitements</h3>
                     </div>
                     <p>Obligatoire pour 50+ employés. Cartographie complète des données, finalités et bases légales</p>
@@ -1437,7 +1427,7 @@ section {
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="alert-octagon" class="feature-icon"></i>
+                        <AlertOctagon class="feature-icon" />
                         <h3>Gestion des Incidents</h3>
                     </div>
                     <p>Notification APDP en 72h, classification automatique, communication aux personnes concernées</p>
@@ -1446,7 +1436,7 @@ section {
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="handshake" class="feature-icon"></i>
+                        <Handshake class="feature-icon" />
                         <h3>Gestion Sous-traitants</h3>
                     </div>
                     <p>Évaluation des risques, contrats DPA, suivi de conformité des processeurs de données</p>
@@ -1455,7 +1445,7 @@ section {
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="camera" class="feature-icon"></i>
+                        <Camera class="feature-icon" />
                         <h3>Vidéosurveillance</h3>
                     </div>
                     <p>Conformité workplace : zones autorisées, rétention 30 jours, finalité sécurité uniquement</p>
@@ -1464,7 +1454,7 @@ section {
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="search" class="feature-icon"></i>
+                        <Search class="feature-icon" />
                         <h3>Analyse d'Impact (DPIA)</h3>
                     </div>
                     <p>Déclencheurs automatiques, workflows d'évaluation, mesures d'atténuation des risques</p>
@@ -1473,7 +1463,7 @@ section {
 
                 <div class="feature-card">
                     <div class="feature-header">
-                        <i data-lucide="bar-chart-3" class="feature-icon"></i>
+                        <BarChart3 class="feature-icon" />
                         <h3>Tableau de Bord</h3>
                     </div>
                     <p>Score de conformité en temps réel, actions prioritaires, rapports d'audit exportables</p>
@@ -1540,12 +1530,12 @@ section {
                         <span class="period">/mois</span>
                     </div>
                     <ul class="pricing-features">
-                        <li><i data-lucide="check" class="check"></i> 1-25 employés</li>
-                        <li><i data-lucide="check" class="check"></i> Portail droits individuels</li>
-                        <li><i data-lucide="check" class="check"></i> Gestion consentement</li>
-                        <li><i data-lucide="check" class="check"></i> Registre traitements</li>
-                        <li><i data-lucide="check" class="check"></i> Templates Monaco</li>
-                        <li><i data-lucide="check" class="check"></i> Support email</li>
+                        <li><Check class="check" /> 1-25 employés</li>
+                        <li><Check class="check" /> Portail droits individuels</li>
+                        <li><Check class="check" /> Gestion consentement</li>
+                        <li><Check class="check" /> Registre traitements</li>
+                        <li><Check class="check" /> Templates Monaco</li>
+                        <li><Check class="check" /> Support email</li>
                     </ul>
                     <a href="#contact" class="btn-card">Commencer</a>
                 </div>
@@ -1561,13 +1551,13 @@ section {
                         <span class="period">/mois</span>
                     </div>
                     <ul class="pricing-features">
-                        <li><i data-lucide="check" class="check"></i> 26-100 employés</li>
-                        <li><i data-lucide="check" class="check"></i> Tout du plan Starter +</li>
-                        <li><i data-lucide="check" class="check"></i> Gestion sous-traitants</li>
-                        <li><i data-lucide="check" class="check"></i> DPIA automatisées</li>
-                        <li><i data-lucide="check" class="check"></i> Intégrations (Google, Microsoft)</li>
-                        <li><i data-lucide="check" class="check"></i> Revue DPO trimestrielle</li>
-                        <li><i data-lucide="check" class="check"></i> Support prioritaire</li>
+                        <li><Check class="check" /> 26-100 employés</li>
+                        <li><Check class="check" /> Tout du plan Starter +</li>
+                        <li><Check class="check" /> Gestion sous-traitants</li>
+                        <li><Check class="check" /> DPIA automatisées</li>
+                        <li><Check class="check" /> Intégrations (Google, Microsoft)</li>
+                        <li><Check class="check" /> Revue DPO trimestrielle</li>
+                        <li><Check class="check" /> Support prioritaire</li>
                     </ul>
                     <a href="#contact" class="btn-card btn-card-primary">Commencer</a>
                 </div>
@@ -1582,14 +1572,14 @@ section {
                         <span class="period">/mois</span>
                     </div>
                     <ul class="pricing-features">
-                        <li><i data-lucide="check" class="check"></i> 100+ employés</li>
-                        <li><i data-lucide="check" class="check"></i> Tout du plan Professional +</li>
-                        <li><i data-lucide="check" class="check"></i> DPO dédié</li>
-                        <li><i data-lucide="check" class="check"></i> API & webhooks</li>
-                        <li><i data-lucide="check" class="check"></i> SSO (SAML/OAuth2)</li>
-                        <li><i data-lucide="check" class="check"></i> Portail public de confiance</li>
-                        <li><i data-lucide="check" class="check"></i> Support 24/7</li>
-                        <li><i data-lucide="check" class="check"></i> SLA garanti</li>
+                        <li><Check class="check" /> 100+ employés</li>
+                        <li><Check class="check" /> Tout du plan Professional +</li>
+                        <li><Check class="check" /> DPO dédié</li>
+                        <li><Check class="check" /> API & webhooks</li>
+                        <li><Check class="check" /> SSO (SAML/OAuth2)</li>
+                        <li><Check class="check" /> Portail public de confiance</li>
+                        <li><Check class="check" /> Support 24/7</li>
+                        <li><Check class="check" /> SLA garanti</li>
                     </ul>
                     <a href="#contact" class="btn-card">Nous Contacter</a>
                 </div>
@@ -1609,10 +1599,10 @@ section {
                     <h2>Développé et Hébergé à Monaco</h2>
                     <p>MonacoRGPD est une solution entièrement conçue, développée et hébergée dans la Principauté de Monaco. Vos données restent sur le territoire monégasque, garantissant une souveraineté totale et une conformité parfaite avec la législation locale.</p>
                     <ul class="monaco-features">
-                        <li><i data-lucide="map-pin" class="check"></i> Équipe basée à Monaco</li>
-                        <li><i data-lucide="server" class="check"></i> Hébergement exclusif Monaco/EU</li>
-                        <li><i data-lucide="shield" class="check"></i> Souveraineté des données garantie</li>
-                        <li><i data-lucide="scale" class="check"></i> Conformité loi n° 1.565</li>
+                        <li><MapPin class="check" /> Équipe basée à Monaco</li>
+                        <li><Server class="check" /> Hébergement exclusif Monaco/EU</li>
+                        <li><Shield class="check" /> Souveraineté des données garantie</li>
+                        <li><Scale class="check" /> Conformité loi n° 1.565</li>
                     </ul>
                 </div>
                 <div class="monaco-made-logo">
@@ -1631,22 +1621,22 @@ section {
             </div>
             <div class="trust-grid">
                 <div class="trust-card">
-                    <i data-lucide="graduation-cap" class="trust-icon-large"></i>
+                    <GraduationCap class="trust-icon-large" />
                     <h3>DPO Expert Monaco</h3>
                     <p>Notre équipe comprend des DPO qualifiés avec une expertise spécifique de la législation monégasque</p>
                 </div>
                 <div class="trust-card">
-                    <i data-lucide="building-2" class="trust-icon-large"></i>
+                    <Building2 class="trust-icon-large" />
                     <h3>Aligné avec l'APDP</h3>
                     <p>Workflows de notification directe et intégration des templates officiels de l'autorité de protection</p>
                 </div>
                 <div class="trust-card">
-                    <i data-lucide="lock" class="trust-icon-large"></i>
+                    <Lock class="trust-icon-large" />
                     <h3>Sécurité Maximale</h3>
                     <p>Hébergement EU/Monaco, chiffrement AES-256, authentification multi-facteurs, audits annuels</p>
                 </div>
                 <div class="trust-card">
-                    <i data-lucide="globe" class="trust-icon-large"></i>
+                    <Globe class="trust-icon-large" />
                     <h3>Convention 108+</h3>
                     <p>Conformité avec les engagements internationaux de Monaco en matière de protection des données</p>
                 </div>
@@ -1662,7 +1652,7 @@ section {
                 <p>Rejoignez les entreprises monégasques qui ont choisi MonacoRGPD</p>
                 <div class="cta-buttons">
                     <a href="mailto:contact@monacogdpr.mc" class="btn-primary btn-large">Demander une démo gratuite</a>
-                    <a href="tel:+37797702244" class="btn-outline btn-large"><i data-lucide="phone" class="inline-block w-5 h-5 align-middle mr-2"></i>Appelez-nous</a>
+                    <a href="tel:+37797702244" class="btn-outline btn-large"><Phone class="inline-block w-5 h-5 align-middle mr-2" />Appelez-nous</a>
                 </div>
                 <p class="cta-note">Évaluation initiale gratuite • Sans engagement • Mise en place en 48h</p>
             </div>
@@ -1675,7 +1665,7 @@ section {
             <div class="footer-grid">
                 <div class="footer-col">
                     <a href="/" class="footer-logo">
-                        <i data-lucide="shield-check" class="logo-icon text-white"></i>
+                        <ShieldCheck class="logo-icon text-white" />
                         <span class="logo-text"><span class="text-red-600 dark:text-red-400">Monaco</span>RGPD</span>
                     </a>
                     <p>La plateforme de conformité RGPD conçue pour les entreprises monégasques.</p>
