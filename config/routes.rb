@@ -37,6 +37,9 @@ Rails.application.routes.draw do
     resources :messages, only: [ :create ], controller: "conversation_messages"
   end
 
+  # Waitlist Entries
+  resources :waitlist_entries, only: [ :create ]
+
   # Dashboard
   get "dashboard", to: "dashboard#show"
 

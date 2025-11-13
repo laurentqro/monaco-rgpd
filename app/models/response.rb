@@ -9,6 +9,7 @@ class Response < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :processing_activities, dependent: :nullify
+  has_many :waitlist_entries, dependent: :destroy
 
   enum :status, {
     in_progress: 0,
