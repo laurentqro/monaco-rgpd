@@ -64,6 +64,9 @@
             shouldExit = true;
             exitMessage = rule.exit_message || "Ce questionnaire n'est pas applicable à votre situation.";
             exitTriggerQuestionId = question.id;
+          } else if (rule.action === 'exit_to_waitlist') {
+            // Redirect to waitlist exit page
+            router.visit(`/questionnaires/${questionnaire.id}/waitlist_exit`);
           } else if (rule.action === 'skip_to_section' && rule.target_section_id) {
             // Find all sections between current and target, mark them as skipped
             const currentSectionIndex = questionnaire.sections.findIndex(s => s.id === question.sectionId);
