@@ -18,15 +18,12 @@
   }
 </script>
 
-<AppLayout>
+<AppLayout title="Registre des traitements">
   <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 py-8">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold mb-2">Registre des traitements</h1>
-        <p class="text-gray-600">
-          Gérez vos activités de traitement conformément à l'article 27 de la Loi n° 1.565 relative à la protection des données personnelles
-        </p>
-      </div>
+      <p class="text-gray-600 mb-6">
+        Gérez vos activités de traitement conformément à l'article 27 de la Loi n° 1.565 relative à la protection des données personnelles
+      </p>
 
       {#if activities.length === 0}
         <Card.Root>
