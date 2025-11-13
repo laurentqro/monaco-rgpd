@@ -261,18 +261,30 @@ s3q1_intro = <<~MARKDOWN
   * gestion des aides sociales
 MARKDOWN
 
+s3q1_help_examples = <<~MARKDOWN
+  **⚠️ Exemples de finalités HORS CADRE (non conformes):**
+
+  * Surveillance systématique des réseaux sociaux personnels des employés
+  * Géolocalisation continue en dehors des heures de travail
+  * Analyse comportementale prédictive pour anticiper les démissions
+  * Profilage psychologique des candidats ou employés
+  * Surveillance de l'activité syndicale au-delà des obligations légales
+  * Collecte de données sans lien avec la relation de travail
+MARKDOWN
+
 s3q1_hr_purposes = section3_hr.questions.create!(
   order_index: 1,
-  question_text: "Collectez-vous des données à d'autres fins que celles listées ci-dessus ?",
+  question_text: "Votre collecte de données RH se limite-t-elle uniquement aux finalités du cadre de référence listées ci-dessus ?",
   question_type: :yes_no,
   intro_text: s3q1_intro,
+  help_text: s3q1_help_examples,
   is_required: true,
   weight: 2
 )
 
 s3q1_hr_purposes.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui", score: 0 },
-  { order_index: 2, choice_text: "Non", score: 100 }
+  { order_index: 1, choice_text: "Oui", score: 100 },
+  { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
 # Q2: Types de données RH
@@ -294,25 +306,39 @@ s3q2_intro = <<~MARKDOWN
     * à la carrière,
     * aux déclarations d'accidents et de maladies professionnelles,
     * aux évaluations,
-    *  à la validation des acquis,
+    * à la validation des acquis,
     * aux formations,
     * aux visites médicales,
     * au permis de conduire,
     * aux congés.
 MARKDOWN
 
+s3q2_help_examples = <<~MARKDOWN
+  **⚠️ Exemples de données HORS CADRE (interdites ou sensibles):**
+
+  * Opinions politiques, convictions religieuses ou philosophiques
+  * Appartenance syndicale (sauf gestion obligatoire des représentants)
+  * Données de santé non liées aux visites médicales obligatoires
+  * Données biométriques (empreintes digitales, reconnaissance faciale) sauf exception
+  * Origines ethniques ou raciales
+  * Orientation sexuelle ou vie privée
+  * Données génétiques
+  * Casier judiciaire (sauf professions spécifiques autorisées)
+MARKDOWN
+
 s3q2_hr_data = section3_hr.questions.create!(
   order_index: 2,
-  question_text: "Collectez-vous des données autres que celles listées ci-dessus ?",
+  question_text: "Les données RH que vous collectez correspondent-elles uniquement à celles du cadre de référence listées ci-dessus ?",
   question_type: :yes_no,
   intro_text: s3q2_intro,
+  help_text: s3q2_help_examples,
   is_required: true,
   weight: 2
 )
 
 s3q2_hr_data.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui", score: 0 },
-  { order_index: 2, choice_text: "Non", score: 100 }
+  { order_index: 1, choice_text: "Oui", score: 100 },
+  { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
 # ============================================================================
@@ -610,16 +636,7 @@ s1q1_monaco.logic_rules.create!(
   exit_message: "Nous ne couvrons que Monaco pour le moment, mais laissez votre email et on vous contactera quand nous couvrirons d'autres pays que Monaco."
 )
 
-# Rule 2: S1Q4 - Exit if no personal data
-s1q4_no = s1q4_personal_data.answer_choices.find_by(choice_text: "Non")
-s1q4_personal_data.logic_rules.create!(
-  condition_type: :equals,
-  condition_value: s1q4_no.id.to_s,
-  action: :exit_questionnaire,
-  exit_message: "Si vous ne traitez pas de données personnelles, vous n'êtes pas concerné par les obligations RGPD pour le moment."
-)
-
-# Rule 3: S2Q1 - Skip Section 3 if no personnel
+# Rule 2: S2Q1 - Skip Section 3 if no personnel
 s2q1_no = s2q1_personnel.answer_choices.find_by(choice_text: "Non")
 s2q1_personnel.logic_rules.create!(
   condition_type: :equals,
@@ -628,7 +645,7 @@ s2q1_personnel.logic_rules.create!(
   target_section_id: section4_dpo.id
 )
 
-# Rule 4: S2Q2 - Exit if video surveillance (needs custom handling)
+# Rule 3: S2Q2 - Exit if video surveillance (needs custom handling)
 s2q2_yes = s2q2_video.answer_choices.find_by(choice_text: "Oui")
 s2q2_video.logic_rules.create!(
   condition_type: :equals,
@@ -637,7 +654,7 @@ s2q2_video.logic_rules.create!(
   exit_message: "La vidéosurveillance nécessite une analyse personnalisée. Merci de nous contacter."
 )
 
-# Rule 5: S2Q7 - Skip to after website questions if no website
+# Rule 4: S2Q7 - Skip to after website questions if no website
 s2q7_no = s2q7_website.answer_choices.find_by(choice_text: "Non")
 s2q7_website.logic_rules.create!(
   condition_type: :equals,
