@@ -654,13 +654,13 @@ s2q2_video.logic_rules.create!(
   exit_message: "La vidéosurveillance nécessite une analyse personnalisée. Merci de nous contacter."
 )
 
-# Rule 4: S2Q7 - Skip to after website questions if no website
+# Rule 4: S2Q7 - Skip website-related questions if no website
 s2q7_no = s2q7_website.answer_choices.find_by(choice_text: "Non")
 s2q7_website.logic_rules.create!(
   condition_type: :equals,
   condition_value: s2q7_no.id.to_s,
-  action: :skip_to_section,
-  target_section_id: section3_hr.id
+  action: :skip_to_question,
+  target_question_id: s2q4_phone.id
 )
 
 puts "\n✓ Created master questionnaire with #{questionnaire.sections.count} sections"
