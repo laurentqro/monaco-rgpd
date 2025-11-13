@@ -21,14 +21,13 @@ class WaitlistEntryTest < ActiveSupport::TestCase
     assert_includes entry.errors[:email], "doit être rempli"
   end
 
-  test "requires response" do
+  test "response is optional for Monaco exit flow" do
     entry = WaitlistEntry.new(
       email: "test@example.com",
-      features_needed: [ "association" ]
+      features_needed: [ "geographic_expansion" ]
     )
 
-    assert_not entry.valid?
-    assert_includes entry.errors[:response], "doit exister"
+    assert entry.valid?
   end
 
   test "validates email format" do
@@ -42,13 +41,14 @@ class WaitlistEntryTest < ActiveSupport::TestCase
     assert_includes entry.errors[:email], "n'est pas valide"
   end
 
-  test "features_needed defaults to empty array" do
-    entry = WaitlistEntry.create!(
+  test "requires features_needed" do
+    entry = WaitlistEntry.new(
       email: "test@example.com",
       response: responses(:one)
     )
 
-    assert_equal [], entry.features_needed
+    assert_not entry.valid?
+    assert_includes entry.errors[:features_needed], "doit être rempli"
   end
 
   test "belongs to response" do

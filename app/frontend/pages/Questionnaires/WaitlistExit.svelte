@@ -7,17 +7,24 @@
   let { questionnaire } = $props()
   let email = $state('')
   let loading = $state(false)
+  let error = $state('')
 
   function handleSubmit(e) {
     e.preventDefault()
     loading = true
+    error = ''
+
     router.post('/waitlist_entries', {
       waitlist_entry: {
         email,
-        questionnaire_response_id: null
+        response_id: null,
+        features_needed: ['geographic_expansion']
       }
     }, {
-      onFinish: () => loading = false
+      onFinish: () => loading = false,
+      onError: (errors) => {
+        error = errors?.email?.[0] || 'Une erreur est survenue. Veuillez réessayer.'
+      }
     })
   }
 
@@ -50,6 +57,9 @@
           required
           disabled={loading}
         />
+        {#if error}
+          <p class="mt-2 text-sm text-red-600">{error}</p>
+        {/if}
       </div>
 
       <div class="flex gap-4">

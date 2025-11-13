@@ -11,13 +11,15 @@
 
   let email = $state('');
   let loading = $state(false);
+  let error = $state('');
 
   // Generate human-readable feature descriptions
   const featureDescriptions = {
     association: "un cadre spécifique pour les associations",
     organisme_public: "un cadre spécifique pour les organismes publics",
     profession_liberale: "un cadre spécifique pour les professions libérales",
-    video_surveillance: "une analyse personnalisée pour la vidéosurveillance"
+    video_surveillance: "une analyse personnalisée pour la vidéosurveillance",
+    geographic_expansion: "l'expansion géographique"
   };
 
   const featuresText = features_needed
@@ -27,13 +29,18 @@
   function handleSubmit(event) {
     event.preventDefault();
     loading = true;
+    error = '';
+
     router.post('/waitlist_entries', {
       waitlist_entry: {
         email,
         response_id: response.id
       }
     }, {
-      onFinish: () => loading = false
+      onFinish: () => loading = false,
+      onError: (errors) => {
+        error = errors?.email?.[0] || 'Une erreur est survenue. Veuillez réessayer.'
+      }
     });
   }
 
@@ -116,6 +123,9 @@
                 disabled={loading}
                 class="mt-1"
               />
+              {#if error}
+                <p class="mt-2 text-sm text-red-600">{error}</p>
+              {/if}
             </div>
 
             <div class="flex gap-4">

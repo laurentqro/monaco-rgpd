@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_13_150532) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_13_210559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -605,7 +605,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_13_150532) do
     t.jsonb "features_needed", default: [], null: false
     t.boolean "notified", default: false, null: false
     t.datetime "notified_at"
-    t.bigint "response_id", null: false
+    t.bigint "response_id"
     t.datetime "updated_at", null: false
     t.index [ "email" ], name: "index_waitlist_entries_on_email"
     t.index [ "features_needed" ], name: "index_waitlist_entries_on_features_needed", using: :gin

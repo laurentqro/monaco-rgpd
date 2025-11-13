@@ -38,7 +38,7 @@ class WaitlistEntriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal response_id, entry.response_id
     assert_equal [ "association" ], entry.features_needed
 
-    assert_redirected_to questionnaire_response_path(@test_response.questionnaire, @test_response)
+    assert_redirected_to root_path
   end
 
   test "create validates email format" do
@@ -64,5 +64,24 @@ class WaitlistEntriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
+  end
+
+  test "Monaco exit flow creates entry without response" do
+    assert_difference "WaitlistEntry.count", 1 do
+      post waitlist_entries_path, params: {
+        waitlist_entry: {
+          email: "monaco@example.com",
+          response_id: nil,
+          features_needed: [ "geographic_expansion" ]
+        }
+      }
+    end
+
+    entry = WaitlistEntry.last
+    assert_equal "monaco@example.com", entry.email
+    assert_nil entry.response_id
+    assert_equal [ "geographic_expansion" ], entry.features_needed
+
+    assert_redirected_to root_path
   end
 end
