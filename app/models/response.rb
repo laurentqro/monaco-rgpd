@@ -25,9 +25,9 @@ class Response < ApplicationRecord
   scope :completed, -> { where(status: :completed) }
 
   def waitlist_features_needed
-    answers.includes(:answer_choice)
-      .select { |a| a.answer_choice&.triggers_waitlist? }
-      .map { |a| a.answer_choice.waitlist_feature_key }
+    answers.joins(:answer_choice)
+      .where(answer_choices: { triggers_waitlist: true })
+      .pluck("answer_choices.waitlist_feature_key")
       .compact
       .uniq
   end

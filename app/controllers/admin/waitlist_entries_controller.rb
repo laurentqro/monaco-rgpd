@@ -16,16 +16,15 @@ class Admin::WaitlistEntriesController < Admin::BaseController
   private
 
   def calculate_feature_counts
-    # Count entries per feature
-    counts = Hash.new(0)
+    # Use PostgreSQL JSONB functions for efficient aggregation
+    result = ActiveRecord::Base.connection.execute(<<-SQL.squish)
+      SELECT jsonb_array_elements_text(features_needed) as feature, COUNT(*) as count
+      FROM waitlist_entries
+      GROUP BY feature
+      ORDER BY count DESC
+    SQL
 
-    WaitlistEntry.find_each do |entry|
-      entry.features_needed.each do |feature|
-        counts[feature] += 1
-      end
-    end
-
-    counts
+    result.to_h { |row| [ row["feature"], row["count"].to_i ] }
   end
 
   def serialize_entry(entry)
