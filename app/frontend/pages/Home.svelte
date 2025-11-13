@@ -8,20 +8,36 @@
   onMount(() => {
     console.log('Home component mounted');
 
-    // Initialize Lucide icons after a short delay to ensure they're loaded
+    // Initialize Lucide icons with retry logic
     const initIcons = () => {
-      if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      if (typeof window.lucide !== 'undefined' && window.lucide.createIcons) {
         try {
-          lucide.createIcons();
-          console.log('Lucide icons initialized');
+          window.lucide.createIcons();
+          console.log('Lucide icons initialized successfully');
+          return true;
         } catch (error) {
           console.error('Error initializing Lucide icons:', error);
+          return false;
         }
+      } else {
+        console.warn('Lucide not loaded yet, retrying...');
+        return false;
       }
     };
 
-    // Try to initialize icons with a small delay
-    setTimeout(initIcons, 100);
+    // Retry initialization with increasing delays
+    const maxRetries = 5;
+    let retryCount = 0;
+
+    const tryInit = () => {
+      if (initIcons() || retryCount >= maxRetries) {
+        return;
+      }
+      retryCount++;
+      setTimeout(tryInit, retryCount * 200);
+    };
+
+    tryInit();
   });
 </script>
 
@@ -45,6 +61,7 @@
   <meta name="twitter:image" content="https://monacogdpr.mc/og-image.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 </svelte:head>
 
@@ -91,6 +108,11 @@
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
+}
+
+/* Home page wrapper - applies Sora font only to this page */
+.home-page {
+    font-family: 'Sora', sans-serif;
 }
 
 :global(body) {
@@ -1217,6 +1239,7 @@ section {
 }
 </style>
 
+<div class="home-page">
 <!-- Header -->
     <header class="header">
         <nav class="nav container">
@@ -1692,3 +1715,4 @@ section {
             </div>
         </div>
     </footer>
+</div>
