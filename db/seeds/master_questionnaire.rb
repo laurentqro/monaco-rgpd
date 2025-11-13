@@ -107,7 +107,7 @@ section2 = questionnaire.sections.create!(
 # Q1: Avez-vous du personnel?
 s2q1_personnel = section2.questions.create!(
   order_index: 1,
-  question_text: "Avez-vous du personnel ?",
+  question_text: "Avez-vous du personnel ? (y compris co-gérants, stagiaires, apprentis, etc.)",
   question_type: :yes_no,
   is_required: true,
   weight: 0
@@ -146,23 +146,9 @@ s2q3_email.answer_choices.create!([
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
-# Q4: Ligne directe
-s2q4_phone = section2.questions.create!(
-  order_index: 4,
-  question_text: "Vos employés disposent-ils d'une ligne directe (fixe ou mobile) ?",
-  question_type: :yes_no,
-  is_required: true,
-  weight: 0
-)
-
-s2q4_phone.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui", score: 0 },
-  { order_index: 2, choice_text: "Non", score: 0 }
-])
-
-# Q5: Accès aux locaux
+# Q4: Accès aux locaux
 s2q5_access = section2.questions.create!(
-  order_index: 5,
+  order_index: 4,
   question_text: "Le personnel accède aux locaux par :",
   question_type: :single_choice,
   is_required: true,
@@ -175,9 +161,9 @@ s2q5_access.answer_choices.create!([
   { order_index: 3, choice_text: "Un dispositif biométrique", score: 0 }
 ])
 
-# Q6: Délégués du personnel
+# Q5: Délégués du personnel
 s2q6_delegates = section2.questions.create!(
-  order_index: 6,
+  order_index: 5,
   question_text: "Avez-vous des délégués du personnel ?",
   question_type: :yes_no,
   is_required: true,
@@ -189,9 +175,9 @@ s2q6_delegates.answer_choices.create!([
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
-# Q7: Site internet
+# Q6: Site internet
 s2q7_website = section2.questions.create!(
-  order_index: 7,
+  order_index: 6,
   question_text: "Avez-vous un site internet ?",
   question_type: :yes_no,
   is_required: true,
@@ -203,9 +189,9 @@ s2q7_website.answer_choices.create!([
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
-# Q8: Type de site
+# Q7: Type de site
 s2q8_site_type = section2.questions.create!(
-  order_index: 8,
+  order_index: 7,
   question_text: "Quel type de site ?",
   question_type: :single_choice,
   is_required: true,
@@ -217,9 +203,9 @@ s2q8_site_type.answer_choices.create!([
   { order_index: 2, choice_text: "Site de vente en ligne", score: 0 }
 ])
 
-# Q9: Informations personnel sur site
+# Q8: Informations personnel sur site
 s2q9_personnel_info = section2.questions.create!(
-  order_index: 9,
+  order_index: 8,
   question_text: "Votre site présente-t-il des informations relatives au personnel ?",
   question_type: :yes_no,
   is_required: true,
@@ -227,6 +213,20 @@ s2q9_personnel_info = section2.questions.create!(
 )
 
 s2q9_personnel_info.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 0 }
+])
+
+# Q9: Ligne directe
+s2q4_phone = section2.questions.create!(
+  order_index: 9,
+  question_text: "Vos employés disposent-ils d'une ligne directe (fixe ou mobile) ?",
+  question_type: :yes_no,
+  is_required: true,
+  weight: 0
+)
+
+s2q4_phone.answer_choices.create!([
   { order_index: 1, choice_text: "Oui", score: 0 },
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
@@ -610,43 +610,7 @@ s1q1_monaco.logic_rules.create!(
   exit_message: "Nous ne couvrons que Monaco pour le moment, mais laissez votre email et on vous contactera quand nous couvrirons d'autres pays que Monaco."
 )
 
-# Rule 2: S1Q2 - Exit if Association
-s1q2_association = s1q2_org_type.answer_choices.find_by(choice_text: "Association")
-s1q2_org_type.logic_rules.create!(
-  condition_type: :equals,
-  condition_value: s1q2_association.id.to_s,
-  action: :exit_questionnaire,
-  exit_message: "Conseil personnalisé"
-)
-
-# Rule 3: S1Q2 - Exit if Organisme public
-s1q2_public = s1q2_org_type.answer_choices.find_by(choice_text: "Organisme public")
-s1q2_org_type.logic_rules.create!(
-  condition_type: :equals,
-  condition_value: s1q2_public.id.to_s,
-  action: :exit_questionnaire,
-  exit_message: "Conseil personnalisé"
-)
-
-# Rule 4: S1Q2 - Exit if Profession libérale
-s1q2_liberal = s1q2_org_type.answer_choices.find_by(choice_text: "Profession libérale")
-s1q2_org_type.logic_rules.create!(
-  condition_type: :equals,
-  condition_value: s1q2_liberal.id.to_s,
-  action: :exit_questionnaire,
-  exit_message: "Conseil personnalisé"
-)
-
-# Rule 5: S1Q2 - Exit if Personne physique
-s1q2_individual = s1q2_org_type.answer_choices.find_by(choice_text: "Personne physique agissant dans un cadre domestique")
-s1q2_org_type.logic_rules.create!(
-  condition_type: :equals,
-  condition_value: s1q2_individual.id.to_s,
-  action: :exit_questionnaire,
-  exit_message: "Non assujetti"
-)
-
-# Rule 6: S1Q4 - Exit if no personal data
+# Rule 2: S1Q4 - Exit if no personal data
 s1q4_no = s1q4_personal_data.answer_choices.find_by(choice_text: "Non")
 s1q4_personal_data.logic_rules.create!(
   condition_type: :equals,
@@ -655,7 +619,7 @@ s1q4_personal_data.logic_rules.create!(
   exit_message: "Si vous ne traitez pas de données personnelles, vous n'êtes pas concerné par les obligations RGPD pour le moment."
 )
 
-# Rule 7: S2Q1 - Skip Section 3 if no personnel
+# Rule 3: S2Q1 - Skip Section 3 if no personnel
 s2q1_no = s2q1_personnel.answer_choices.find_by(choice_text: "Non")
 s2q1_personnel.logic_rules.create!(
   condition_type: :equals,
@@ -664,7 +628,7 @@ s2q1_personnel.logic_rules.create!(
   target_section_id: section4_dpo.id
 )
 
-# Rule 8: S2Q2 - Exit if video surveillance (needs custom handling)
+# Rule 4: S2Q2 - Exit if video surveillance (needs custom handling)
 s2q2_yes = s2q2_video.answer_choices.find_by(choice_text: "Oui")
 s2q2_video.logic_rules.create!(
   condition_type: :equals,
@@ -673,7 +637,7 @@ s2q2_video.logic_rules.create!(
   exit_message: "La vidéosurveillance nécessite une analyse personnalisée. Merci de nous contacter."
 )
 
-# Rule 9: S2Q7 - Skip to after website questions if no website
+# Rule 5: S2Q7 - Skip to after website questions if no website
 s2q7_no = s2q7_website.answer_choices.find_by(choice_text: "Non")
 s2q7_website.logic_rules.create!(
   condition_type: :equals,
