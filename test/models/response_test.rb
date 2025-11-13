@@ -112,4 +112,68 @@ class ResponseTest < ActiveSupport::TestCase
       response.touch # Trigger update without changing status
     end
   end
+
+  test "waitlist_features_needed returns empty array when no triggers" do
+    response = responses(:one)
+
+    assert_equal [], response.waitlist_features_needed
+    assert_not response.requires_waitlist?
+  end
+
+  test "waitlist_features_needed returns feature keys from triggered answers" do
+    # Setup: Create answer with waitlist-triggering choice
+    question = questions(:one)
+    choice = question.answer_choices.create!(
+      choice_text: "Association",
+      order_index: 3,
+      score: 0,
+      triggers_waitlist: true,
+      waitlist_feature_key: "association"
+    )
+
+    response = responses(:one)
+    response.answers.create!(
+      question: question,
+      answer_choice: choice
+    )
+
+    assert_equal [ "association" ], response.waitlist_features_needed
+    assert response.requires_waitlist?
+  end
+
+  test "waitlist_features_needed returns unique features for multiple triggers" do
+    # Create a fresh response with no existing answers
+    response = Response.create!(
+      questionnaire: questionnaires(:compliance),
+      account: accounts(:basic),
+      respondent: users(:owner),
+      status: :in_progress
+    )
+
+    question1 = questions(:one)
+    question2 = questions(:has_personnel)
+
+    choice1 = question1.answer_choices.create!(
+      choice_text: "Association",
+      order_index: 3,
+      score: 0,
+      triggers_waitlist: true,
+      waitlist_feature_key: "association"
+    )
+
+    choice2 = question2.answer_choices.create!(
+      choice_text: "Oui",
+      order_index: 3,
+      score: 0,
+      triggers_waitlist: true,
+      waitlist_feature_key: "video_surveillance"
+    )
+
+    response.answers.create!(question: question1, answer_choice: choice1)
+    response.answers.create!(question: question2, answer_choice: choice2)
+
+    assert_equal 2, response.waitlist_features_needed.size
+    assert_includes response.waitlist_features_needed, "association"
+    assert_includes response.waitlist_features_needed, "video_surveillance"
+  end
 end

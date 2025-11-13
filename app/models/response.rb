@@ -23,6 +23,18 @@ class Response < ApplicationRecord
   scope :for_account, ->(account) { where(account: account) }
   scope :completed, -> { where(status: :completed) }
 
+  def waitlist_features_needed
+    answers.includes(:answer_choice)
+      .select { |a| a.answer_choice&.triggers_waitlist? }
+      .map { |a| a.answer_choice.waitlist_feature_key }
+      .compact
+      .uniq
+  end
+
+  def requires_waitlist?
+    waitlist_features_needed.any?
+  end
+
   private
 
   def set_started_at
