@@ -8,6 +8,12 @@ class WaitlistEntriesController < ApplicationController
       # Completion flow: User finished questionnaire
       @response = Response.find(response_id)
 
+      # Authorization: Verify ownership if user is authenticated
+      if Current.user && @response.respondent_id != Current.user.id && @response.account_id != Current.account&.id
+        render json: { errors: { response: [ "non autorisé" ] } }, status: :forbidden
+        return
+      end
+
       features = @response.waitlist_features_needed
       if features.empty?
         render json: { errors: { features_needed: [ "aucune fonctionnalité en attente requise" ] } }, status: :unprocessable_entity
