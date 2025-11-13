@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_12_085446) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_13_150148) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -126,9 +126,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_12_085446) do
     t.integer "order_index", null: false
     t.bigint "question_id", null: false
     t.decimal "score", precision: 5, scale: 2
+    t.boolean "triggers_waitlist", default: false, null: false
     t.datetime "updated_at", null: false
+    t.string "waitlist_feature_key"
     t.index [ "order_index" ], name: "index_answer_choices_on_order_index"
     t.index [ "question_id" ], name: "index_answer_choices_on_question_id"
+    t.index [ "waitlist_feature_key" ], name: "index_answer_choices_on_waitlist_feature_key"
   end
 
   create_table "answers", force: :cascade do |t|
