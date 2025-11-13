@@ -95,32 +95,6 @@ s1q3_org_size.answer_choices.create!([
   { order_index: 5, choice_text: "50+", score: 0 }
 ])
 
-# Q4: Traitez-vous des données personnelles?
-s1q4_help_text = <<~MARKDOWN
-  Voici quelques exemples de données personnelles:
-
-  * Identité : nom, prénom, numéro de sécurité sociale, adresse IP, identifiant en ligne
-  * Caractéristiques physiques / physiologiques : photo, empreintes digitales, ADN
-  * Informations professionnelles : poste, salaire, évaluations
-  * Données de localisation : adresse, géolocalisation (GPS)
-  * Habitudes / comportements : historique de navigation, achats, centres d'intérêt
-  * Données sensibles : origine ethnique, opinions politiques, religion, santé, orientation sexuelle, données biométriques ou génétiques
-MARKDOWN
-
-s1q4_personal_data = section1.questions.create!(
-  order_index: 4,
-  question_text: "Traitez-vous des données personnelles ?",
-  question_type: :yes_no,
-  help_text: s1q4_help_text,
-  is_required: true,
-  weight: 0
-)
-
-s1q4_personal_data.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui", score: 0 },
-  { order_index: 2, choice_text: "Non", score: 0 }
-])
-
 # ============================================================================
 # Section 2: Cartographie des traitements
 # ============================================================================
