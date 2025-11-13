@@ -1,5 +1,5 @@
 class QuestionnairesController < ApplicationController
-  before_action :set_questionnaire, only: [ :show ]
+  before_action :set_questionnaire, only: [ :show, :waitlist_exit ]
 
   def index
     questionnaires = Questionnaire.published
@@ -12,6 +12,15 @@ class QuestionnairesController < ApplicationController
   def show
     render inertia: "Questionnaires/Show", props: {
       questionnaire: questionnaire_props(@questionnaire)
+    }
+  end
+
+  def waitlist_exit
+    render inertia: "Questionnaires/WaitlistExit", props: {
+      questionnaire: {
+        id: @questionnaire.id,
+        title: @questionnaire.title
+      }
     }
   end
 

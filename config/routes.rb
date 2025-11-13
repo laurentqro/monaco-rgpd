@@ -21,6 +21,9 @@ Rails.application.routes.draw do
 
   # Questionnaires and Responses
   resources :questionnaires, only: [ :index, :show ] do
+    member do
+      get :waitlist_exit
+    end
     resources :responses, only: [ :create, :show, :update ]
   end
 
