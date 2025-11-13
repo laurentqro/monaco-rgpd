@@ -13,7 +13,7 @@
 </script>
 
 <AppLayout>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-muted">
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Header with back button -->
       <div class="mb-8 flex justify-between items-start">
@@ -29,7 +29,7 @@
             Retour à la liste
           </Button>
           <h1 class="text-3xl font-bold mb-2">{activity.name}</h1>
-          <p class="text-gray-600">{activity.description}</p>
+          <p class="text-muted-foreground">{activity.description}</p>
         </div>
         <Button onclick={downloadPDF}>
           <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,20 +42,20 @@
       <!-- Finalités -->
       <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">Finalité(s)</h2>
-        <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="border border-border rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row class="bg-gray-100 hover:bg-gray-100">
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Finalité(s)</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Base(s) juridique(s)</Table.Head>
+              <Table.Row class="bg-muted hover:bg-muted">
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Finalité(s)</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-border whitespace-normal">Base(s) juridique(s)</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body class="bg-white">
+            <Table.Body class="bg-background">
               {#each activity.processing_purposes as purpose (purpose.purpose_number)}
                 <Table.Row>
-                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">Finalité {purpose.purpose_number}</Table.Cell>
-                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{purpose.purpose_detail}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-border whitespace-normal">Finalité {purpose.purpose_number}</Table.Cell>
+                  <Table.Cell class="border-r border-border whitespace-normal">{purpose.purpose_detail}</Table.Cell>
                   <Table.Cell class="whitespace-normal">{purpose.legal_basis_text}</Table.Cell>
                 </Table.Row>
               {/each}
@@ -65,7 +65,7 @@
       </div>
 
       <!-- Metadata sections -->
-      <div class="mb-8 bg-white border border-gray-200 rounded-lg p-6">
+      <div class="mb-8 bg-background border border-border rounded-lg p-6">
         <div class="space-y-4">
           <div class="flex border-b pb-4">
             <div class="flex-1 font-semibold">Le traitement est-il mis en œuvre à des fins de surveillance ?</div>
@@ -95,22 +95,22 @@
       <!-- Data Categories -->
       <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">Autres catégories de données</h2>
-        <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="border border-border rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row class="bg-gray-100 hover:bg-gray-100">
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Catégories de données</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Durée(s) de conservation</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Source(s)</Table.Head>
+              <Table.Row class="bg-muted hover:bg-muted">
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Catégories de données</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Durée(s) de conservation</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-border whitespace-normal">Source(s)</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body class="bg-white">
+            <Table.Body class="bg-background">
               {#each activity.data_category_details as category, i (i)}
                 <Table.Row>
-                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">{category.category_type_text}</Table.Cell>
-                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{category.detail}</Table.Cell>
-                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{category.retention_period}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-border whitespace-normal">{category.category_type_text}</Table.Cell>
+                  <Table.Cell class="border-r border-border whitespace-normal">{category.detail}</Table.Cell>
+                  <Table.Cell class="border-r border-border whitespace-normal">{category.retention_period}</Table.Cell>
                   <Table.Cell class="whitespace-normal">{category.data_source}</Table.Cell>
                 </Table.Row>
               {/each}
@@ -122,20 +122,20 @@
       <!-- Access Categories -->
       <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">Catégories de personnes ayant accès aux données</h2>
-        <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="border border-border rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row class="bg-gray-100 hover:bg-gray-100">
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Catégories de personnes ayant accès aux données</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Localisation des personnes</Table.Head>
+              <Table.Row class="bg-muted hover:bg-muted">
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Catégories de personnes ayant accès aux données</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-border whitespace-normal">Localisation des personnes</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body class="bg-white">
+            <Table.Body class="bg-background">
               {#each activity.access_categories as category (category.category_number)}
                 <Table.Row>
-                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">Catégorie {category.category_number}</Table.Cell>
-                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{category.detail}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-border whitespace-normal">Catégorie {category.category_number}</Table.Cell>
+                  <Table.Cell class="border-r border-border whitespace-normal">{category.detail}</Table.Cell>
                   <Table.Cell class="whitespace-normal">{category.location}</Table.Cell>
                 </Table.Row>
               {/each}
@@ -147,20 +147,20 @@
       <!-- Recipient Categories -->
       <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">Catégorie(s) de personnes habilitées à recevoir communication des données</h2>
-        <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="border border-border rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row class="bg-gray-100 hover:bg-gray-100">
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Catégorie(s) de personnes habilitées à recevoir communication des données</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Détail</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Localisation des personnes</Table.Head>
+              <Table.Row class="bg-muted hover:bg-muted">
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Catégorie(s) de personnes habilitées à recevoir communication des données</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Détail</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-border whitespace-normal">Localisation des personnes</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body class="bg-white">
+            <Table.Body class="bg-background">
               {#each activity.recipient_categories as recipient (recipient.recipient_number)}
                 <Table.Row>
-                  <Table.Cell class="font-medium border-r border-gray-200 whitespace-normal">Destinataire {recipient.recipient_number}</Table.Cell>
-                  <Table.Cell class="border-r border-gray-200 whitespace-normal">{recipient.detail}</Table.Cell>
+                  <Table.Cell class="font-medium border-r border-border whitespace-normal">Destinataire {recipient.recipient_number}</Table.Cell>
+                  <Table.Cell class="border-r border-border whitespace-normal">{recipient.detail}</Table.Cell>
                   <Table.Cell class="whitespace-normal">{recipient.location}</Table.Cell>
                 </Table.Row>
               {/each}
@@ -172,18 +172,18 @@
       <!-- Security -->
       <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">Sécurité</h2>
-        <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <div class="border border-border rounded-lg overflow-hidden">
           <Table.Root>
             <Table.Header>
-              <Table.Row class="bg-gray-100 hover:bg-gray-100">
-                <Table.Head class="font-bold text-gray-900 border-b border-r border-gray-200 whitespace-normal">Sécurité</Table.Head>
-                <Table.Head class="font-bold text-gray-900 border-b border-gray-200 whitespace-normal">Référence(s) documents</Table.Head>
+              <Table.Row class="bg-muted hover:bg-muted">
+                <Table.Head class="font-bold text-foreground border-b border-r border-border whitespace-normal">Sécurité</Table.Head>
+                <Table.Head class="font-bold text-foreground border-b border-border whitespace-normal">Référence(s) documents</Table.Head>
               </Table.Row>
             </Table.Header>
-            <Table.Body class="bg-white">
+            <Table.Body class="bg-background">
               {#each activity.security_measures as securityMeasure, i (i)}
                 <Table.Row>
-                  <Table.Cell class="border-r border-gray-200 whitespace-normal">
+                  <Table.Cell class="border-r border-border whitespace-normal">
                     {typeof securityMeasure === 'string' ? securityMeasure : securityMeasure.measure}
                   </Table.Cell>
                   <Table.Cell class="whitespace-normal">
@@ -199,7 +199,7 @@
       <!-- Final Information -->
       <div class="mb-8">
         <h2 class="text-xl font-bold mb-4">Informations complémentaires</h2>
-        <div class="bg-white border border-gray-200 rounded-lg p-6">
+        <div class="bg-background border border-border rounded-lg p-6">
           <div class="space-y-4">
             <div class="flex border-b pb-4">
               <div class="flex-1 font-semibold">Transfert de données vers un pays ne disposant pas d'un niveau de protection adéquat</div>

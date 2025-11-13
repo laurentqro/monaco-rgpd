@@ -78,11 +78,11 @@
 
   {#if isSending}
     <div class="flex justify-start">
-      <div class="bg-white border border-gray-200 rounded-lg px-4 py-3">
+      <div class="bg-background border border-border rounded-lg px-4 py-3">
         <div class="flex space-x-2">
-          <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
-          <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
-          <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+          <div class="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+          <div class="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+          <div class="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style="animation-delay: 300ms"></div>
         </div>
       </div>
     </div>

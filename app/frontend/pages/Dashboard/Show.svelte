@@ -92,18 +92,18 @@
           <CardTitle class="text-2xl mb-4">Bienvenue sur Monaco RGPD</CardTitle>
         </CardHeader>
         <CardContent>
-          <p class="text-gray-600 mb-6">Complétez votre évaluation pour obtenir:</p>
+          <p class="text-muted-foreground mb-6">Complétez votre évaluation pour obtenir:</p>
           <ul class="text-left max-w-md mx-auto mb-8 space-y-2">
             <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span>
+              <span class="text-green-600 dark:text-green-400 mr-2">✓</span>
               Votre score de conformité
             </li>
             <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span>
+              <span class="text-green-600 dark:text-green-400 mr-2">✓</span>
               4 documents essentiels
             </li>
             <li class="flex items-center">
-              <span class="text-green-500 mr-2">✓</span>
+              <span class="text-green-600 dark:text-green-400 mr-2">✓</span>
               Votre registre des traitements
             </li>
           </ul>
@@ -114,7 +114,7 @@
           >
             Commencer l'évaluation
           </Button>
-          <p class="text-sm text-gray-500 mt-4">Temps estimé: 15-20 minutes</p>
+          <p class="text-sm text-muted-foreground mt-4">Temps estimé: 15-20 minutes</p>
         </CardContent>
       </Card>
     {/if}

@@ -67,10 +67,10 @@
     {#if question.help_text}
       <Accordion class="mb-6">
         <AccordionItem value="help">
-          <AccordionTrigger class="text-amber-700 hover:text-amber-800 py-2 text-sm font-normal flex-row-reverse justify-end gap-2 cursor-pointer [&>svg]:-rotate-90 [&[data-state=open]>svg]:rotate-0">
+          <AccordionTrigger class="text-accent hover:text-accent/90 py-2 text-sm font-normal flex-row-reverse justify-end gap-2 cursor-pointer [&>svg]:-rotate-90 [&[data-state=open]>svg]:rotate-0">
             Afficher l'aide
           </AccordionTrigger>
-          <AccordionContent class="bg-amber-50 border border-amber-200 rounded-md p-4 text-amber-900 help-content">
+          <AccordionContent class="bg-accent/10 border border-accent/30 rounded-md p-4 text-accent-foreground help-content">
             {@html helpTextHtml}
           </AccordionContent>
         </AccordionItem>
@@ -84,7 +84,7 @@
             <Button
               onclick={() => handleYesNo(choice.choice_text)}
               variant={selectedValue.choice_id === choice.id ? "default" : "outline"}
-              class="flex-1 h-16 text-lg {selectedValue.choice_id === choice.id && choice.choice_text === 'Oui' ? 'bg-green-600 hover:bg-green-700' : ''} {selectedValue.choice_id === choice.id && choice.choice_text === 'Non' ? 'bg-red-600 hover:bg-red-700' : ''}"
+              class="flex-1 h-16 text-lg {selectedValue.choice_id === choice.id && choice.choice_text === 'Oui' ? 'bg-green-600 dark:bg-green-500 hover:bg-green-700 dark:hover:bg-green-600' : ''} {selectedValue.choice_id === choice.id && choice.choice_text === 'Non' ? 'bg-destructive hover:bg-destructive/90' : ''}"
               role="radio"
               aria-checked={selectedValue.choice_id === choice.id}
             >
@@ -111,7 +111,7 @@
       {:else if question.question_type === 'multiple_choice'}
         <div class="flex flex-col gap-4" role="group" aria-labelledby="question-title-{question.id}">
           {#each question.answer_choices as choice (choice.id)}
-            <Label for="choice-{choice.id}" class="flex items-center p-4 rounded-lg border cursor-pointer hover:bg-gray-50">
+            <Label for="choice-{choice.id}" class="flex items-center p-4 rounded-lg border cursor-pointer hover:bg-muted">
               <Checkbox
                 id="choice-{choice.id}"
                 checked={selectedValue.choice_ids?.includes(choice.id)}
@@ -186,7 +186,7 @@
   }
 
   :global(.help-content a) {
-    color: #d97706;
+    color: var(--color-accent);
     text-decoration: underline;
   }
 </style>

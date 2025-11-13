@@ -1222,7 +1222,7 @@ section {
         <nav class="nav container">
             <a href="/mcrgpd" class="logo">
                 <i data-lucide="shield-check" class="logo-icon"></i>
-                <span class="logo-text"><span style="color: red;">Monaco</span>RGPD</span>
+                <span class="logo-text"><span class="text-red-600 dark:text-red-400">Monaco</span>RGPD</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#fonctionnalites">Fonctionnalités</a></li>
@@ -1639,7 +1639,7 @@ section {
                 <p>Rejoignez les entreprises monégasques qui ont choisi MonacoRGPD</p>
                 <div class="cta-buttons">
                     <a href="mailto:contact@monacogdpr.mc" class="btn-primary btn-large">Demander une démo gratuite</a>
-                    <a href="tel:+37797702244" class="btn-outline btn-large"><i data-lucide="phone" style="width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></i>Appelez-nous</a>
+                    <a href="tel:+37797702244" class="btn-outline btn-large"><i data-lucide="phone" class="inline-block w-5 h-5 align-middle mr-2"></i>Appelez-nous</a>
                 </div>
                 <p class="cta-note">Évaluation initiale gratuite • Sans engagement • Mise en place en 48h</p>
             </div>
@@ -1652,8 +1652,8 @@ section {
             <div class="footer-grid">
                 <div class="footer-col">
                     <a href="/" class="footer-logo">
-                        <i data-lucide="shield-check" class="logo-icon" style="color: white;"></i>
-                        <span class="logo-text"><span style="color: red;">Monaco</span>RGPD</span>
+                        <i data-lucide="shield-check" class="logo-icon text-white"></i>
+                        <span class="logo-text"><span class="text-red-600 dark:text-red-400">Monaco</span>RGPD</span>
                     </a>
                     <p>La plateforme de conformité RGPD conçue pour les entreprises monégasques.</p>
                 </div>

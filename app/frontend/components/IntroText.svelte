@@ -19,12 +19,12 @@
 
 {#if content}
   {#if variant === 'plain'}
-    <div class="intro-text-plain text-sm text-gray-700 mb-6">
+    <div class="intro-text-plain text-sm text-muted-foreground mb-6">
       {@html html}
     </div>
   {:else}
-    <div class="intro-text bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded-r">
-      <div class="text-sm text-gray-700">
+    <div class="intro-text bg-accent/10 border-l-4 border-accent p-4 mb-6 rounded-r">
+      <div class="text-sm text-muted-foreground">
         {@html html}
       </div>
     </div>
@@ -77,7 +77,7 @@
 
   .intro-text :global(a),
   .intro-text-plain :global(a) {
-    color: #2563eb;
+    color: var(--color-primary);
     text-decoration: underline;
   }
 </style>
