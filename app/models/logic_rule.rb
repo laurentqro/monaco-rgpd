@@ -16,7 +16,8 @@ class LogicRule < ApplicationRecord
     hide: 1,
     skip_to_section: 2,
     exit_questionnaire: 3,
-    skip_to_question: 4
+    skip_to_question: 4,
+    exit_to_waitlist: 5
   }, prefix: true
 
   validates :condition_type, presence: true
