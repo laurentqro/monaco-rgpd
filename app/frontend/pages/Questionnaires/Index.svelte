@@ -19,16 +19,11 @@
   }
 </script>
 
-<AppLayout>
+<AppLayout title="Questionnaires">
   <div class="flex flex-col gap-6">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight">Questionnaires</h1>
-        <p class="text-muted-foreground mt-1">
-          Évaluez votre conformité RGPD avec nos questionnaires guidés
-        </p>
-      </div>
-    </div>
+    <p class="text-muted-foreground">
+      Évaluez votre conformité RGPD avec nos questionnaires guidés
+    </p>
 
     {#if questionnaires.length === 0}
       <Card>
