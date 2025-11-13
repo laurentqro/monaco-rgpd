@@ -104,37 +104,23 @@ section2 = questionnaire.sections.create!(
   description: "Identification des principaux traitements de données"
 )
 
-# Q1: Avez-vous du personnel?
-s2q1_personnel = section2.questions.create!(
+# Q1: Délégués du personnel (shown only for orgs with 50+ employees)
+s2q6_delegates = section2.questions.create!(
   order_index: 1,
-  question_text: "Avez-vous du personnel ? (y compris co-gérants, stagiaires, apprentis, etc.)",
+  question_text: "Avez-vous des délégués du personnel ?",
   question_type: :yes_no,
   is_required: true,
   weight: 0
 )
 
-s2q1_personnel.answer_choices.create!([
+s2q6_delegates.answer_choices.create!([
   { order_index: 1, choice_text: "Oui", score: 0 },
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
-# Q2: Vidéosurveillance
-s2q2_video = section2.questions.create!(
-  order_index: 2,
-  question_text: "Avez-vous un dispositif de vidéosurveillance dans les locaux ?",
-  question_type: :yes_no,
-  is_required: true,
-  weight: 0
-)
-
-s2q2_video.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui", score: 0 },
-  { order_index: 2, choice_text: "Non", score: 0 }
-])
-
-# Q3: Email professionnel
+# Q2: Email professionnel
 s2q3_email = section2.questions.create!(
-  order_index: 3,
+  order_index: 2,
   question_text: "Vos employés disposent-ils d'une adresse email professionnelle ?",
   question_type: :yes_no,
   is_required: true,
@@ -146,9 +132,9 @@ s2q3_email.answer_choices.create!([
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
-# Q4: Accès aux locaux
+# Q3: Accès aux locaux
 s2q5_access = section2.questions.create!(
-  order_index: 4,
+  order_index: 3,
   question_text: "Le personnel accède aux locaux par :",
   question_type: :single_choice,
   is_required: true,
@@ -161,23 +147,9 @@ s2q5_access.answer_choices.create!([
   { order_index: 3, choice_text: "Un dispositif biométrique", score: 0 }
 ])
 
-# Q5: Délégués du personnel
-s2q6_delegates = section2.questions.create!(
-  order_index: 5,
-  question_text: "Avez-vous des délégués du personnel ?",
-  question_type: :yes_no,
-  is_required: true,
-  weight: 0
-)
-
-s2q6_delegates.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui", score: 0 },
-  { order_index: 2, choice_text: "Non", score: 0 }
-])
-
-# Q6: Site internet
+# Q4: Site internet
 s2q7_website = section2.questions.create!(
-  order_index: 6,
+  order_index: 4,
   question_text: "Avez-vous un site internet ?",
   question_type: :yes_no,
   is_required: true,
@@ -189,9 +161,9 @@ s2q7_website.answer_choices.create!([
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
-# Q7: Type de site
+# Q5: Type de site
 s2q8_site_type = section2.questions.create!(
-  order_index: 7,
+  order_index: 5,
   question_text: "Quel type de site ?",
   question_type: :single_choice,
   is_required: true,
@@ -203,9 +175,9 @@ s2q8_site_type.answer_choices.create!([
   { order_index: 2, choice_text: "Site de vente en ligne", score: 0 }
 ])
 
-# Q8: Informations personnel sur site
+# Q6: Informations personnel sur site
 s2q9_personnel_info = section2.questions.create!(
-  order_index: 8,
+  order_index: 6,
   question_text: "Votre site présente-t-il des informations relatives au personnel ?",
   question_type: :yes_no,
   is_required: true,
@@ -217,9 +189,9 @@ s2q9_personnel_info.answer_choices.create!([
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
-# Q9: Ligne directe
+# Q7: Ligne directe
 s2q4_phone = section2.questions.create!(
-  order_index: 9,
+  order_index: 7,
   question_text: "Vos employés disposent-ils d'une ligne directe (fixe ou mobile) ?",
   question_type: :yes_no,
   is_required: true,
@@ -227,6 +199,20 @@ s2q4_phone = section2.questions.create!(
 )
 
 s2q4_phone.answer_choices.create!([
+  { order_index: 1, choice_text: "Oui", score: 0 },
+  { order_index: 2, choice_text: "Non", score: 0 }
+])
+
+# Q8: Vidéosurveillance
+s2q2_video = section2.questions.create!(
+  order_index: 8,
+  question_text: "Avez-vous un dispositif de vidéosurveillance dans les locaux ?",
+  question_type: :yes_no,
+  is_required: true,
+  weight: 0
+)
+
+s2q2_video.answer_choices.create!([
   { order_index: 1, choice_text: "Oui", score: 0 },
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
@@ -636,11 +622,20 @@ s1q1_monaco.logic_rules.create!(
   exit_message: "Nous ne couvrons que Monaco pour le moment, mais laissez votre email et on vous contactera quand nous couvrirons d'autres pays que Monaco."
 )
 
-# Rule 2: S2Q1 - Skip Section 3 if no personnel
-s2q1_no = s2q1_personnel.answer_choices.find_by(choice_text: "Non")
-s2q1_personnel.logic_rules.create!(
+# Rule 1b: S1Q3 - Skip delegates question if org size < 50+
+s1q3_fifty_plus = s1q3_org_size.answer_choices.find_by(choice_text: "50+")
+s1q3_org_size.logic_rules.create!(
+  condition_type: :not_equals,
+  condition_value: s1q3_fifty_plus.id.to_s,
+  action: :skip_to_question,
+  target_question_id: s2q3_email.id
+)
+
+# Rule 2: S1Q3 - Skip Section 3 (HR) if no personnel (org size = 0)
+s1q3_zero = s1q3_org_size.answer_choices.find_by(choice_text: "0")
+s1q3_org_size.logic_rules.create!(
   condition_type: :equals,
-  condition_value: s2q1_no.id.to_s,
+  condition_value: s1q3_zero.id.to_s,
   action: :skip_to_section,
   target_section_id: section4_dpo.id
 )
