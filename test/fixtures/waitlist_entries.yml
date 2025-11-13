@@ -1,0 +1,11 @@
+one:
+  email: waitlist1@example.com
+  response: one
+  features_needed: ["association"]
+  notified: false
+
+two:
+  email: waitlist2@example.com
+  response: master_response
+  features_needed: ["video_surveillance", "association"]
+  notified: false
