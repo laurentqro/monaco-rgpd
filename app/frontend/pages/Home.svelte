@@ -30,6 +30,9 @@
     Globe,
     Phone
   } from 'lucide-svelte';
+
+  // Import Monaco Cloud logo from Rails assets
+  import monacoCloudLogo from '../../assets/images/monacocloud.png';
 </script>
 
 <svelte:head>
@@ -106,6 +109,7 @@
 }
 
 :global(body) {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     line-height: 1.6;
     color: var(--dark);
     background: var(--white);
@@ -319,12 +323,6 @@
     color: var(--gray);
     font-size: 14px;
     font-weight: 500;
-}
-
-.trust-icon {
-    width: 20px;
-    height: 20px;
-    color: var(--secondary);
 }
 
 /* Dashboard Preview */
@@ -1607,7 +1605,7 @@ section {
                 </div>
                 <div class="monaco-made-logo">
                     <p class="monaco-badge">en partenariat avec</p>
-                    <img src="images/monacocloud.png" alt="Monaco Cloud - Hébergé à Monaco" class="monaco-logo">
+                    <img src={monacoCloudLogo} alt="Monaco Cloud - Hébergé à Monaco" class="w-full h-auto">
                 </div>
             </div>
         </div>
