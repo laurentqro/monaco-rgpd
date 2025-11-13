@@ -6,7 +6,7 @@
   const account = $derived($page.props.current_account)
 </script>
 
-<AppLayout>
+<AppLayout title="Application">
   <div class="max-w-7xl mx-auto">
     <div class="bg-white shadow rounded-lg p-6">
       <h2 class="text-xl font-semibold text-gray-800 mb-4">

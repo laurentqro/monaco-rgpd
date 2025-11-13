@@ -52,7 +52,7 @@
   });
 </script>
 
-<AppLayout>
+<AppLayout title="Résultats de conformité">
   <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-5xl mx-auto px-4">
     <!-- Header -->
@@ -67,8 +67,7 @@
         </svg>
         Retour au tableau de bord
       </Button>
-      <h1 class="text-3xl font-bold text-gray-900">Détails de l'évaluation</h1>
-      <p class="text-gray-600 mt-2">
+      <p class="text-gray-600">
         {response.questionnaire.title} • Complétée le {new Date(response.completed_at).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
       </p>
     </div>

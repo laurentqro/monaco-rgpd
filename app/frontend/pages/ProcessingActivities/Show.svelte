@@ -12,7 +12,7 @@
   }
 </script>
 
-<AppLayout>
+<AppLayout title={activity?.name || 'Activité de traitement'}>
   <div class="min-h-screen bg-muted">
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Header with back button -->
@@ -28,7 +28,6 @@
             </svg>
             Retour à la liste
           </Button>
-          <h1 class="text-3xl font-bold mb-2">{activity.name}</h1>
           <p class="text-muted-foreground">{activity.description}</p>
         </div>
         <Button onclick={downloadPDF}>

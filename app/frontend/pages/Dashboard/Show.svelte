@@ -41,33 +41,21 @@
   }
 </script>
 
-<AppLayout>
+<AppLayout title="Tableau de bord de conformité">
 <div class="min-h-screen bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 py-8">
-    <div class="flex items-center justify-between mb-8">
-      <h1 class="text-3xl font-bold">Tableau de bord de conformité</h1>
-      <div class="flex items-center gap-4">
-        {#if latest_assessment && questionnaire_id}
-          <Button
-            onclick={() => router.post(`/questionnaires/${questionnaire_id}/responses`)}
-          >
-            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-            Nouvelle évaluation
-          </Button>
-        {/if}
+    {#if latest_assessment && questionnaire_id}
+      <div class="mb-6">
         <Button
-          variant="outline"
-          onclick={() => router.delete('/session')}
+          onclick={() => router.post(`/questionnaires/${questionnaire_id}/responses`)}
         >
           <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          Déconnexion
+          Nouvelle évaluation
         </Button>
       </div>
-    </div>
+    {/if}
 
     {#if latest_assessment}
       <!-- Action Items Inbox -->

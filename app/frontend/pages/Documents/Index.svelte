@@ -77,14 +77,11 @@
   }
 </script>
 
-<AppLayout>
+<AppLayout title="Documents">
   <div class="flex flex-col gap-6">
-    <div>
-      <h1 class="text-3xl font-bold tracking-tight">Documents</h1>
-      <p class="text-muted-foreground mt-2">
-        Générez vos documents de conformité RGPD
-      </p>
-    </div>
+    <p class="text-muted-foreground">
+      Générez vos documents de conformité RGPD
+    </p>
 
     {#if available_documents.length === 0}
       <Card>

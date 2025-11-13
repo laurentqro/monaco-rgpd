@@ -6,7 +6,7 @@
   let { response, questionnaire } = $props();
 </script>
 
-<AppLayout>
+<AppLayout title="Réponse au questionnaire">
   <div class="min-h-screen bg-gray-50">
     <QuestionnaireWizard {questionnaire} {response} />
   </div>
