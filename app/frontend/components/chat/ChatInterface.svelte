@@ -63,14 +63,11 @@
   }
 </script>
 
-<div class="flex h-screen">
+<div class="flex h-full">
   <div class="flex-1 flex flex-col">
-    <header class="bg-white border-b px-6 py-4">
-      <h1 class="text-2xl font-bold text-gray-900">
-        {questionnaire.title}
-      </h1>
+    <div class="bg-white border-b px-6 py-4">
       <p class="text-sm text-gray-600">{questionnaire.description}</p>
-    </header>
+    </div>
 
     <MessageList {messages} {isSending} onButtonSelect={handleButtonSelect} />
 

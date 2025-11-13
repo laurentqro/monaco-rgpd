@@ -6,7 +6,5 @@
 </script>
 
 <AppLayout title={questionnaire?.title || 'Conversation'}>
-  <div class="min-h-screen bg-gray-50">
-    <ChatInterface {conversation} {questionnaire} />
-  </div>
+  <ChatInterface {conversation} {questionnaire} />
 </AppLayout>
