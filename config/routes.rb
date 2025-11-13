@@ -80,6 +80,7 @@ Rails.application.routes.draw do
     delete "impersonations", to: "impersonations#destroy", as: :stop_impersonating
     resources :subscriptions, only: [ :index ]
     resources :admins, only: [ :index, :create, :destroy ]
+    resources :waitlist_entries, only: [ :index ]
     root "dashboard#index"
   end
 
