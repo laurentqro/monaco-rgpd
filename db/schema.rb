@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_12_085446) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_13_210559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -126,9 +126,12 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_12_085446) do
     t.integer "order_index", null: false
     t.bigint "question_id", null: false
     t.decimal "score", precision: 5, scale: 2
+    t.boolean "triggers_waitlist", default: false, null: false
     t.datetime "updated_at", null: false
+    t.string "waitlist_feature_key"
     t.index [ "order_index" ], name: "index_answer_choices_on_order_index"
     t.index [ "question_id" ], name: "index_answer_choices_on_question_id"
+    t.index [ "waitlist_feature_key" ], name: "index_answer_choices_on_waitlist_feature_key"
   end
 
   create_table "answers", force: :cascade do |t|
@@ -596,6 +599,20 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_12_085446) do
     t.index [ "email" ], name: "index_users_on_email", unique: true
   end
 
+  create_table "waitlist_entries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.jsonb "features_needed", default: [], null: false
+    t.boolean "notified", default: false, null: false
+    t.datetime "notified_at"
+    t.bigint "response_id"
+    t.datetime "updated_at", null: false
+    t.index [ "email" ], name: "index_waitlist_entries_on_email"
+    t.index [ "features_needed" ], name: "index_waitlist_entries_on_features_needed", using: :gin
+    t.index [ "notified", "created_at" ], name: "index_waitlist_entries_on_notified_and_created_at"
+    t.index [ "response_id" ], name: "index_waitlist_entries_on_response_id"
+  end
+
   add_foreign_key "access_categories", "processing_activities"
   add_foreign_key "action_items", "accounts"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -642,4 +659,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_12_085446) do
   add_foreign_key "subscriptions", "accounts"
   add_foreign_key "subscriptions", "products"
   add_foreign_key "users", "accounts"
+  add_foreign_key "waitlist_entries", "responses"
 end

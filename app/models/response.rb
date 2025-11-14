@@ -9,6 +9,7 @@ class Response < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :documents, dependent: :destroy
   has_many :processing_activities, dependent: :nullify
+  has_many :waitlist_entries, dependent: :destroy
 
   enum :status, {
     in_progress: 0,
@@ -22,6 +23,18 @@ class Response < ApplicationRecord
 
   scope :for_account, ->(account) { where(account: account) }
   scope :completed, -> { where(status: :completed) }
+
+  def waitlist_features_needed
+    answers.joins(:answer_choice)
+      .where(answer_choices: { triggers_waitlist: true })
+      .pluck("answer_choices.waitlist_feature_key")
+      .compact
+      .uniq
+  end
+
+  def requires_waitlist?
+    waitlist_features_needed.any?
+  end
 
   private
 

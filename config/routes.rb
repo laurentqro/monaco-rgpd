@@ -21,6 +21,9 @@ Rails.application.routes.draw do
 
   # Questionnaires and Responses
   resources :questionnaires, only: [ :index, :show ] do
+    member do
+      get :waitlist_exit
+    end
     resources :responses, only: [ :create, :show, :update ]
   end
 
@@ -36,6 +39,9 @@ Rails.application.routes.draw do
   resources :conversations, only: [ :create, :show ] do
     resources :messages, only: [ :create ], controller: "conversation_messages"
   end
+
+  # Waitlist Entries
+  resources :waitlist_entries, only: [ :create ]
 
   # Dashboard
   get "dashboard", to: "dashboard#show"
@@ -74,6 +80,7 @@ Rails.application.routes.draw do
     delete "impersonations", to: "impersonations#destroy", as: :stop_impersonating
     resources :subscriptions, only: [ :index ]
     resources :admins, only: [ :index, :create, :destroy ]
+    resources :waitlist_entries, only: [ :index ]
     root "dashboard#index"
   end
 

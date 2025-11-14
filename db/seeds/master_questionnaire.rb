@@ -59,7 +59,13 @@ s1q1_monaco = section1.questions.create!(
 
 s1q1_monaco.answer_choices.create!([
   { order_index: 1, choice_text: "Oui", score: 0 },
-  { order_index: 2, choice_text: "Non", score: 0 }
+  {
+    order_index: 2,
+    choice_text: "Non",
+    score: 0,
+    triggers_waitlist: true,
+    waitlist_feature_key: "geographic_expansion"
+  }
 ])
 
 # Q2: Qui êtes-vous?
@@ -73,9 +79,27 @@ s1q2_org_type = section1.questions.create!(
 
 s1q2_org_type.answer_choices.create!([
   { order_index: 1, choice_text: "Entreprise (nom personnel, SARL, SASU, SNC, SAM, etc.)", score: 0 },
-  { order_index: 2, choice_text: "Association", score: 0 },
-  { order_index: 3, choice_text: "Organisme public", score: 0 },
-  { order_index: 4, choice_text: "Profession libérale", score: 0 }
+  {
+    order_index: 2,
+    choice_text: "Association",
+    score: 0,
+    triggers_waitlist: true,
+    waitlist_feature_key: "association"
+  },
+  {
+    order_index: 3,
+    choice_text: "Organisme public",
+    score: 0,
+    triggers_waitlist: true,
+    waitlist_feature_key: "organisme_public"
+  },
+  {
+    order_index: 4,
+    choice_text: "Profession libérale",
+    score: 0,
+    triggers_waitlist: true,
+    waitlist_feature_key: "profession_liberale"
+  }
 ])
 
 # Q3: Taille de l'organisation
@@ -213,7 +237,13 @@ s2q2_video = section2.questions.create!(
 )
 
 s2q2_video.answer_choices.create!([
-  { order_index: 1, choice_text: "Oui", score: 0 },
+  {
+    order_index: 1,
+    choice_text: "Oui",
+    score: 0,
+    triggers_waitlist: true,
+    waitlist_feature_key: "video_surveillance"
+  },
   { order_index: 2, choice_text: "Non", score: 0 }
 ])
 
@@ -613,13 +643,12 @@ s6q8_rights.answer_choices.create!([
 
 puts "\nConfiguring logic rules..."
 
-# Rule 1: S1Q1 - Exit if not in Monaco
+# Rule 1: S1Q1 - Exit to waitlist if not in Monaco
 s1q1_no = s1q1_monaco.answer_choices.find_by(choice_text: "Non")
 s1q1_monaco.logic_rules.create!(
   condition_type: :equals,
   condition_value: s1q1_no.id.to_s,
-  action: :exit_questionnaire,
-  exit_message: "Nous ne couvrons que Monaco pour le moment, mais laissez votre email et on vous contactera quand nous couvrirons d'autres pays que Monaco."
+  action: :exit_to_waitlist
 )
 
 # Rule 1b: S1Q3 - Skip delegates question if org size < 50+
@@ -640,16 +669,7 @@ s1q3_org_size.logic_rules.create!(
   target_section_id: section4_dpo.id
 )
 
-# Rule 3: S2Q2 - Exit if video surveillance (needs custom handling)
-s2q2_yes = s2q2_video.answer_choices.find_by(choice_text: "Oui")
-s2q2_video.logic_rules.create!(
-  condition_type: :equals,
-  condition_value: s2q2_yes.id.to_s,
-  action: :exit_questionnaire,
-  exit_message: "La vidéosurveillance nécessite une analyse personnalisée. Merci de nous contacter."
-)
-
-# Rule 4: S2Q7 - Skip website-related questions if no website
+# Rule 3: S2Q7 - Skip website-related questions if no website
 s2q7_no = s2q7_website.answer_choices.find_by(choice_text: "Non")
 s2q7_website.logic_rules.create!(
   condition_type: :equals,
